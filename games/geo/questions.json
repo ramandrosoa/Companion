@@ -1,0 +1,126 @@
+{
+    "capitals": {
+      "1": [
+        {"q": "What is the capital of France?", "opts": ["London", "Berlin", "Paris", "Madrid"], "a": "Paris", "fact": "Paris is also known as the City of Light!"},
+        {"q": "What is the capital of Japan?", "opts": ["Beijing", "Seoul", "Bangkok", "Tokyo"], "a": "Tokyo", "fact": "Tokyo is one of the most populated cities in the world!"},
+        {"q": "What is the capital of Australia?", "opts": ["Sydney", "Melbourne", "Canberra", "Brisbane"], "a": "Canberra", "fact": "Many people think Sydney is the capital, but it's Canberra!"},
+        {"q": "What is the capital of the United States?", "opts": ["New York", "Los Angeles", "Chicago", "Washington D.C."], "a": "Washington D.C.", "fact": "Washington D.C. is its own district, not part of any state!"},
+        {"q": "What is the capital of Brazil?", "opts": ["Rio de Janeiro", "São Paulo", "Brasília", "Salvador"], "a": "Brasília", "fact": "Brasília was built from scratch and became the capital in 1960!"},
+        {"q": "What is the capital of Italy?", "opts": ["Milan", "Venice", "Naples", "Rome"], "a": "Rome", "fact": "Rome is known as the Eternal City and is over 2,800 years old!"},
+        {"q": "What is the capital of China?", "opts": ["Shanghai", "Beijing", "Guangzhou", "Shenzhen"], "a": "Beijing", "fact": "Beijing has been China's capital for over 700 years!"},
+        {"q": "What is the capital of Egypt?", "opts": ["Alexandria", "Cairo", "Luxor", "Giza"], "a": "Cairo", "fact": "Cairo is the largest city in Africa and the Arab world!"},
+        {"q": "What is the capital of India?", "opts": ["Mumbai", "Kolkata", "Chennai", "New Delhi"], "a": "New Delhi", "fact": "New Delhi was built by the British in the early 20th century!"},
+        {"q": "What is the capital of Spain?", "opts": ["Barcelona", "Seville", "Valencia", "Madrid"], "a": "Madrid", "fact": "Madrid is the highest capital city in the European Union!"}
+      ],
+      "2": [
+        {"q": "What is the capital of Canada?", "opts": ["Toronto", "Vancouver", "Ottawa", "Montreal"], "a": "Ottawa", "fact": "Like Australia, Canada's capital is not its largest city!"},
+        {"q": "What is the capital of South Africa?", "opts": ["Cape Town", "Johannesburg", "Pretoria", "Durban"], "a": "Pretoria", "fact": "South Africa has three capitals — one for each branch of government!"},
+        {"q": "What is the capital of Mexico?", "opts": ["Guadalajara", "Monterrey", "Cancun", "Mexico City"], "a": "Mexico City", "fact": "Mexico City is built on the ruins of the Aztec city Tenochtitlán!"},
+        {"q": "What is the capital of Argentina?", "opts": ["Córdoba", "Rosario", "Mendoza", "Buenos Aires"], "a": "Buenos Aires", "fact": "Buenos Aires means 'fair winds' in Spanish!"},
+        {"q": "What is the capital of Germany?", "opts": ["Munich", "Hamburg", "Frankfurt", "Berlin"], "a": "Berlin", "fact": "Berlin was divided into East and West by a wall from 1961 to 1989!"},
+        {"q": "What is the capital of Russia?", "opts": ["St. Petersburg", "Moscow", "Novosibirsk", "Kazan"], "a": "Moscow", "fact": "Moscow's Red Square is one of the most famous squares in the world!"},
+        {"q": "What is the capital of South Korea?", "opts": ["Busan", "Incheon", "Daegu", "Seoul"], "a": "Seoul", "fact": "Seoul means 'capital' in Korean — it's simply called 'the capital'!"},
+        {"q": "What is the capital of Turkey?", "opts": ["Istanbul", "Izmir", "Bursa", "Ankara"], "a": "Ankara", "fact": "Most people think Istanbul is the capital but it's actually Ankara!"},
+        {"q": "What is the capital of Saudi Arabia?", "opts": ["Jeddah", "Mecca", "Medina", "Riyadh"], "a": "Riyadh", "fact": "Riyadh means 'gardens' in Arabic, though it sits in the desert!"},
+        {"q": "What is the capital of Nigeria?", "opts": ["Lagos", "Kano", "Ibadan", "Abuja"], "a": "Abuja", "fact": "Abuja replaced Lagos as Nigeria's capital in 1991!"}
+      ],
+      "3": [
+        {"q": "What is the capital of Kazakhstan?", "opts": ["Almaty", "Shymkent", "Karaganda", "Astana"], "a": "Astana", "fact": "Kazakhstan is the world's largest landlocked country!"},
+        {"q": "What is the capital of Pakistan?", "opts": ["Karachi", "Lahore", "Peshawar", "Islamabad"], "a": "Islamabad", "fact": "Islamabad was purpose-built as the capital in the 1960s!"},
+        {"q": "What is the capital of Ukraine?", "opts": ["Kharkiv", "Odessa", "Lviv", "Kyiv"], "a": "Kyiv", "fact": "Kyiv is one of the oldest cities in Eastern Europe, founded in the 5th century!"},
+        {"q": "What is the capital of Ethiopia?", "opts": ["Dire Dawa", "Gondar", "Mekelle", "Addis Ababa"], "a": "Addis Ababa", "fact": "Addis Ababa means 'new flower' in Amharic!"},
+        {"q": "What is the capital of Peru?", "opts": ["Cusco", "Arequipa", "Trujillo", "Lima"], "a": "Lima", "fact": "Lima is home to over 30% of Peru's entire population!"},
+        {"q": "What is the capital of Morocco?", "opts": ["Casablanca", "Marrakech", "Fez", "Rabat"], "a": "Rabat", "fact": "Most tourists visit Casablanca or Marrakech, but Rabat is the capital!"},
+        {"q": "What is the capital of Vietnam?", "opts": ["Ho Chi Minh City", "Da Nang", "Hue", "Hanoi"], "a": "Hanoi", "fact": "Hanoi has been Vietnam's capital for over 1,000 years!"},
+        {"q": "What is the capital of Colombia?", "opts": ["Medellín", "Cali", "Cartagena", "Bogotá"], "a": "Bogotá", "fact": "Bogotá sits at 2,600 meters above sea level — one of the world's highest capitals!"},
+        {"q": "What is the capital of Iran?", "opts": ["Isfahan", "Shiraz", "Mashhad", "Tehran"], "a": "Tehran", "fact": "Tehran is home to more than 15 million people in its metro area!"},
+        {"q": "What is the capital of Algeria?", "opts": ["Oran", "Constantine", "Annaba", "Algiers"], "a": "Algiers", "fact": "Algiers is nicknamed 'Algiers the White' for its white buildings!"}
+      ],
+      "4": [
+        {"q": "What is the capital of Myanmar?", "opts": ["Yangon", "Mandalay", "Bagan", "Naypyidaw"], "a": "Naypyidaw", "fact": "Naypyidaw was purpose-built and became the capital in 2006 — barely anyone lives there!"},
+        {"q": "What is the capital of Sri Lanka?", "opts": ["Kandy", "Galle", "Colombo", "Sri Jayawardenepura Kotte"], "a": "Sri Jayawardenepura Kotte", "fact": "Sri Lanka has two capitals — the legislature is in Kotte, but Colombo is the commercial capital!"},
+        {"q": "What is the capital of Bolivia?", "opts": ["La Paz", "Cochabamba", "Santa Cruz", "Sucre"], "a": "Sucre", "fact": "Bolivia has two capitals — Sucre is the constitutional capital and La Paz is the seat of government!"},
+        {"q": "What is the capital of Tanzania?", "opts": ["Zanzibar", "Mwanza", "Arusha", "Dodoma"], "a": "Dodoma", "fact": "Most people think Dar es Salaam is the capital but Tanzania moved it to Dodoma in 1996!"},
+        {"q": "What is the capital of Ivory Coast?", "opts": ["Abidjan", "Bouaké", "Korhogo", "Yamoussoukro"], "a": "Yamoussoukro", "fact": "Yamoussoukro is home to the world's largest church by area!"},
+        {"q": "What is the capital of Malaysia?", "opts": ["Penang", "Johor Bahru", "Ipoh", "Kuala Lumpur"], "a": "Kuala Lumpur", "fact": "Kuala Lumpur means 'muddy confluence' — it was founded at the meeting of two rivers!"},
+        {"q": "What is the capital of Georgia (country)?", "opts": ["Batumi", "Kutaisi", "Rustavi", "Tbilisi"], "a": "Tbilisi", "fact": "Tbilisi means 'warm location' in Georgian — it was named for its hot sulfur springs!"},
+        {"q": "What is the capital of Cameroon?", "opts": ["Douala", "Bafoussam", "Garoua", "Yaoundé"], "a": "Yaoundé", "fact": "Douala is the largest city but Yaoundé has been the capital since 1922!"},
+        {"q": "What is the capital of Honduras?", "opts": ["San Pedro Sula", "La Ceiba", "Choloma", "Tegucigalpa"], "a": "Tegucigalpa", "fact": "Tegucigalpa is one of the few capital cities not connected to the Pan-American Highway!"},
+        {"q": "What is the capital of Uzbekistan?", "opts": ["Samarkand", "Bukhara", "Namangan", "Tashkent"], "a": "Tashkent", "fact": "Tashkent is the largest city in Central Asia!"}
+      ],
+      "5": [
+        {"q": "What is the capital of Kyrgyzstan?", "opts": ["Osh", "Jalal-Abad", "Karakol", "Bishkek"], "a": "Bishkek", "fact": "Bishkek sits at the foot of the Tian Shan mountains at 800 meters altitude!"},
+        {"q": "What is the capital of Eritrea?", "opts": ["Massawa", "Keren", "Assab", "Asmara"], "a": "Asmara", "fact": "Asmara has one of the best-preserved collections of 1930s modernist architecture in the world!"},
+        {"q": "What is the capital of Palau?", "opts": ["Koror", "Airai", "Melekeok", "Ngerulmud"], "a": "Ngerulmud", "fact": "Ngerulmud has a population of only around 300 people — one of the smallest capitals in the world!"},
+        {"q": "What is the capital of Vanuatu?", "opts": ["Luganville", "Isangel", "Lakatoro", "Port Vila"], "a": "Port Vila", "fact": "Vanuatu has 83 islands and over 100 languages — one of the most linguistically diverse countries!"},
+        {"q": "What is the capital of Nauru?", "opts": ["Aiwo", "Denigomodu", "Meneng", "Yaren"], "a": "Yaren", "fact": "Nauru is the world's smallest island nation and has no official capital — Yaren is the largest district!"},
+        {"q": "What is the capital of Burkina Faso?", "opts": ["Bobo-Dioulasso", "Koudougou", "Banfora", "Ouagadougou"], "a": "Ouagadougou", "fact": "Ouagadougou is one of the hardest capital city names to spell in the world!"},
+        {"q": "What is the capital of Timor-Leste?", "opts": ["Baucau", "Maliana", "Suai", "Dili"], "a": "Dili", "fact": "Timor-Leste became the first new country of the 21st century, gaining independence in 2002!"},
+        {"q": "What is the capital of Micronesia?", "opts": ["Kolonia", "Weno", "Tofol", "Palikir"], "a": "Palikir", "fact": "Palikir replaced Kolonia as the capital in 1989 and has a population of only about 4,600!"},
+        {"q": "What is the capital of Comoros?", "opts": ["Fomboni", "Mutsamudu", "Domoni", "Moroni"], "a": "Moroni", "fact": "Moroni comes from the Arabic word for 'in the heart of the fire' — Mount Karthala volcano is nearby!"},
+        {"q": "What is the capital of Suriname?", "opts": ["Nieuw Nickerie", "Lelydorp", "Moengo", "Paramaribo"], "a": "Paramaribo", "fact": "Paramaribo's historic inner city is a UNESCO World Heritage Site!"}
+      ]
+    },
+    "flags": {
+      "1": [
+        {"q": "Which country does this flag belong to?", "flag": "🇫🇷", "country": "France", "opts": ["Germany", "France", "Italy", "Spain"], "a": "France", "fact": "The French flag is called the Tricolore — blue, white and red!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇯🇵", "country": "Japan", "opts": ["China", "South Korea", "Japan", "Vietnam"], "a": "Japan", "fact": "The Japanese flag shows a red disc representing the sun — Japan is called the Land of the Rising Sun!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇧🇷", "country": "Brazil", "opts": ["Argentina", "Colombia", "Brazil", "Peru"], "a": "Brazil", "fact": "Brazil's flag has a blue globe with stars showing the sky over Rio de Janeiro on November 15, 1889!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇬🇧", "country": "United Kingdom", "opts": ["Australia", "New Zealand", "Ireland", "United Kingdom"], "a": "United Kingdom", "fact": "The UK flag is called the Union Jack — it combines the crosses of England, Scotland and Ireland!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇨🇦", "country": "Canada", "opts": ["United States", "Canada", "Switzerland", "Denmark"], "a": "Canada", "fact": "The maple leaf on Canada's flag was adopted in 1965 — before that they used the Union Jack!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇦🇺", "country": "Australia", "opts": ["New Zealand", "Australia", "Fiji", "Papua New Guinea"], "a": "Australia", "fact": "Australia's flag features the Southern Cross constellation, visible from the Southern Hemisphere!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇩🇪", "country": "Germany", "opts": ["Belgium", "Germany", "Austria", "Hungary"], "a": "Germany", "fact": "Germany's black-red-gold flag dates back to the 1848 revolution!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇨🇳", "country": "China", "opts": ["Vietnam", "China", "North Korea", "Laos"], "a": "China", "fact": "China's red flag has one large star and four smaller ones representing the Communist Party!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇮🇳", "country": "India", "opts": ["Pakistan", "Bangladesh", "India", "Nepal"], "a": "India", "fact": "India's flag has a blue wheel called the Ashoka Chakra with 24 spokes!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇮🇹", "country": "Italy", "opts": ["Mexico", "Italy", "Ireland", "Hungary"], "a": "Italy", "fact": "Italy and Mexico have very similar flags — Italy's is green-white-red without a coat of arms!"}
+      ],
+      "2": [
+        {"q": "Which country does this flag belong to?", "flag": "🇿🇦", "country": "South Africa", "opts": ["Kenya", "South Africa", "Zimbabwe", "Zambia"], "a": "South Africa", "fact": "South Africa's flag was designed in 1994 for the end of apartheid — the Y shape represents convergence!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇰🇷", "country": "South Korea", "opts": ["Japan", "China", "North Korea", "South Korea"], "a": "South Korea", "fact": "South Korea's flag features the yin-yang symbol and four trigrams from the I Ching!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇲🇽", "country": "Mexico", "opts": ["Italy", "Mexico", "Bolivia", "Peru"], "a": "Mexico", "fact": "Mexico's flag shows an eagle eating a snake on a cactus — from an Aztec legend!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇹🇷", "country": "Turkey", "opts": ["Pakistan", "Azerbaijan", "Tunisia", "Turkey"], "a": "Turkey", "fact": "Turkey's crescent and star flag is one of the oldest national flag designs still in use!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇸🇦", "country": "Saudi Arabia", "opts": ["Iran", "Saudi Arabia", "Pakistan", "Libya"], "a": "Saudi Arabia", "fact": "Saudi Arabia's flag has the Shahada (Islamic declaration of faith) and a sword written in Arabic!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇦🇷", "country": "Argentina", "opts": ["Uruguay", "Argentina", "Greece", "El Salvador"], "a": "Argentina", "fact": "Argentina's flag has a sun face called the Sun of May, commemorating the May Revolution of 1810!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇳🇬", "country": "Nigeria", "opts": ["Cameroon", "Nigeria", "Ivory Coast", "Ireland"], "a": "Nigeria", "fact": "Nigeria's simple green and white flag was chosen from a student competition in 1959!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇸🇬", "country": "Singapore", "opts": ["Singapore", "Malaysia", "Indonesia", "Philippines"], "a": "Singapore", "fact": "Singapore's crescent represents a young nation, and the five stars represent democracy, peace, progress, justice and equality!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇵🇹", "country": "Portugal", "opts": ["Spain", "Brazil", "Portugal", "Angola"], "a": "Portugal", "fact": "Portugal's flag features an armillary sphere — a navigation instrument used in the Age of Exploration!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇸🇪", "country": "Sweden", "opts": ["Finland", "Norway", "Sweden", "Iceland"], "a": "Sweden", "fact": "The Nordic cross on Sweden's flag represents Christianity and is shared by all Scandinavian countries!"}
+      ],
+      "3": [
+        {"q": "Which country does this flag belong to?", "flag": "🇬🇭", "country": "Ghana", "opts": ["Guinea", "Ghana", "Senegal", "Mali"], "a": "Ghana", "fact": "Ghana's black star was an inspiration for many African nations during independence movements!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇵🇰", "country": "Pakistan", "opts": ["Malaysia", "Saudi Arabia", "Pakistan", "Algeria"], "a": "Pakistan", "fact": "Pakistan's white stripe represents the country's non-Muslim minorities!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇨🇭", "country": "Switzerland", "opts": ["Denmark", "Switzerland", "England", "Norway"], "a": "Switzerland", "fact": "Switzerland's flag is one of only two square national flags in the world!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇯🇲", "country": "Jamaica", "opts": ["Trinidad", "Guyana", "Jamaica", "Barbados"], "a": "Jamaica", "fact": "Jamaica's flag is the only national flag with no red, white or blue!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇰🇪", "country": "Kenya", "opts": ["Uganda", "Tanzania", "Kenya", "Ethiopia"], "a": "Kenya", "fact": "Kenya's flag features a Maasai shield and two spears representing the defense of freedom!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇮🇷", "country": "Iran", "opts": ["Iraq", "Iran", "Afghanistan", "Pakistan"], "a": "Iran", "fact": "Iran's flag has the words 'Allahu Akbar' written 22 times along the borders!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇵🇭", "country": "Philippines", "opts": ["Malaysia", "Indonesia", "Philippines", "Vietnam"], "a": "Philippines", "fact": "The Philippines flag is flipped upside down during wartime — blue on top means peace, red means war!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇬🇷", "country": "Greece", "opts": ["Greece", "Israel", "Uruguay", "Finland"], "a": "Greece", "fact": "Greece's nine stripes represent the nine syllables of the phrase 'Freedom or Death'!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇨🇴", "country": "Colombia", "opts": ["Ecuador", "Venezuela", "Colombia", "Bolivia"], "a": "Colombia", "fact": "Colombia, Ecuador and Venezuela share very similar flags — they all come from Gran Colombia!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇲🇦", "country": "Morocco", "opts": ["Libya", "Morocco", "Tunisia", "Western Sahara"], "a": "Morocco", "fact": "The green star on Morocco's flag is called the Seal of Solomon!"}
+      ],
+      "4": [
+        {"q": "Which country does this flag belong to?", "flag": "🇧🇧", "country": "Barbados", "opts": ["Bahamas", "Barbados", "Trinidad", "Antigua"], "a": "Barbados", "fact": "Barbados' trident is broken — symbolizing the break from colonial rule!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇧🇭", "country": "Bahrain", "opts": ["Qatar", "Bahrain", "UAE", "Kuwait"], "a": "Bahrain", "fact": "Bahrain's five white points represent the five pillars of Islam!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇲🇳", "country": "Mongolia", "opts": ["Kazakhstan", "Mongolia", "Uzbekistan", "Turkmenistan"], "a": "Mongolia", "fact": "Mongolia's flag features the Soyombo symbol — a unique script representing fire, sun, moon, earth and water!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇬🇪", "country": "Georgia", "opts": ["Armenia", "Georgia", "Azerbaijan", "Moldova"], "a": "Georgia", "fact": "Georgia's five-cross flag is known as the flag of the five crosses and dates back to the 5th century!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇧🇹", "country": "Bhutan", "opts": ["Nepal", "Bhutan", "Tibet", "Myanmar"], "a": "Bhutan", "fact": "Bhutan's flag has a White Dragon — Bhutan calls itself Druk Yul meaning 'Land of the Thunder Dragon'!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇲🇻", "country": "Maldives", "opts": ["Sri Lanka", "Maldives", "Bangladesh", "Brunei"], "a": "Maldives", "fact": "The crescent on Maldives' flag points away from the hoist side — an unusual design!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇰🇬", "country": "Kyrgyzstan", "opts": ["Tajikistan", "Kyrgyzstan", "Turkmenistan", "Kazakhstan"], "a": "Kyrgyzstan", "fact": "Kyrgyzstan's flag shows a tunduk — the top of a yurt (traditional tent), viewed from inside!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇸🇷", "country": "Suriname", "opts": ["Guyana", "Suriname", "Trinidad", "Belize"], "a": "Suriname", "fact": "Suriname has a yellow star on its flag representing unity and the golden future!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇲🇿", "country": "Mozambique", "opts": ["Zimbabwe", "Angola", "Mozambique", "Zambia"], "a": "Mozambique", "fact": "Mozambique is the only country with a modern assault rifle (AK-47) on its flag!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇦🇲", "country": "Armenia", "opts": ["Armenia", "Georgia", "Azerbaijan", "Iran"], "a": "Armenia", "fact": "Armenia's red represents the blood shed for independence, blue the sky and orange the courage!"}
+      ],
+      "5": [
+        {"q": "Which country does this flag belong to?", "flag": "🇲🇭", "country": "Marshall Islands", "opts": ["Palau", "Marshall Islands", "Micronesia", "Kiribati"], "a": "Marshall Islands", "fact": "The Marshall Islands flag has a rising diagonal stripe representing the equator!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇵🇼", "country": "Palau", "opts": ["Nauru", "Palau", "Tuvalu", "Samoa"], "a": "Palau", "fact": "Palau's moon is positioned slightly off-center — a deliberate design choice for aesthetic balance!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇰🇮", "country": "Kiribati", "opts": ["Tuvalu", "Kiribati", "Fiji", "Vanuatu"], "a": "Kiribati", "fact": "Kiribati's flag shows a frigate bird flying over the rising sun and Pacific Ocean!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇸🇧", "country": "Solomon Islands", "opts": ["Vanuatu", "Solomon Islands", "Papua New Guinea", "Fiji"], "a": "Solomon Islands", "fact": "The five stars on Solomon Islands' flag represent its five main island groups!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇹🇻", "country": "Tuvalu", "opts": ["Tuvalu", "Samoa", "Nauru", "Niue"], "a": "Tuvalu", "fact": "Tuvalu's nine stars represent its nine atolls!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇸🇲", "country": "San Marino", "opts": ["Vatican", "San Marino", "Monaco", "Andorra"], "a": "San Marino", "fact": "San Marino claims to be the world's oldest republic, founded in 301 AD!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇹🇱", "country": "Timor-Leste", "opts": ["Papua New Guinea", "Timor-Leste", "Indonesia", "Philippines"], "a": "Timor-Leste", "fact": "Timor-Leste's black triangle represents the colonial past and the star represents hope for the future!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇦🇩", "country": "Andorra", "opts": ["Monaco", "Andorra", "Liechtenstein", "Luxembourg"], "a": "Andorra", "fact": "Andorra is a tiny country between France and Spain — one of the smallest in Europe!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇸🇹", "country": "São Tomé and Príncipe", "opts": ["Gabon", "São Tomé and Príncipe", "Equatorial Guinea", "Cameroon"], "a": "São Tomé and Príncipe", "fact": "São Tomé and Príncipe is a tiny island nation in the Gulf of Guinea!"},
+        {"q": "Which country does this flag belong to?", "flag": "🇻🇺", "country": "Vanuatu", "opts": ["Solomon Islands", "Papua New Guinea", "Vanuatu", "Fiji"], "a": "Vanuatu", "fact": "Vanuatu's yellow Y shape represents the chain of islands and the light of Christianity!"}
+      ]
+    }
+  }
