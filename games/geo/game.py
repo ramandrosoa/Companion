@@ -15,9 +15,6 @@ QUESTIONS_PER_STAGE = {1: 5, 2: 6, 3: 7, 4: 8, 5: 8}
 # Difficulty labels
 DIFFICULTY = {1: "Beginner", 2: "Easy", 3: "Medium", 4: "Hard", 5: "Expert"}
 
-# Seconds for timer (stage 5 only)
-TIMER_SECONDS = 15
-
 
 def load_questions() -> dict:
     with open(QUESTIONS_PATH, "r", encoding="utf-8") as f:
@@ -45,13 +42,6 @@ def check_answer(question: dict, submitted: str) -> bool:
     return submitted == question["a"]
 
 
-def calc_xp(is_correct: bool, streak: int) -> int:
-    if not is_correct:
-        return 0
-    base = 5
-    streak_bonus = 2 if streak >= 3 else 0
-    return base + streak_bonus
-
 
 def get_hint(question: dict, stage: int) -> str | None:
     """Return a hint string for stages 2-3, None otherwise."""
@@ -61,35 +51,5 @@ def get_hint(question: dict, stage: int) -> str | None:
         return f"Starts with '{question['a'][:2]}'"
     return None
 
-
-def build_results(session: dict) -> dict:
-    """Build the results summary from a completed game session."""
-    total     = session["total"]
-    correct   = session["correct"]
-    score     = session["score"]
-    max_score = total * 10
-    pct       = int((score / max_score) * 100) if max_score > 0 else 0
-    xp_earned = session["xp_earned"] + 20  # +20 completion bonus
-
-    if pct == 100:
-        xp_earned += 15  # perfect quiz bonus
-        emoji, title = "🏆", "Perfect Score!"
-    elif pct >= 80:
-        emoji, title = "🌟", "Amazing!"
-    elif pct >= 50:
-        emoji, title = "👏", "Good Job!"
-    else:
-        emoji, title = "🌱", "Keep Going!"
-
-    return {
-        "emoji":      emoji,
-        "title":      title,
-        "score":      score,
-        "max_score":  max_score,
-        "pct":        pct,
-        "correct":    correct,
-        "wrong":      total - correct,
-        "xp_earned":  xp_earned,
-        "best_streak": session.get("best_streak", 0),
-        "total":      total,
-    }
+def session_max_xp(stage: int) -> int:
+    return QUESTIONS_PER_STAGE[stage] * 10 + 20 + 15

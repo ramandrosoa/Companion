@@ -39,6 +39,14 @@ DEFAULT_CONFIG = {
         "companion_name": None,      # Stage 5 custom name
         "theme_override": None,      # Stage 5 theme choice
     },
+    # Tracks which questions have been mastered (answered correctly at least once)
+    # Structure: {"capitals": {"1": ["Paris", "Tokyo"], "2": [...], ...},
+    #             "flags":    {"1": ["France", "Japan"], "2": [...], ...}}
+    # The answer string (question["a"]) is used as the unique identifier
+    "mastered": {
+        "capitals": {"1": [], "2": [], "3": [], "4": [], "5": []},
+        "flags":    {"1": [], "2": [], "3": [], "4": [], "5": []},
+    },
 }
 
 
@@ -127,3 +135,56 @@ def _deep_merge(defaults: dict, target: dict) -> None:
             target[key] = val
         elif isinstance(val, dict) and isinstance(target[key], dict):
             _deep_merge(val, target[key])
+
+
+def is_mastered(data: dict, mode: str, stage: int, answer: str) -> bool:
+    """Return True if this question has already been mastered."""
+    return answer in data["mastered"][mode][str(stage)]
+
+
+def master_question(data: dict, mode: str, stage: int, answer: str) -> tuple[dict, bool]:
+    """
+    Mark a question as mastered and award XP if it's the first time.
+    Returns (updated_data, xp_awarded).
+
+    Rules:
+    - First correct answer → mastered, +10 XP
+    - Already mastered    → no change, +0 XP
+    - Wrong answer        → no change (caller decides, not this function)
+    """
+    mastered_list = data["mastered"][mode][str(stage)]
+
+    if answer in mastered_list:
+        return data, False
+
+    # First time correct — mark mastered and award XP
+    mastered_list.append(answer)
+    data = add_xp(data, 10)
+    return data, True
+
+
+def mastered_count(data: dict, mode: str, stage: int) -> int:
+    """Return how many questions have been mastered for a mode/stage."""
+    return len(data["mastered"][mode][str(stage)])
+
+
+def stage_progress(data: dict, stage: int) -> dict:
+    """
+    Return mastery progress for both modes at a given stage.
+    Example return:
+    {
+        "capitals": {"mastered": 7, "total": 10},
+        "flags":    {"mastered": 3, "total": 10},
+    }
+    """
+    total = 10  # always 10 questions per mode per stage
+    return {
+        "capitals": {
+            "mastered": mastered_count(data, "capitals", stage),
+            "total": total,
+        },
+        "flags": {
+            "mastered": mastered_count(data, "flags", stage),
+            "total": total,
+        },
+    }

@@ -3,13 +3,19 @@ core/stage.py
 Manages stage, XP progression, and companion state.
 """
 
-# XP required to REACH each stage
+# XP required to REACH each stage (cumulative)
+# Based on geography quiz only: 10 questions per stage × 10 XP per correct answer
+# Stage 1: master 10 questions = 100 XP
+# Stage 2: master 10 more     = 200 XP (total 300)
+# Stage 3: master 10 more     = 300 XP (total 600)
+# Stage 4: master 10 more     = 400 XP (total 1000)
+# When more games are added later, these thresholds scale up accordingly
 XP_THRESHOLDS = {
     1: 0,
-    2: 500,
-    3: 1500,
-    4: 3500,
-    5: 7000,
+    2: 100,
+    3: 300,
+    4: 600,
+    5: 1000,
 }
 
 STAGE_NAMES = {
