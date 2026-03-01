@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Companion — Stage Up!{% endblock %}
+
+{% block content %}
+<div class="card">
+
+  {# ── TRANSITION MESSAGE ──────────────────────────────── #}
+  {# The content changes based on which stage was just reached #}
+
+  {% if to_stage == 2 %}
+  {# Monochrome → color. The screen "wakes up". #}
+  <div class="results">
+    <div class="res-emoji">🌿</div>
+    <div class="res-title">STAGE 2 UNLOCKED</div>
+    <div class="res-sub">SPROUT</div>
+
+    <div class="feedback show ok" style="text-align:left; margin-bottom:16px;">
+      Something changed. The screen looks... different.<br><br>
+      You can now choose your color. This is yours.
+    </div>
+
+    <div class="section-label">NEW UNLOCKS</div>
+    <div class="stats-row" style="margin-bottom:16px;">
+      <div class="stat-box">
+        <div class="stat-val">🎨</div>
+        <div class="stat-lbl">COLOR</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val">💡</div>
+        <div class="stat-lbl">HINTS</div>
+      </div>
+    </div>
+
+  </div>
+
+  {% elif to_stage == 3 %}
+  {# Color explodes into full palette #}
+  <div class="results">
+    <div class="res-emoji">🌳</div>
+    <div class="res-title">STAGE 3 UNLOCKED</div>
+    <div class="res-sub">SAPLING</div>
+
+    <div class="feedback show ok" style="text-align:left; margin-bottom:16px;">
+      The whole palette just opened up.<br><br>
+      Harder questions from here. Your companion
+      now knows your name.
+    </div>
+
+    <div class="section-label">NEW UNLOCKS</div>
+    <div class="stats-row" style="margin-bottom:16px;">
+      <div class="stat-box">
+        <div class="stat-val">🌈</div>
+        <div class="stat-lbl">FULL COLOR</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val">🗺</div>
+        <div class="stat-lbl">HARDER MAPS</div>
+      </div>
+    </div>
+
+  </div>
+
+  {% elif to_stage == 4 %}
+  {# The pixel shell cracks open — modern UI emerges #}
+  <div class="results">
+    <div class="res-emoji">🌲</div>
+    <div class="res-title">STAGE 4 UNLOCKED</div>
+    <div class="res-sub">TREE</div>
+
+    <div class="feedback show ok" style="text-align:left; margin-bottom:16px;">
+      The old shell is gone.<br><br>
+      Same device. Completely different feel.
+      You've grown past the retro phase.
+    </div>
+
+    <div class="section-label">NEW UNLOCKS</div>
+    <div class="stats-row" style="margin-bottom:16px;">
+      <div class="stat-box">
+        <div class="stat-val">✦</div>
+        <div class="stat-lbl">MODERN UI</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val">🌍</div>
+        <div class="stat-lbl">EXPERT MAPS</div>
+      </div>
+    </div>
+
+  </div>
+
+  {% elif to_stage == 5 %}
+  {# Maximum stage — stars appear, premium feel #}
+  <div class="results">
+    <div class="res-emoji">✨</div>
+    <div class="res-title">STAGE 5 UNLOCKED</div>
+    <div class="res-sub">ANCIENT</div>
+
+    <div class="feedback show ok" style="text-align:left; margin-bottom:16px;">
+      You reached the top.<br><br>
+      This is the final form. There is nothing
+      beyond this — only mastery.
+    </div>
+
+    <div class="section-label">NEW UNLOCKS</div>
+    <div class="stats-row" style="margin-bottom:16px;">
+      <div class="stat-box">
+        <div class="stat-val">👑</div>
+        <div class="stat-lbl">MAX STAGE</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val">🏆</div>
+        <div class="stat-lbl">ALL REGIONS</div>
+      </div>
+    </div>
+
+  </div>
+  {% endif %}
+
+  {# ── CONTINUE BUTTON ─────────────────────────────────── #}
+  <form action="{{ url_for('menu') }}" method="GET">
+    <button type="submit" class="btn-next show">
+      CONTINUE →
+    </button>
+  </form>
+
+</div>
+{% endblock %}

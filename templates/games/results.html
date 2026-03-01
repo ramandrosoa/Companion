@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Companion — Results{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="results">
+
+    {# ── RESULT EMOJI AND TITLE ──────────────────────────── #}
+    <div class="res-emoji">{{ summary.emoji }}</div>
+    <div class="res-title">{{ summary.title }}</div>
+    <div class="res-sub">
+      {{ summary.correct }}/{{ summary.total }} correct
+      · {{ mode | upper }}
+    </div>
+
+    {# ── NEW PERSONAL BEST BADGE ─────────────────────────── #}
+    {% if summary.new_best %}
+    <div class="new-best">★ NEW BEST SCORE</div>
+    {% endif %}
+
+    {# ── SCORE GRID ──────────────────────────────────────── #}
+    <div class="res-grid">
+      <div class="res-cell">
+        <div class="res-val">{{ summary.score }}</div>
+        <div class="res-lbl">SCORE</div>
+      </div>
+      <div class="res-cell">
+        <div class="res-val">{{ summary.pct }}%</div>
+        <div class="res-lbl">ACCURACY</div>
+      </div>
+      <div class="res-cell">
+        <div class="res-val">{{ summary.correct }}</div>
+        <div class="res-lbl">CORRECT</div>
+      </div>
+      <div class="res-cell">
+        <div class="res-val">{{ summary.best_streak }}</div>
+        <div class="res-lbl">BEST STREAK</div>
+      </div>
+    </div>
+
+    {# ── XP BREAKDOWN ────────────────────────────────────── #}
+    {# Shows exactly where XP came from this session          #}
+    <div class="section-label">XP EARNED</div>
+    <div class="stats-row" style="margin-bottom:16px;">
+
+      <div class="stat-box">
+        <div class="stat-val">+{{ summary.xp_from_mastery }}</div>
+        <div class="stat-lbl">MASTERY</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-val">+{{ summary.xp_completion }}</div>
+        <div class="stat-lbl">COMPLETION</div>
+      </div>
+
+      {% if summary.xp_perfect > 0 %}
+      <div class="stat-box">
+        <div class="stat-val">+{{ summary.xp_perfect }}</div>
+        <div class="stat-lbl">PERFECT</div>
+      </div>
+      {% endif %}
+
+      <div class="stat-box">
+        <div class="stat-val">{{ summary.xp_earned }}</div>
+        <div class="stat-lbl">TOTAL</div>
+      </div>
+
+    </div>
+
+    {# ── MASTERY PROGRESS ────────────────────────────────── #}
+    <div class="section-label">STAGE {{ stage }} PROGRESS</div>
+    <div class="mastery-row" style="margin-bottom:16px;">
+      <div class="mastery-bar-wrap">
+        <div class="mastery-label">🏛 CAPITALS</div>
+        <div class="mastery-track">
+          <div class="mastery-fill"
+               style="width: {{ (progress.capitals.mastered / progress.capitals.total * 100) | int }}%">
+          </div>
+        </div>
+        <div class="mastery-count">
+          {{ progress.capitals.mastered }}/{{ progress.capitals.total }}
+        </div>
+      </div>
+      <div class="mastery-bar-wrap">
+        <div class="mastery-label">🚩 FLAGS</div>
+        <div class="mastery-track">
+          <div class="mastery-fill"
+               style="width: {{ (progress.flags.mastered / progress.flags.total * 100) | int }}%">
+          </div>
+        </div>
+        <div class="mastery-count">
+          {{ progress.flags.mastered }}/{{ progress.flags.total }}
+        </div>
+      </div>
+    </div>
+
+    {# ── ACTIONS ─────────────────────────────────────────── #}
+    <div class="res-actions">
+      <form method="GET" action="{{ url_for('geo_play', mode=mode) }}">
+        <button type="submit" class="btn-play-again">
+          PLAY AGAIN
+        </button>
+      </form>
+      <form method="GET" action="{{ url_for('geo_menu') }}">
+        <button type="submit" class="btn-back-menu">
+          CHANGE MODE
+        </button>
+      </form>
+      <form method="GET" action="{{ url_for('menu') }}">
+        <button type="submit" class="btn-back-menu">
+          MAIN MENU
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

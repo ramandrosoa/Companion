@@ -1,0 +1,45 @@
+{
+  "name": null,
+  "xp": 0,
+  "stage": 1,
+  "tint": "amber",
+  "streak": 0,
+  "longest_streak": 0,
+  "last_opened": null,
+  "daily_pillars": {
+    "word_seen": false,
+    "game_played": false,
+    "steps_goal": false
+  },
+  "stats": {
+    "total_steps": 0,
+    "games_played": 0,
+    "best_score_capitals": 0,
+    "best_score_flags": 0,
+    "words_learned": 0,
+    "correct_answers": 0,
+    "wrong_answers": 0
+  },
+  "badges": [],
+  "calendar": {},
+  "preferences": {
+    "companion_name": null,
+    "theme_override": null
+  },
+  "mastered": {
+    "capitals": {
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": []
+    },
+    "flags": {
+      "1": [],
+      "2": [],
+      "3": [],
+      "4": [],
+      "5": []
+    }
+  }
+}

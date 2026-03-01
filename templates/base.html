@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>{% block title %}Companion{% endblock %}</title>
+
+  {# Load the stage-specific CSS file — s1.css through s5.css #}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/' ~ theme ~ '.css') }}">
+
+  {# Stage 2 only: inject the user's chosen tint color as CSS variables.
+     This overrides the :root defaults in s2.css so the same file
+     produces amber, green, blue, red, or cyan. #}
+  {% if stage == 2 and tint_hex %}
+  <style>
+    :root {
+      --tint:      {{ tint_hex }};
+      --tint-bg:   {{ tint_bg }};
+      --tint-dark: {{ tint_dark }};
+      --tint-glow: {{ tint_glow }};
+      --bg:        {{ tint_bg }};
+      --card:      {{ tint_dark }};
+      --border:    {{ tint_dark }};
+      --accent:    {{ tint_hex }};
+      --accent2:   {{ tint_hex }};
+      --text:      {{ tint_hex }};
+    }
+  </style>
+  {% endif %}
+</head>
+
+<body>
+
+  {# ── TOP BAR ─────────────────────────────────────────── #}
+  <div class="top-bar">
+    <span class="logo">{{ companion_emoji }} COMPANION</span>
+    <span class="stage-chip">{{ stage_name | upper }}</span>
+    <span class="battery">
+      {# Three LEDs — lit based on stage #}
+      {% for i in range(1, 6) %}
+        {% if i <= stage %}●{% else %}○{% endif %}
+      {% endfor %}
+    </span>
+  </div>
+
+  {# ── XP BAR ──────────────────────────────────────────── #}
+  <div class="xp-row">
+    <span class="xp-label">XP</span>
+    <div class="xp-track">
+      <div class="xp-fill" style="width: {{ xp_bar_percent }}%"></div>
+    </div>
+    {% if not max_stage %}
+      <span class="xp-val">{{ xp_to_next }}▲</span>
+    {% else %}
+      <span class="xp-val">MAX</span>
+    {% endif %}
+  </div>
+
+  {# ── DEV STAGE SWITCHER ──────────────────────────────── #}
+  {# Only visible when DEV_MODE = True in app.py #}
+  {% if dev_mode %}
+  <div class="dev-switcher">
+    {% for s in all_stages %}
+    <a href="{{ url_for('dev_set_stage', stage=s) }}"
+       class="dev-btn {% if s == stage %}active{% endif %}">
+      S{{ s }}
+      <small>{{ stage_names[s] }}</small>
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {# ── PAGE CONTENT ────────────────────────────────────── #}
+  {# Every template that extends base.html fills this block #}
+  {% block content %}{% endblock %}
+
+  {# ── XP TOAST ────────────────────────────────────────── #}
+  {# Shown briefly when XP is earned. Controlled by companion.js #}
+  <div class="xp-toast" id="xp-toast"></div>
+
+  <script src="{{ url_for('static', filename='js/companion.js') }}"></script>
+  {% block scripts %}{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Companion — Menu{% endblock %}
+
+{% block content %}
+<div class="card">
+
+  {# ── COMPANION BLOCK ─────────────────────────────────── #}
+  <div class="companion-block">
+    <span class="companion-emoji">{{ companion_emoji }}</span>
+    <div>
+      <div class="companion-name">{{ companion_name }}</div>
+      <div class="companion-msg">{{ companion_greeting }}</div>
+    </div>
+  </div>
+
+  {# ── STAGE 2 TINT PICKER ─────────────────────────────── #}
+  {# Only shown at stage 2 so the user can pick their color #}
+  {% if stage == 2 %}
+  <div class="tint-picker">
+    <span class="tint-label">COLOR</span>
+    <div class="tint-swatches">
+      {% for key, color in tint_colors.items() %}
+      <a href="{{ url_for('set_tint', tint_key=key) }}"
+         class="tint-swatch {% if key == tint %}active{% endif %}"
+         style="background: {{ color.hex }}"
+         title="{{ key }}"></a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {# ── STREAK ──────────────────────────────────────────── #}
+  {% if streak > 0 %}
+  <div class="streak-info">
+    <span class="streak-val">{{ streak }}</span>
+    <div>
+      <div class="streak-lbl">DAY STREAK</div>
+      {% if streak == longest_streak and streak > 1 %}
+      <div class="streak-lbl">PERSONAL BEST</div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  {# ── GAMES LIST ──────────────────────────────────────── #}
+  <div class="section-label">GAMES</div>
+  <div class="game-list">
+
+    {# Geography — always unlocked #}
+    <a href="{{ url_for('geo_menu') }}" class="game-row">
+      {% if stage <= 2 %}<div class="pixel-icon icon-globe"></div>{% else %}<span class="game-icon">🌍</span>{% endif %}
+      <div>
+        <div class="game-title">GEOGRAPHY</div>
+        <div class="game-sub">
+          Capitals · Flags
+          {# Show mastery progress if any questions mastered #}
+          {% set cap = progress.capitals.mastered %}
+          {% set flg = progress.flags.mastered %}
+          {% if cap > 0 or flg > 0 %}
+           · {{ cap + flg }}/20 mastered
+          {% endif %}
+        </div>
+      </div>
+      <span class="game-arrow">›</span>
+    </a>
+
+    {# Future games — locked #}
+    <div class="game-row locked">
+      {% if stage <= 2 %}<div class="pixel-icon icon-microscope"></div>{% else %}<span class="game-icon">🔬</span>{% endif %}
+      <div>
+        <div class="game-title">SCIENCE</div>
+        <div class="game-sub">Coming soon</div>
+      </div>
+      <span class="game-arrow">{% if stage <= 3 %}<div class="pixel-icon icon-lock"></div>{% else %}🔒{% endif %}</span>
+    </div>
+
+    <div class="game-row locked">
+      {% if stage <= 2 %}<div class="pixel-icon icon-brain"></div>{% else %}<span class="game-icon">🧠</span>{% endif %}
+      <div>
+        <div class="game-title">MEMORY</div>
+        <div class="game-sub">Coming soon</div>
+      </div>
+      <span class="game-arrow">{% if stage <= 3 %}<div class="pixel-icon icon-lock"></div>{% else %}🔒{% endif %}</span>
+    </div>
+
+  </div>
+
+  {# ── MASTERY PROGRESS BARS ───────────────────────────── #}
+  {# Shows how many geography questions mastered at current stage #}
+  <div class="section-label">STAGE {{ stage }} PROGRESS</div>
+  <div class="mastery-row">
+    <div class="mastery-bar-wrap">
+      <div class="mastery-label">🏛 CAPITALS</div>
+      <div class="mastery-track">
+        <div class="mastery-fill"
+             style="width: {{ (progress.capitals.mastered / progress.capitals.total * 100) | int }}%">
+        </div>
+      </div>
+      <div class="mastery-count">
+        {{ progress.capitals.mastered }}/{{ progress.capitals.total }}
+      </div>
+    </div>
+    <div class="mastery-bar-wrap">
+      <div class="mastery-label">🚩 FLAGS</div>
+      <div class="mastery-track">
+        <div class="mastery-fill"
+             style="width: {{ (progress.flags.mastered / progress.flags.total * 100) | int }}%">
+        </div>
+      </div>
+      <div class="mastery-count">
+        {{ progress.flags.mastered }}/{{ progress.flags.total }}
+      </div>
+    </div>
+  </div>
+
+  {# ── STATS ───────────────────────────────────────────── #}
+  <div class="section-label">STATS</div>
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-val">{{ xp }}</div>
+      <div class="stat-lbl">TOTAL XP</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">{{ games_played }}</div>
+      <div class="stat-lbl">GAMES</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">{{ correct_answers }}</div>
+      <div class="stat-lbl">CORRECT</div>
+    </div>
+  </div>
+
+</div>
+
+{# ── DEV LINK ────────────────────────────────────────────── #}
+{% if dev_mode %}
+<div class="back-wrap">
+  <a href="{{ url_for('dev') }}" class="back-link">⚙ DEV PANEL</a>
+</div>
+{% endif %}
+
+{% endblock %}

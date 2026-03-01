@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Companion — Geography{% endblock %}
+
+{% block content %}
+<div class="card">
+
+  {# ── COMPANION BLOCK ─────────────────────────────────── #}
+  <div class="companion-block">
+    <span class="companion-emoji">{{ companion_emoji }}</span>
+    <div>
+      <div class="companion-name">GEOGRAPHY</div>
+      <div class="companion-msg">Choose your challenge.</div>
+    </div>
+  </div>
+
+  {# ── MODE SELECTOR ───────────────────────────────────── #}
+  <div class="mode-title">SELECT MODE</div>
+  <div class="mode-grid">
+
+    <a href="{{ url_for('geo_play', mode='capitals') }}" class="mode-card">
+      {% if stage <= 2 %}<div class="pixel-icon icon-capitals"></div>{% else %}<span class="mode-card-icon">🏛</span>{% endif %}
+      <div class="mode-card-title">CAPITALS</div>
+      <div class="mode-card-sub">
+        {{ progress.capitals.mastered }}/{{ progress.capitals.total }} mastered
+      </div>
+    </a>
+
+    <a href="{{ url_for('geo_play', mode='flags') }}" class="mode-card">
+      {% if stage <= 2 %}<div class="pixel-icon icon-flag"></div>{% else %}<span class="mode-card-icon">🚩</span>{% endif %}
+      <div class="mode-card-title">FLAGS</div>
+      <div class="mode-card-sub">
+        {{ progress.flags.mastered }}/{{ progress.flags.total }} mastered
+      </div>
+    </a>
+
+  </div>
+
+  {# ── MASTERY PROGRESS ────────────────────────────────── #}
+  <div class="section-label">STAGE {{ stage }} PROGRESS</div>
+  <div class="mastery-row">
+    <div class="mastery-bar-wrap">
+      <div class="mastery-label">🏛 CAPITALS</div>
+      <div class="mastery-track">
+        <div class="mastery-fill"
+             style="width: {{ (progress.capitals.mastered / progress.capitals.total * 100) | int }}%">
+        </div>
+      </div>
+      <div class="mastery-count">
+        {{ progress.capitals.mastered }}/{{ progress.capitals.total }}
+      </div>
+    </div>
+    <div class="mastery-bar-wrap">
+      <div class="mastery-label">🚩 FLAGS</div>
+      <div class="mastery-track">
+        <div class="mastery-fill"
+             style="width: {{ (progress.flags.mastered / progress.flags.total * 100) | int }}%">
+        </div>
+      </div>
+      <div class="mastery-count">
+        {{ progress.flags.mastered }}/{{ progress.flags.total }}
+      </div>
+    </div>
+  </div>
+
+  {# ── BEST SCORES ─────────────────────────────────────── #}
+  <div class="section-label">BEST SCORES</div>
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-val">{{ best_score_capitals }}</div>
+      <div class="stat-lbl">CAPITALS</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">{{ best_score_flags }}</div>
+      <div class="stat-lbl">FLAGS</div>
+    </div>
+  </div>
+
+</div>
+
+{# ── BACK LINK ───────────────────────────────────────────── #}
+<div class="back-wrap">
+  <a href="{{ url_for('menu') }}" class="back-link">← BACK</a>
+</div>
+
+{% endblock %}

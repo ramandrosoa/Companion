@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Companion — Dev Panel{% endblock %}
+
+{% block content %}
+<div class="card">
+
+  {# ── HEADER ──────────────────────────────────────────── #}
+  <div class="companion-block">
+    <span class="companion-emoji">⚙</span>
+    <div>
+      <div class="companion-name">DEV PANEL</div>
+      <div class="companion-msg">Testing tools. Not visible in production.</div>
+    </div>
+  </div>
+
+  {# ── CURRENT STATE ───────────────────────────────────── #}
+  <div class="section-label">CURRENT STATE</div>
+  <div class="stats-row" style="margin-bottom:14px;">
+    <div class="stat-box">
+      <div class="stat-val">{{ stage }}</div>
+      <div class="stat-lbl">STAGE</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">{{ xp }}</div>
+      <div class="stat-lbl">XP</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">{{ xp_to_next }}</div>
+      <div class="stat-lbl">TO NEXT</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">{{ streak }}</div>
+      <div class="stat-lbl">STREAK</div>
+    </div>
+  </div>
+
+  {# ── JUMP TO STAGE ───────────────────────────────────── #}
+  <div class="section-label">JUMP TO STAGE</div>
+  <div class="dev-switcher" style="margin-bottom:14px;">
+    {% for s in all_stages %}
+    <a href="{{ url_for('dev_set_stage', stage=s) }}"
+       class="dev-btn {% if s == stage %}active{% endif %}">
+      S{{ s }}
+      <small>{{ stage_names[s] }}</small>
+    </a>
+    {% endfor %}
+  </div>
+
+  {# ── SET EXACT XP ────────────────────────────────────── #}
+  <div class="section-label">SET EXACT XP</div>
+  <div class="dev-switcher" style="margin-bottom:14px;">
+    <a href="{{ url_for('dev_set_xp', xp=0) }}"   class="dev-btn">0</a>
+    <a href="{{ url_for('dev_set_xp', xp=50) }}"  class="dev-btn">50</a>
+    <a href="{{ url_for('dev_set_xp', xp=100) }}" class="dev-btn">100</a>
+    <a href="{{ url_for('dev_set_xp', xp=200) }}" class="dev-btn">200</a>
+    <a href="{{ url_for('dev_set_xp', xp=300) }}" class="dev-btn">300</a>
+    <a href="{{ url_for('dev_set_xp', xp=600) }}" class="dev-btn">600</a>
+    <a href="{{ url_for('dev_set_xp', xp=999) }}" class="dev-btn">999</a>
+  </div>
+
+  {# ── MASTERY PROGRESS ────────────────────────────────── #}
+  <div class="section-label">STAGE {{ stage }} MASTERY</div>
+  <div class="mastery-row" style="margin-bottom:14px;">
+    <div class="mastery-bar-wrap">
+      <div class="mastery-label">🏛 CAPITALS</div>
+      <div class="mastery-track">
+        <div class="mastery-fill"
+             style="width: {{ (progress.capitals.mastered / progress.capitals.total * 100) | int }}%">
+        </div>
+      </div>
+      <div class="mastery-count">
+        {{ progress.capitals.mastered }}/{{ progress.capitals.total }}
+      </div>
+    </div>
+    <div class="mastery-bar-wrap">
+      <div class="mastery-label">🚩 FLAGS</div>
+      <div class="mastery-track">
+        <div class="mastery-fill"
+             style="width: {{ (progress.flags.mastered / progress.flags.total * 100) | int }}%">
+        </div>
+      </div>
+      <div class="mastery-count">
+        {{ progress.flags.mastered }}/{{ progress.flags.total }}
+      </div>
+    </div>
+  </div>
+
+  {# ── DANGER ZONE ─────────────────────────────────────── #}
+  <div class="section-label">DANGER ZONE</div>
+  <a href="{{ url_for('dev_reset') }}"
+     class="btn-back-menu"
+     style="display:block; text-align:center; margin-bottom:8px;"
+     onclick="return confirm('Reset all data?')">
+    ⚠ RESET ALL DATA
+  </a>
+
+</div>
+
+{# ── BACK TO MENU ────────────────────────────────────────── #}
+<div class="back-wrap">
+  <a href="{{ url_for('menu') }}" class="back-link">← BACK TO MENU</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Companion — {{ mode | title }}{% endblock %}
+
+{% block content %}
+<div class="card">
+
+  {# ── PROGRESS PILLS ──────────────────────────────────── #}
+  <div class="q-pills">
+    <div class="pill score">⬡ {{ progress.score }}</div>
+    {% if progress.streak >= 3 %}
+    <div class="pill streak">🔥 {{ progress.streak }}</div>
+    {% endif %}
+    <div class="pill prog">{{ progress.current }}/{{ progress.total }}</div>
+  </div>
+
+  {# ── FLAG (flags mode only) ──────────────────────────── #}
+  {% if mode == "flags" and question.flag %}
+  <span class="q-flag">{{ question.flag }}</span>
+  {% endif %}
+
+  {# ── DIFFICULTY TAG ──────────────────────────────────── #}
+  <div class="q-tag">{{ difficulty }} · {{ mode | upper }}</div>
+
+  {# ── QUESTION TEXT ───────────────────────────────────── #}
+  <div class="q-text">{{ question.q }}</div>
+
+  {# ── HINT (stages 2 and 3 only, shown before answering) ─ #}
+  {% if hint and not answered %}
+  <div class="q-hint">💡 {{ hint }}</div>
+  {% endif %}
+
+  {# ── ANSWER OPTIONS ──────────────────────────────────── #}
+  {# Before answering: each button submits a form via POST    #}
+  {# After answering:  buttons are disabled with state classes #}
+  <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
+    <div class="opts-grid">
+      {% for opt in question.shuffled_opts %}
+      {% set letter = ["A","B","C","D"][loop.index0] %}
+
+      <button type="submit"
+              name="answer"
+              value="{{ opt }}"
+              class="opt
+                {%- if answered %}
+                  {%- if opt == question.a %} correct
+                  {%- elif opt == submitted %} wrong
+                  {%- endif %}
+                {%- endif %}"
+              {% if answered %}disabled{% endif %}>
+        <span class="opt-ltr">{{ letter }}</span>
+        {{ opt }}
+      </button>
+
+      {% endfor %}
+    </div>
+  </form>
+
+  {# ── FEEDBACK BLOCK ──────────────────────────────────── #}
+  {# Only visible after an answer has been submitted         #}
+  {% if answered %}
+
+    {% if is_correct %}
+    <div class="feedback show ok">
+      ✓ CORRECT
+      {% if xp_gained > 0 %}
+       · +{{ xp_gained }} XP
+      {% elif already_mastered %}
+       · Already mastered
+      {% endif %}
+      {% if feedback %}
+      <br><br>{{ feedback }}
+      {% endif %}
+    </div>
+
+    {% else %}
+    <div class="feedback show bad">
+      ✗ WRONG · Correct answer: {{ question.a }}
+      {% if feedback %}
+      <br><br>{{ feedback }}
+      {% endif %}
+    </div>
+    {% endif %}
+
+    {# Next button — submits POST to advance to next question #}
+    <form method="POST" action="{{ url_for('geo_next') }}">
+      <button type="submit" class="btn-next show">
+        {% if progress.current == progress.total %}
+          SEE RESULTS →
+        {% else %}
+          NEXT →
+        {% endif %}
+      </button>
+    </form>
+
+  {% endif %}
+
+</div>
+
+{# ── BACK LINK ───────────────────────────────────────────── #}
+{# Only shown before answering so user can't quit mid-feedback #}
+{% if not answered %}
+<div class="back-wrap">
+  <a href="{{ url_for('geo_menu') }}" class="back-link">← QUIT</a>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+{# Show XP toast after a correct answer #}
+{% if answered and is_correct %}
+<script>
+  showXpToast({{ xp_gained }}, {{ 'true' if already_mastered else 'false' }});
+</script>
+{% endif %}
+{% endblock %}
