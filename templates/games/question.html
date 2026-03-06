@@ -24,10 +24,11 @@
 
   {# ── QUESTION TEXT ───────────────────────────────────── #}
   <div class="q-text">{{ question.q }}</div>
-
   {# ── STAGE 5 — TYPE ANSWER ──────────────────────────── #}
   {% if stage == 5 and not answered %}
 
+    {% if hints_used == 0 %}
+    {# No hints yet — text input only #}
     <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
       <input type="text"
              name="answer"
@@ -35,59 +36,67 @@
              placeholder="Type your answer..."
              autocomplete="off"
              autofocus>
-      <button type="submit" class="btn-submit">
-        SUBMIT · {{ 10 - hints_used * 3 if hints_used < 3 else 1 }} XP
-      </button>
+      <button type="submit" class="btn-submit">SUBMIT · 10 XP</button>
     </form>
-
-    {# Hint buttons for S5 — reveal options progressively #}
-    {% if not answered %}
     <div class="hint-btns">
-      {% if hints_used == 0 %}
       <form method="POST" action="{{ url_for('geo_hint') }}">
-        <button type="submit" class="hint-btn">GET 4 OPTIONS · 7 XP</button>
+        <button type="submit" class="hint-btn">💡 GET 4 OPTIONS · 7 XP</button>
       </form>
-      {% elif hints_used == 1 %}
-      {# Show the revealed options as clickable buttons #}
-      <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
-        <div class="opts-grid">
-          {% for opt in question.shuffled_opts %}
-          {% set letter = ["A","B","C","D","E"][loop.index0] %}
-          <button type="submit" name="answer" value="{{ opt }}" class="opt">
-            <span class="opt-ltr">{{ letter }}</span>{{ opt }}
-          </button>
-          {% endfor %}
-        </div>
-      </form>
+    </div>
+
+    {% elif hints_used == 1 %}
+    {# 4 options shown, can reduce to 3 #}
+    <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
+      <div class="opts-grid">
+        {% for opt in question.shuffled_opts %}
+        {% set letter = ["A","B","C","D","E"][loop.index0] %}
+        <button type="submit" name="answer" value="{{ opt }}" class="opt">
+          <span class="opt-ltr">{{ letter }}</span>{{ opt }}
+        </button>
+        {% endfor %}
+      </div>
+    </form>
+    <div class="hint-btns">
+      <button type="button" class="hint-btn dim" disabled>💡 4 OPTIONS · USED</button>
       <form method="POST" action="{{ url_for('geo_hint') }}">
-        <button type="submit" class="hint-btn">GET 3 OPTIONS · 4 XP</button>
+        <button type="submit" class="hint-btn">💡 GET 3 OPTIONS · 4 XP</button>
       </form>
-      {% elif hints_used == 2 %}
-      <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
-        <div class="opts-grid">
-          {% for opt in question.shuffled_opts %}
-          {% set letter = ["A","B","C","D","E"][loop.index0] %}
-          <button type="submit" name="answer" value="{{ opt }}" class="opt">
-            <span class="opt-ltr">{{ letter }}</span>{{ opt }}
-          </button>
-          {% endfor %}
-        </div>
-      </form>
+    </div>
+
+    {% elif hints_used == 2 %}
+    {# 3 options shown, can reduce to 2 #}
+    <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
+      <div class="opts-grid">
+        {% for opt in question.shuffled_opts %}
+        {% set letter = ["A","B","C","D","E"][loop.index0] %}
+        <button type="submit" name="answer" value="{{ opt }}" class="opt">
+          <span class="opt-ltr">{{ letter }}</span>{{ opt }}
+        </button>
+        {% endfor %}
+      </div>
+    </form>
+    <div class="hint-btns">
+      <button type="button" class="hint-btn dim" disabled>💡 4 OPTIONS · USED</button>
+      <button type="button" class="hint-btn dim" disabled>💡 3 OPTIONS · USED</button>
       <form method="POST" action="{{ url_for('geo_hint') }}">
-        <button type="submit" class="hint-btn">GET 2 OPTIONS · 1 XP</button>
+        <button type="submit" class="hint-btn">💡 GET 2 OPTIONS · 1 XP</button>
       </form>
-      {% elif hints_used >= 3 %}
-      <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
-        <div class="opts-grid">
-          {% for opt in question.shuffled_opts %}
-          {% set letter = ["A","B","C","D","E"][loop.index0] %}
-          <button type="submit" name="answer" value="{{ opt }}" class="opt">
-            <span class="opt-ltr">{{ letter }}</span>{{ opt }}
-          </button>
-          {% endfor %}
-        </div>
-      </form>
-      {% endif %}
+    </div>
+
+    {% elif hints_used >= 3 %}
+    {# 2 options shown, no more hints #}
+    <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
+      <div class="opts-grid">
+        {% for opt in question.shuffled_opts %}
+        {% set letter = ["A","B","C","D","E"][loop.index0] %}
+        <button type="submit" name="answer" value="{{ opt }}" class="opt">
+          <span class="opt-ltr">{{ letter }}</span>{{ opt }}
+        </button>
+        {% endfor %}
+      </div>
+    </form>
+    <div class="hint-btns">
+      <button type="button" class="hint-btn dim" disabled>💡 ALL HINTS USED</button>
     </div>
     {% endif %}
 
