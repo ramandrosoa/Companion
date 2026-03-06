@@ -1,11 +1,11 @@
 {
   "name": null,
-  "xp": 0,
-  "stage": 3,
+  "xp": 29,
+  "stage": 5,
   "tint": "cyan",
   "streak": 0,
   "longest_streak": 0,
-  "last_opened": "2026-03-06",
+  "last_opened": "2026-03-07",
   "daily_pillars": {
     "word_seen": false,
     "game_played": true,
@@ -13,15 +13,17 @@
   },
   "stats": {
     "total_steps": 0,
-    "games_played": 13,
-    "best_score_capitals": 60,
-    "best_score_flags": 60,
+    "games_played": 27,
+    "best_score_capitals": 80,
+    "best_score_flags": 80,
     "words_learned": 0,
     "correct_answers": 0,
     "wrong_answers": 0
   },
   "badges": [],
-  "calendar": {},
+  "calendar": {
+    "2026-03-06": "partial"
+  },
   "preferences": {
     "companion_name": null,
     "theme_override": null
@@ -112,9 +114,112 @@
           "remaining": 0
         }
       },
-      "3": {},
-      "4": {},
-      "5": {}
+      "3": {
+        "Addis Ababa": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Islamabad": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Bogotá": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Lima": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Kyiv": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Rabat": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Tehran": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Algiers": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Hanoi": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Astana": {
+          "earned": 10,
+          "remaining": 0
+        }
+      },
+      "4": {
+        "Kuala Lumpur": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Yamoussoukro": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Yaoundé": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Tashkent": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Naypyidaw": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Tegucigalpa": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Sri Jayawardenepura Kotte": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Tbilisi": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Dodoma": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Sucre": {
+          "earned": 10,
+          "remaining": 0
+        }
+      },
+      "5": {
+        "Yaren": {
+          "earned": 7,
+          "remaining": 3
+        },
+        "Bishkek": {
+          "earned": 7,
+          "remaining": 3
+        },
+        "Asmara": {
+          "earned": 1,
+          "remaining": 9
+        },
+        "Ngerulmud": {
+          "earned": 7,
+          "remaining": 3
+        },
+        "Moroni": {
+          "earned": 7,
+          "remaining": 3
+        }
+      }
     },
     "flags": {
       "1": {
@@ -201,8 +306,90 @@
           "remaining": 0
         }
       },
-      "3": {},
-      "4": {},
+      "3": {
+        "Morocco": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Pakistan": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Philippines": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Greece": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Iran": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Switzerland": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Ghana": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Jamaica": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Colombia": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Kenya": {
+          "earned": 10,
+          "remaining": 0
+        }
+      },
+      "4": {
+        "Kyrgyzstan": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Armenia": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Barbados": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Georgia": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Mongolia": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Maldives": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Bahrain": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Bhutan": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Suriname": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Mozambique": {
+          "earned": 10,
+          "remaining": 0
+        }
+      },
       "5": {}
     }
   }

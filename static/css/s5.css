@@ -253,3 +253,32 @@
      box-shadow:0 4px 16px rgba(0,0,0,0.4), 0 0 14px rgba(167,139,250,0.2);
    }
    .xp-toast.show { transform:translateY(0); }
+
+    /* ── HINT BUTTONS ─────────────────────────────────────── */
+  .hint-btns { display:flex; flex-direction:column; gap:8px; margin-bottom:16px; }
+  .hint-btn {
+    width:100%; padding:12px 14px;
+    background:rgba(255,255,255,0.02); border:1px solid var(--border2); border-radius:10px;
+    color:var(--text3); font-family:var(--body-font); font-size:0.72rem; font-weight:700;
+    cursor:pointer; text-align:left; transition:all 0.2s;
+  }
+  .hint-btn:hover { border-color:rgba(167,139,250,0.3); color:var(--accent3); background:rgba(167,139,250,0.05); }
+  .hint-btn.dim { opacity:0.3; cursor:default; }
+
+  /* ── TYPE INPUT (S5) ──────────────────────────────────── */
+  .type-input {
+    width:100%; padding:14px 16px;
+    background:rgba(255,255,255,0.03); border:1px solid var(--border2); border-radius:10px;
+    color:var(--text); font-family:var(--body-font); font-size:0.82rem; font-weight:700;
+    margin-bottom:10px; outline:none; transition:all 0.2s;
+  }
+  .type-input:focus { border-color:rgba(167,139,250,0.4); box-shadow:0 0 12px rgba(167,139,250,0.1); }
+  .btn-submit {
+    width:100%; padding:16px; border-radius:10px;
+    background:linear-gradient(135deg,rgba(167,139,250,0.15),rgba(78,205,196,0.1));
+    border:1px solid rgba(167,139,250,0.4); color:var(--accent);
+    font-family:var(--body-font); font-size:0.9rem; font-weight:800;
+    cursor:pointer; margin-bottom:16px;
+    box-shadow:0 0 14px rgba(167,139,250,0.1); transition:all 0.2s;
+  }
+  .btn-submit:hover { background:linear-gradient(135deg,rgba(167,139,250,0.25),rgba(78,205,196,0.15)); }

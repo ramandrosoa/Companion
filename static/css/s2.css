@@ -215,3 +215,31 @@
      box-shadow:0 0 12px var(--tint-glow);
    }
    .xp-toast.show { transform:translateY(0); }
+
+    /* ── HINT BUTTONS ─────────────────────────────────────── */
+  .hint-btns { display:flex; flex-direction:column; gap:6px; margin-bottom:14px; }
+  .hint-btn {
+    width:100%; padding:10px 12px; background:var(--bg2);
+    border:1px solid var(--border2); border-left:3px solid var(--border);
+    color:var(--text3); font-family:var(--font); font-size:0.48rem;
+    cursor:pointer; text-align:left; letter-spacing:1px; transition:all 0.1s;
+  }
+  .hint-btn:hover { border-left-color:var(--accent3); color:var(--accent3); }
+  .hint-btn.dim { opacity:0.35; cursor:default; }
+
+  /* ── TYPE INPUT (S5) ──────────────────────────────────── */
+  .type-input {
+    width:100%; padding:14px 12px; background:var(--bg2);
+    border:1px solid var(--border2); border-left:3px solid var(--accent);
+    color:var(--text); font-family:var(--font); font-size:0.65rem;
+    margin-bottom:8px; outline:none; transition:all 0.1s;
+  }
+  .type-input:focus { border-left-color:var(--accent2); }
+  .btn-submit {
+    width:100%; padding:14px; background:var(--card2);
+    border:1px solid var(--accent); color:var(--accent);
+    font-family:var(--font); font-size:0.7rem;
+    cursor:pointer; text-align:center; letter-spacing:2px;
+    margin-bottom:14px; transition:all 0.1s;
+  }
+  .btn-submit:hover { background:var(--border2); }
