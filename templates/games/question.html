@@ -25,37 +25,125 @@
   {# ── QUESTION TEXT ───────────────────────────────────── #}
   <div class="q-text">{{ question.q }}</div>
 
-  {# ── HINT (stages 2 and 3 only, shown before answering) ─ #}
-  {% if hint and not answered %}
-  <div class="q-hint">💡 {{ hint }}</div>
-  {% endif %}
+  {# ── STAGE 5 — TYPE ANSWER ──────────────────────────── #}
+  {% if stage == 5 and not answered %}
 
-  {# ── ANSWER OPTIONS ──────────────────────────────────── #}
-  {# Before answering: each button submits a form via POST    #}
-  {# After answering:  buttons are disabled with state classes #}
-  <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
-    <div class="opts-grid">
-      {% for opt in question.shuffled_opts %}
-      {% set letter = ["A","B","C","D"][loop.index0] %}
-
-      <button type="submit"
-              name="answer"
-              value="{{ opt }}"
-              class="opt
-                {%- if answered %}
-                  {%- if opt == question.a %} correct
-                  {%- elif opt == submitted %} wrong
-                  {%- endif %}
-                {%- endif %}"
-              {% if answered %}disabled{% endif %}>
-        <span class="opt-ltr">{{ letter }}</span>
-        {{ opt }}
+    <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
+      <input type="text"
+             name="answer"
+             class="type-input"
+             placeholder="Type your answer..."
+             autocomplete="off"
+             autofocus>
+      <button type="submit" class="btn-submit">
+        SUBMIT · {{ 10 - hints_used * 3 if hints_used < 3 else 1 }} XP
       </button>
+    </form>
 
-      {% endfor %}
+    {# Hint buttons for S5 — reveal options progressively #}
+    {% if not answered %}
+    <div class="hint-btns">
+      {% if hints_used == 0 %}
+      <form method="POST" action="{{ url_for('geo_hint') }}">
+        <button type="submit" class="hint-btn">GET 4 OPTIONS · 7 XP</button>
+      </form>
+      {% elif hints_used == 1 %}
+      {# Show the revealed options as clickable buttons #}
+      <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
+        <div class="opts-grid">
+          {% for opt in question.shuffled_opts %}
+          {% set letter = ["A","B","C","D","E"][loop.index0] %}
+          <button type="submit" name="answer" value="{{ opt }}" class="opt">
+            <span class="opt-ltr">{{ letter }}</span>{{ opt }}
+          </button>
+          {% endfor %}
+        </div>
+      </form>
+      <form method="POST" action="{{ url_for('geo_hint') }}">
+        <button type="submit" class="hint-btn">GET 3 OPTIONS · 4 XP</button>
+      </form>
+      {% elif hints_used == 2 %}
+      <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
+        <div class="opts-grid">
+          {% for opt in question.shuffled_opts %}
+          {% set letter = ["A","B","C","D","E"][loop.index0] %}
+          <button type="submit" name="answer" value="{{ opt }}" class="opt">
+            <span class="opt-ltr">{{ letter }}</span>{{ opt }}
+          </button>
+          {% endfor %}
+        </div>
+      </form>
+      <form method="POST" action="{{ url_for('geo_hint') }}">
+        <button type="submit" class="hint-btn">GET 2 OPTIONS · 1 XP</button>
+      </form>
+      {% elif hints_used >= 3 %}
+      <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
+        <div class="opts-grid">
+          {% for opt in question.shuffled_opts %}
+          {% set letter = ["A","B","C","D","E"][loop.index0] %}
+          <button type="submit" name="answer" value="{{ opt }}" class="opt">
+            <span class="opt-ltr">{{ letter }}</span>{{ opt }}
+          </button>
+          {% endfor %}
+        </div>
+      </form>
+      {% endif %}
     </div>
-  </form>
+    {% endif %}
 
+  {# ── STAGES 1-4 — MULTIPLE CHOICE ───────────────────── #}
+  {% else %}
+
+    <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
+      <div class="opts-grid">
+        {% for opt in question.shuffled_opts %}
+        {% set letter = ["A","B","C","D","E"][loop.index0] %}
+        <button type="submit"
+                name="answer"
+                value="{{ opt }}"
+                class="opt
+                  {%- if answered %}
+                    {%- if opt == question.a %} correct
+                    {%- elif opt == submitted %} wrong
+                    {%- endif %}
+                  {%- endif %}"
+                {% if answered %}disabled{% endif %}>
+          <span class="opt-ltr">{{ letter }}</span>
+          {{ opt }}
+        </button>
+        {% endfor %}
+      </div>
+    </form>
+
+    {# ── HINT BUTTONS (S3 and S4 only, before answering) ── #}
+    {% if not answered %}
+      {% if stage == 3 and hints_used == 0 %}
+      <div class="hint-btns">
+        <form method="POST" action="{{ url_for('geo_hint') }}">
+          <button type="submit" class="hint-btn">— REDUCE TO 2 OPTIONS · 5 XP</button>
+        </form>
+      </div>
+      {% elif stage == 4 %}
+      <div class="hint-btns">
+        {% if hints_used == 0 %}
+        <form method="POST" action="{{ url_for('geo_hint') }}">
+          <button type="submit" class="hint-btn">REDUCE TO 3 OPTIONS · 6 XP</button>
+        </form>
+        <button type="button" class="hint-btn dim" disabled>REDUCE TO 2 OPTIONS · 2 XP</button>
+        {% elif hints_used == 1 %}
+        <button type="button" class="hint-btn dim" disabled>REDUCE TO 3 OPTIONS · USED</button>
+        <form method="POST" action="{{ url_for('geo_hint') }}">
+          <button type="submit" class="hint-btn">REDUCE TO 2 OPTIONS · 2 XP</button>
+        </form>
+        {% elif hints_used >= 2 %}
+        <button type="button" class="hint-btn dim" disabled>REDUCE TO 3 OPTIONS · USED</button>
+        <button type="button" class="hint-btn dim" disabled>REDUCE TO 2 OPTIONS · USED</button>
+        {% endif %}
+      </div>
+      {% endif %}
+    {% endif %}
+
+  {% endif %}
   {# ── FEEDBACK BLOCK ──────────────────────────────────── #}
   {# Only visible after an answer has been submitted         #}
   {% if answered %}

@@ -43,23 +43,7 @@
     {# Shows exactly where XP came from this session          #}
     <div class="section-label">XP EARNED</div>
     <div class="stats-row" style="margin-bottom:16px;">
-
-      <div class="stat-box">
-        <div class="stat-val">+{{ summary.xp_from_mastery }}</div>
-        <div class="stat-lbl">MASTERY</div>
-      </div>
-
-      <div class="stat-box">
-        <div class="stat-val">+{{ summary.xp_completion }}</div>
-        <div class="stat-lbl">COMPLETION</div>
-      </div>
-
-      {% if summary.xp_perfect > 0 %}
-      <div class="stat-box">
-        <div class="stat-val">+{{ summary.xp_perfect }}</div>
-        <div class="stat-lbl">PERFECT</div>
-      </div>
-      {% endif %}
+    
 
       <div class="stat-box">
         <div class="stat-val">{{ summary.xp_earned }}</div>

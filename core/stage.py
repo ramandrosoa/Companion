@@ -10,13 +10,10 @@ Manages stage, XP progression, and companion state.
 # Stage 3: master 10 more     = 300 XP (total 600)
 # Stage 4: master 10 more     = 400 XP (total 1000)
 # When more games are added later, these thresholds scale up accordingly
-XP_THRESHOLDS = {
-    1: 0,
-    2: 100,
-    3: 300,
-    4: 600,
-    5: 1000,
-}
+# XP needed within a stage to be eligible for stage up
+# Always 20 questions × 10 XP max = 200
+
+XP_PER_STAGE = 200
 
 STAGE_NAMES = {
     1: "Seed",
@@ -63,33 +60,34 @@ DEFAULT_TINT = "amber"
 
 DIFFICULTY = {1: "Beginner", 2: "Easy", 3: "Medium", 4: "Hard", 5: "Expert"}
 
-
-def get_stage_from_xp(xp: int) -> int:
-    """Return the stage number for a given XP amount."""
-    stage = 1
-    for s in [5, 4, 3, 2]:
-        if xp >= XP_THRESHOLDS[s]:
-            stage = s
-            break
-    return stage
-
-
-def xp_to_next_stage(xp: int, stage: int) -> int:
-    """Return XP needed to reach the next stage."""
-    if stage >= 5:
-        return 0
-    return max(0, XP_THRESHOLDS[stage + 1] - xp)
+def can_stage_up(data: dict, stage: int) -> bool:
+    """
+    Returns True if both stage-up conditions are met:
+    1. All 20 questions mastered (10 capitals + 10 flags)
+    2. XP >= 200
+    """
+    from core.user import mastered_count
+    capitals_done = mastered_count(data, "capitals", stage) >= 10
+    flags_done    = mastered_count(data, "flags", stage) >= 10
+    xp_done       = data["xp"] >= XP_PER_STAGE
+    return capitals_done and flags_done and xp_done
 
 
-def xp_bar_percent(xp: int, stage: int) -> int:
-    """Return XP bar fill percentage within current stage range."""
-    if stage >= 5:
-        return 100
-    floor = XP_THRESHOLDS[stage]
-    ceil  = XP_THRESHOLDS[stage + 1]
-    span  = ceil - floor
-    earned = xp - floor
-    return min(100, max(0, int((earned / span) * 100)))
+def do_stage_up(data: dict) -> dict:
+    """
+    Advance to next stage, reset XP to 0.
+    Mastery data is preserved.
+    """
+    if data["stage"] < 5:
+        data["stage"] += 1
+        data["xp"] = 0
+    return data
+
+
+def xp_bar_percent(data: dict) -> int:
+    """Return XP bar fill percentage within current stage (0-200 range)."""
+    return min(100, int((data["xp"] / XP_PER_STAGE) * 100))
+
 
 
 def get_companion_info(stage: int, user_name: str = None) -> dict:

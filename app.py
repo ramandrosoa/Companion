@@ -16,7 +16,7 @@ from flask import (
 from core import user, context
 from core import session as game_session
 from games.geography import game
-from games.geography.game import DIFFICULTY, QUESTIONS_PER_STAGE
+from games.geography.game import DIFFICULTY, QUESTIONS_PER_STAGE, get_xp_worth
 
 # ─── APP SETUP ──────────────────────────────────────────────
 app = Flask(__name__)
@@ -117,7 +117,8 @@ def geo_question():
     mode     = get_mode()
     question = game_session.current_question()
     progress = game_session.get_progress()
-    hint     = game.get_hint(question, stage)
+    q_index      = game_session.get_progress()["current"] - 1
+    hints_used   = game_session.get_hints_used(q_index)
 
     already_mastered = user.is_mastered(data, mode, stage, question["a"])
 
@@ -125,7 +126,7 @@ def geo_question():
     ctx.update({
         "question":         question,
         "progress":         progress,
-        "hint":             hint,
+        "hints_used":       hints_used,
         "already_mastered": already_mastered,
         "difficulty":       DIFFICULTY[stage],
         "mode":             mode,
@@ -154,30 +155,25 @@ def geo_answer():
     submitted = request.form.get("answer", "")
 
     is_correct = game.check_answer(question, submitted)
+    q_index    = game_session.get_progress()["current"] - 1
+    hints_used = game_session.get_hints_used(q_index)
+    worth      = get_xp_worth(stage, hints_used)
 
     if is_correct:
-        data, xp_awarded = user.master_question(data, mode, stage, question["a"])
-        xp_gained = 10 if xp_awarded else 0
+        data, xp_gained = user.award_xp(data, mode, stage, question["a"], worth)
     else:
         xp_gained = 0
 
     game_session.record_answer(is_correct, xp_gained)
 
-    new_stage = data["stage"]
-    if new_stage > old_stage:
-        flask_session["stage_up_from"] = old_stage
-        flask_session["stage_up_to"]   = new_stage
-
     user.save(data)
 
     progress = game_session.get_progress()
-    hint     = game.get_hint(question, stage)
-
     ctx = context.build(data)
     ctx.update({
         "question":         question,
         "progress":         progress,
-        "hint":             hint,
+        "hints_used":       hints_used,
         "already_mastered": xp_gained == 0 and is_correct,
         "difficulty":       DIFFICULTY[stage],
         "mode":             mode,
@@ -188,6 +184,7 @@ def geo_answer():
         "xp_gained":        xp_gained,
     })
     return render_template("games/question.html", **ctx)
+
 
 
 # ─── NEXT QUESTION ──────────────────────────────────────────
@@ -201,7 +198,39 @@ def geo_next():
 
     return redirect(url_for("geo_question"))
 
+# ─── USE A HINT ─────────────────────────────────────────────
+@app.route("/geo/hint", methods=["POST"])
+def geo_hint():
+    """
+    Eliminate wrong options for the current question.
+    Returns updated shuffled_opts via redirect back to question.
+    """
+    if not game_session.is_active():
+        return redirect(url_for("geo_menu"))
 
+    data     = user.load()
+    stage    = data["stage"]
+    q_index  = game_session.get_progress()["current"] - 1
+    hints_used = game_session.use_hint(q_index)
+
+    question = game_session.current_question()
+
+    # Determine target option count after this hint
+    from games.geography.game import OPTIONS_PER_STAGE, apply_hint
+    targets = {3: [2], 4: [3, 2], 5: [4, 3, 2]}
+    target_counts = targets.get(stage, [])
+
+    if hints_used <= len(target_counts):
+        target = target_counts[hints_used - 1]
+        new_opts = apply_hint(question["shuffled_opts"], question["a"], target)
+        # Update the question in the session
+        questions = flask_session["geo_questions"]
+        questions[q_index]["shuffled_opts"] = new_opts
+        flask_session["geo_questions"] = questions
+        flask_session.modified = True
+
+    return redirect(url_for("geo_question"))
+    
 # ─── RESULTS ────────────────────────────────────────────────
 @app.route("/geo/results")
 def geo_results():
@@ -214,14 +243,14 @@ def geo_results():
     mode    = get_mode()
     summary = game_session.get_summary()
 
-    bonus = summary["xp_completion"] + summary["xp_perfect"]
-    if bonus > 0:
-        old_stage = data["stage"]
-        data = user.add_xp(data, bonus)
-        new_stage = data["stage"]
-        if new_stage > old_stage:
-            flask_session["stage_up_from"] = old_stage
-            flask_session["stage_up_to"]   = new_stage
+    from core.stage import can_stage_up, do_stage_up
+    if can_stage_up(data, stage):
+        data = do_stage_up(data)
+        user.save(data)
+        game_session.clear()
+        flask_session["stage_up_from"] = stage
+        flask_session["stage_up_to"]   = data["stage"]
+        return redirect(url_for("stage_up"))
 
     best_key = f"best_score_{mode}"
     if summary["score"] > data["stats"].get(best_key, 0):
@@ -257,10 +286,12 @@ def stage_up():
     data = user.load()
     ctx  = context.build(data)
     ctx.update({
-        "from_stage": from_stage,
-        "to_stage":   to_stage,
+        "from_stage":  from_stage,
+        "to_stage":    to_stage,
+        "next_url":    url_for("menu"),
     })
     return render_template("stage_up.html", **ctx)
+
 
 
 # ─── DEV PANEL ──────────────────────────────────────────────
@@ -278,14 +309,11 @@ def dev():
 
 @app.route("/dev/set-xp/<int:xp>")
 def dev_set_xp(xp):
-    """Set XP directly to any value. Dev only."""
     if not DEV_MODE:
         return redirect(url_for("menu"))
 
-    from core.stage import get_stage_from_xp
-    data          = user.load()
-    data["xp"]    = xp
-    data["stage"] = get_stage_from_xp(xp)
+    data       = user.load()
+    data["xp"] = xp
     user.save(data)
     return redirect(url_for("dev"))
 
@@ -303,17 +331,15 @@ def dev_reset():
 
 @app.route("/dev/set-stage/<int:stage>")
 def dev_set_stage(stage):
-    """Jump directly to a stage by setting XP to its threshold. Dev only."""
     if not DEV_MODE:
         return redirect(url_for("menu"))
 
-    from core.stage import XP_THRESHOLDS
-    if stage not in XP_THRESHOLDS:
+    if stage not in range(1, 6):
         return redirect(url_for("dev"))
 
     data          = user.load()
-    data["xp"]    = XP_THRESHOLDS[stage]
     data["stage"] = stage
+    data["xp"]    = 0
     user.save(data)
     return redirect(url_for("dev"))
 

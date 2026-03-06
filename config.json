@@ -1,21 +1,21 @@
 {
   "name": null,
   "xp": 0,
-  "stage": 1,
-  "tint": "amber",
+  "stage": 3,
+  "tint": "cyan",
   "streak": 0,
   "longest_streak": 0,
-  "last_opened": null,
+  "last_opened": "2026-03-06",
   "daily_pillars": {
     "word_seen": false,
-    "game_played": false,
+    "game_played": true,
     "steps_goal": false
   },
   "stats": {
     "total_steps": 0,
-    "games_played": 0,
-    "best_score_capitals": 0,
-    "best_score_flags": 0,
+    "games_played": 13,
+    "best_score_capitals": 60,
+    "best_score_flags": 60,
     "words_learned": 0,
     "correct_answers": 0,
     "wrong_answers": 0
@@ -28,18 +28,182 @@
   },
   "mastered": {
     "capitals": {
-      "1": [],
-      "2": [],
-      "3": [],
-      "4": [],
-      "5": []
+      "1": {
+        "Paris": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Beijing": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Tokyo": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Brasília": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Rome": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "New Delhi": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Canberra": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Washington D.C.": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Cairo": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Madrid": {
+          "earned": 10,
+          "remaining": 0
+        }
+      },
+      "2": {
+        "Buenos Aires": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Pretoria": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Ankara": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Riyadh": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Ottawa": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Mexico City": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Berlin": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Moscow": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Abuja": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Seoul": {
+          "earned": 10,
+          "remaining": 0
+        }
+      },
+      "3": {},
+      "4": {},
+      "5": {}
     },
     "flags": {
-      "1": [],
-      "2": [],
-      "3": [],
-      "4": [],
-      "5": []
+      "1": {
+        "China": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Australia": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "India": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Japan": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Brazil": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "France": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Germany": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Canada": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Italy": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "United Kingdom": {
+          "earned": 10,
+          "remaining": 0
+        }
+      },
+      "2": {
+        "South Korea": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "South Africa": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Portugal": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Sweden": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Turkey": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Argentina": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Nigeria": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Singapore": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Saudi Arabia": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Mexico": {
+          "earned": 10,
+          "remaining": 0
+        }
+      },
+      "3": {},
+      "4": {},
+      "5": {}
     }
   }
 }

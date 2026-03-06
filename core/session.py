@@ -15,15 +15,17 @@ from flask import session
 
 # ─── SESSION KEYS ───────────────────────────────────────────
 # Using constants avoids typos when reading/writing session keys
-MODE       = "geo_mode"        # "capitals" or "flags"
-QUESTIONS  = "geo_questions"   # list of question dicts for this session
-Q_INDEX    = "geo_q_index"     # which question we're on (0-based)
-SCORE      = "geo_score"       # current score (10 pts per correct answer)
-STREAK     = "geo_streak"      # current consecutive correct streak
-BEST_STREAK= "geo_best_streak" # highest streak reached this session
-CORRECT    = "geo_correct"     # total correct answers
-XP_EARNED  = "geo_xp_earned"   # XP accumulated so far this session
-
+MODE        = "geo_mode"
+QUESTIONS   = "geo_questions"
+Q_INDEX     = "geo_q_index"
+SCORE       = "geo_score"
+STREAK      = "geo_streak"
+BEST_STREAK = "geo_best_streak"
+CORRECT     = "geo_correct"
+XP_EARNED   = "geo_xp_earned"
+HINTS_USED  = "geo_hints_used"   # {q_index: hints_used_count}
+WRONG_COUNT = "geo_wrong_count"  # {q_index: wrong_attempts}
+FLAGGED     = "geo_flagged"      # [question strings answered wrong twice]
 
 # ─── START ──────────────────────────────────────────────────
 def start(mode: str, questions: list) -> None:
@@ -40,6 +42,9 @@ def start(mode: str, questions: list) -> None:
     session[BEST_STREAK] = 0
     session[CORRECT]     = 0
     session[XP_EARNED]   = 0
+    session[HINTS_USED]  = {}
+    session[WRONG_COUNT] = {}
+    session[FLAGGED]     = []
 
 
 # ─── READ ───────────────────────────────────────────────────
@@ -110,9 +115,21 @@ def record_answer(is_correct: bool, xp_gained: int) -> None:
         # Update best streak if current streak is higher
         if session[STREAK] > session.get(BEST_STREAK, 0):
             session[BEST_STREAK] = session[STREAK]
+
     else:
-        # Wrong answer resets the streak but no penalty
         session[STREAK] = 0
+        # Track wrong attempts for flagging
+        q_index = str(session.get(Q_INDEX, 0))
+        wrong = session.get(WRONG_COUNT, {})
+        wrong[q_index] = wrong.get(q_index, 0) + 1
+        session[WRONG_COUNT] = wrong
+        # Flag question if wrong twice
+        if wrong[q_index] == 2:
+            q = current_question()
+            if q and q["q"] not in session.get(FLAGGED, []):
+                flagged = session.get(FLAGGED, [])
+                flagged.append(q["q"])
+                session[FLAGGED] = flagged
 
     # Force Flask to recognise the session has changed
     # (needed because we're mutating values, not replacing them)
@@ -127,6 +144,23 @@ def advance() -> None:
     session[Q_INDEX] = session.get(Q_INDEX, 0) + 1
     session.modified = True
 
+def use_hint(q_index: int) -> int:
+    """
+    Record that a hint was used for question at q_index.
+    Returns the new hint count for that question.
+    """
+    hints = session.get(HINTS_USED, {})
+    key = str(q_index)
+    hints[key] = hints.get(key, 0) + 1
+    session[HINTS_USED] = hints
+    session.modified = True
+    return hints[key]
+
+
+def get_hints_used(q_index: int) -> int:
+    """Return how many hints have been used for a given question."""
+    hints = session.get(HINTS_USED, {})
+    return hints.get(str(q_index), 0)
 
 # ─── SUMMARY ────────────────────────────────────────────────
 def get_summary() -> dict:
@@ -147,10 +181,7 @@ def get_summary() -> dict:
     max_score  = total * 10
     pct        = int((score / max_score) * 100) if max_score > 0 else 0
 
-    xp_from_mastery = session.get(XP_EARNED, 0)
-    xp_completion   = 20
-    xp_perfect      = 15 if pct == 100 else 0
-    xp_total        = xp_from_mastery + xp_completion + xp_perfect
+    xp_total = session.get(XP_EARNED, 0)
 
     # Pick result emoji and title based on percentage
     if pct == 100:
@@ -171,10 +202,8 @@ def get_summary() -> dict:
         "correct":          correct,
         "wrong":            total - correct,
         "total":            total,
-        "xp_from_mastery":  xp_from_mastery,
-        "xp_completion":    xp_completion,
-        "xp_perfect":       xp_perfect,
         "xp_earned":        xp_total,
+        "flagged":          session.get(FLAGGED, []),
         "best_streak":      session.get(BEST_STREAK, 0),
         "mode":             session.get(MODE, "capitals"),
     }
@@ -186,5 +215,5 @@ def clear() -> None:
     Wipe all game session data.
     Call this when the user finishes a game or quits back to menu.
     """
-    for key in [MODE, QUESTIONS, Q_INDEX, SCORE, STREAK, BEST_STREAK, CORRECT, XP_EARNED]:
+    for key in [MODE, QUESTIONS, Q_INDEX, SCORE, STREAK, BEST_STREAK, CORRECT, XP_EARNED, HINTS_USED, WRONG_COUNT, FLAGGED]:
         session.pop(key, None)

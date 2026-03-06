@@ -7,7 +7,7 @@ All game state that should survive a browser refresh lives here.
 import json
 import os
 from datetime import date
-from core.stage import get_stage_from_xp, DEFAULT_TINT
+from core.stage import DEFAULT_TINT
 
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "config.json")
 
@@ -44,8 +44,8 @@ DEFAULT_CONFIG = {
     #             "flags":    {"1": ["France", "Japan"], "2": [...], ...}}
     # The answer string (question["a"]) is used as the unique identifier
     "mastered": {
-        "capitals": {"1": [], "2": [], "3": [], "4": [], "5": []},
-        "flags":    {"1": [], "2": [], "3": [], "4": [], "5": []},
+        "capitals": {"1": {}, "2": {}, "3": {}, "4": {}, "5": {}},
+        "flags":    {"1": {}, "2": {}, "3": {}, "4": {}, "5": {}},
     },
 }
 
@@ -72,13 +72,6 @@ def save(data: dict) -> None:
             json.dump(data, f, indent=2, ensure_ascii=False)
     except IOError as e:
         print(f"Warning: could not save config: {e}")
-
-
-def add_xp(data: dict, amount: int) -> dict:
-    """Add XP, recalculate stage, return updated data."""
-    data["xp"] += amount
-    data["stage"] = get_stage_from_xp(data["xp"])
-    return data
 
 
 def check_and_update_streak(data: dict) -> tuple[dict, bool]:
@@ -138,29 +131,43 @@ def _deep_merge(defaults: dict, target: dict) -> None:
 
 
 def is_mastered(data: dict, mode: str, stage: int, answer: str) -> bool:
-    """Return True if this question has already been mastered."""
+    """Return True if this question has been answered correctly at least once."""
     return answer in data["mastered"][mode][str(stage)]
 
 
-def master_question(data: dict, mode: str, stage: int, answer: str) -> tuple[dict, bool]:
+def award_xp(data: dict, mode: str, stage: int, answer: str, worth: int) -> tuple[dict, int]:
     """
-    Mark a question as mastered and award XP if it's the first time.
+    Award XP for a correct answer, respecting the 10 XP lifetime cap per question.
+    - worth: XP this attempt is worth (10 full, 5 after hint S3, etc.)
+    Returns (updated_data, xp_actually_awarded).
+    """
+    stage_key = str(stage)
+    mastered = data["mastered"][mode][stage_key]
+
+    if answer not in mastered:
+        # First time correct — create entry
+        mastered[answer] = {"earned": 0, "remaining": 10}
+
+    entry = mastered[answer]
+
+    if entry["remaining"] == 0:
+        # Already sealed — no XP but question still counts as mastered
+        return data, 0
+
+    awarded = min(worth, entry["remaining"])
+    entry["earned"] += awarded
+    entry["remaining"] -= awarded
+    data["xp"] += awarded
+    return data, awarded
+
+
+def master_question(data: dict, mode: str, stage: int, answer: str, worth: int = 10) -> tuple[dict, int]:
+    """
+    Mark a question as mastered and award XP.
     Returns (updated_data, xp_awarded).
-
-    Rules:
-    - First correct answer → mastered, +10 XP
-    - Already mastered    → no change, +0 XP
-    - Wrong answer        → no change (caller decides, not this function)
+    Kept for backwards compatibility — wraps award_xp.
     """
-    mastered_list = data["mastered"][mode][str(stage)]
-
-    if answer in mastered_list:
-        return data, False
-
-    # First time correct — mark mastered and award XP
-    mastered_list.append(answer)
-    data = add_xp(data, 10)
-    return data, True
+    return award_xp(data, mode, stage, answer, worth)
 
 
 def mastered_count(data: dict, mode: str, stage: int) -> int:
@@ -169,15 +176,8 @@ def mastered_count(data: dict, mode: str, stage: int) -> int:
 
 
 def stage_progress(data: dict, stage: int) -> dict:
-    """
-    Return mastery progress for both modes at a given stage.
-    Example return:
-    {
-        "capitals": {"mastered": 7, "total": 10},
-        "flags":    {"mastered": 3, "total": 10},
-    }
-    """
-    total = 10  # always 10 questions per mode per stage
+    """Return mastery progress for both modes at a given stage."""
+    total = 10
     return {
         "capitals": {
             "mastered": mastered_count(data, "capitals", stage),

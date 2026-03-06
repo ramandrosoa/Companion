@@ -6,8 +6,8 @@ Call build() and unpack with **ctx into render_template().
 
 from core.stage import (
     get_companion_info, get_theme_name,
-    xp_bar_percent, xp_to_next_stage,
-    STAGE_NAMES, TINT_COLORS, XP_THRESHOLDS
+    xp_bar_percent,
+    STAGE_NAMES, TINT_COLORS
 )
 
 # Set this to True to show the dev switcher in templates
@@ -36,8 +36,8 @@ def build(data: dict) -> dict:
 
         # ── XP ───────────────────────────────────────────────
         "xp":             xp,
-        "xp_bar_percent": xp_bar_percent(xp, stage),
-        "xp_to_next":     xp_to_next_stage(xp, stage),
+        "xp_bar_percent": xp_bar_percent(data),
+        "xp_to_next":     max(0, 200 - xp),
 
         # ── Theme ────────────────────────────────────────────
         "theme":          get_theme_name(stage),

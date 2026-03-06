@@ -12,8 +12,21 @@ QUESTIONS_PATH = os.path.join(os.path.dirname(__file__), "questions.json")
 # Questions per session per stage
 QUESTIONS_PER_STAGE = {1: 5, 2: 6, 3: 7, 4: 8, 5: 8}
 
+# Number of options shown per stage (before any hints)
+OPTIONS_PER_STAGE = {1: 2, 2: 3, 3: 4, 4: 5, 5: 0}  # 0 = type answer
+
 # Difficulty labels
 DIFFICULTY = {1: "Beginner", 2: "Easy", 3: "Medium", 4: "Hard", 5: "Expert"}
+
+# XP worth per attempt depending on hints used
+XP_WORTH = {
+    # (stage, hints_used): xp_worth
+    (1, 0): 10,
+    (2, 0): 10,
+    (3, 0): 10, (3, 1): 5,
+    (4, 0): 10, (4, 1): 6, (4, 2): 2,
+    (5, 0): 10, (5, 1): 7, (5, 2): 4, (5, 3): 1,
+}
 
 
 def load_questions() -> dict:
@@ -24,32 +37,49 @@ def load_questions() -> dict:
 def get_session_questions(mode: str, stage: int) -> list:
     """
     Pick a random set of questions for a game session.
-    mode: 'capitals' or 'flags'
+    Slices options to the correct count for the stage.
     """
     all_q = load_questions()
     pool = all_q[mode][str(stage)]
     count = QUESTIONS_PER_STAGE[stage]
     selected = random.sample(pool, min(count, len(pool)))
-    # Shuffle answer options for each question
+
+    n_opts = OPTIONS_PER_STAGE[stage]
     for q in selected:
-        opts = q["opts"][:]
-        random.shuffle(opts)
-        q["shuffled_opts"] = opts
+        if n_opts > 0:
+            # Always keep the correct answer, pick remaining wrong ones
+            wrong = [o for o in q["opts"] if o != q["a"]]
+            random.shuffle(wrong)
+            opts = wrong[:n_opts - 1] + [q["a"]]
+            random.shuffle(opts)
+            q["shuffled_opts"] = opts
+        else:
+            q["shuffled_opts"] = []  # S5 type answer
     return selected
 
 
+def get_xp_worth(stage: int, hints_used: int) -> int:
+    """Return XP this attempt is worth given stage and hints used."""
+    return XP_WORTH.get((stage, hints_used), 0)
+
+
+def apply_hint(shuffled_opts: list, correct: str, target_count: int) -> list:
+    """
+    Eliminate wrong options down to target_count.
+    Always keeps the correct answer.
+    Returns new shuffled_opts list.
+    """
+    wrong = [o for o in shuffled_opts if o != correct]
+    random.shuffle(wrong)
+    keep_wrong = wrong[:target_count - 1]
+    new_opts = keep_wrong + [correct]
+    random.shuffle(new_opts)
+    return new_opts
+
+
 def check_answer(question: dict, submitted: str) -> bool:
-    return submitted == question["a"]
+    return submitted.strip() == question["a"]
 
-
-
-def get_hint(question: dict, stage: int) -> str | None:
-    """Return a hint string for stages 2-3, None otherwise."""
-    if stage == 2:
-        return f"Starts with '{question['a'][0]}'"
-    if stage == 3:
-        return f"Starts with '{question['a'][:2]}'"
-    return None
 
 def session_max_xp(stage: int) -> int:
-    return QUESTIONS_PER_STAGE[stage] * 10 + 20 + 15
+    return QUESTIONS_PER_STAGE[stage] * 10
