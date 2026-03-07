@@ -47,14 +47,18 @@ def get_session_questions(mode: str, stage: int) -> list:
     n_opts = OPTIONS_PER_STAGE[stage]
     for q in selected:
         if n_opts > 0:
-            # Always keep the correct answer, pick remaining wrong ones
             wrong = [o for o in q["opts"] if o != q["a"]]
             random.shuffle(wrong)
             opts = wrong[:n_opts - 1] + [q["a"]]
             random.shuffle(opts)
             q["shuffled_opts"] = opts
         else:
-            q["shuffled_opts"] = []  # S5 type answer
+            # S5 type answer — store all 4 opts for hint elimination
+            # but shuffled_opts starts empty until first hint is used
+            opts = q["opts"][:]
+            random.shuffle(opts)
+            q["all_opts"] = opts
+            q["shuffled_opts"] = []
     return selected
 
 

@@ -222,7 +222,9 @@ def geo_hint():
 
     if hints_used <= len(target_counts):
         target = target_counts[hints_used - 1]
-        new_opts = apply_hint(question["shuffled_opts"], question["a"], target)
+            # For S5 first hint, start from all_opts since shuffled_opts is empty
+        current_opts = question.get("all_opts", question["shuffled_opts"]) if hints_used == 1 else question["shuffled_opts"]
+        new_opts = apply_hint(current_opts, question["a"], target)
         # Update the question in the session
         questions = flask_session["geo_questions"]
         questions[q_index]["shuffled_opts"] = new_opts
