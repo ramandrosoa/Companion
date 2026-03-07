@@ -10,17 +10,29 @@ Then open http://127.0.0.1:5000 in your browser.
 
 from flask import (
     Flask, render_template, redirect,
-    url_for, request, session as flask_session
+    url_for, request, session as flask_session, jsonify
 )
+from datetime import timedelta
+import os
+from dotenv import load_dotenv
+from groq import Groq
 
 from core import user, context
 from core import session as game_session
 from games.geography import game
 from games.geography.game import DIFFICULTY, QUESTIONS_PER_STAGE, get_xp_worth
+from pip_prompts import get_system_prompt, build_game_context, get_message
+from datetime import timedelta
+
+
+load_dotenv()
+groq_client = Groq(api_key=os.environ["GROQ_API_KEY"])
+
 
 # ─── APP SETUP ──────────────────────────────────────────────
 app = Flask(__name__)
 app.secret_key = "companion-dev-key"
+app.permanent_session_lifetime = timedelta(days = 30)
 
 # Set DEV_MODE = False when running on the real device
 DEV_MODE = True
@@ -35,6 +47,7 @@ def get_mode() -> str:
 # ─── MAIN MENU ──────────────────────────────────────────────
 @app.route("/")
 def menu():
+    flask_session.permanent = True
     data         = user.load()
     data, _      = user.check_and_update_streak(data)
     user.save(data)
@@ -182,6 +195,7 @@ def geo_answer():
         "is_correct":       is_correct,
         "submitted":        submitted,
         "xp_gained":        xp_gained,
+        "get_message":      get_message,
     })
     return render_template("games/question.html", **ctx)
 
@@ -265,6 +279,14 @@ def geo_results():
     data = user.mark_game_played(data)
     user.save(data)
 
+    # Set Pep game context so he knows how the session went
+    flask_session["pep_game_context"] = build_game_context(
+        stage, mode,
+        summary["correct"], summary["wrong"],
+        summary["total"],   summary["mastered_hit"],
+        summary["flagged"]
+    )
+
     game_session.clear()
 
     ctx = context.build(data)
@@ -275,6 +297,59 @@ def geo_results():
     })
     return render_template("games/results.html", **ctx)
 
+# ─── PEP CHAT ───────────────────────────────────────────────
+@app.route("/pep", methods=["POST"])
+def pep_chat():
+    """
+    Receive a message from the Pep widget.
+    Returns a JSON response with Pep's reply.
+    """
+    data     = user.load()
+    stage    = data["stage"]
+    payload  = request.get_json()
+    message  = payload.get("message", "").strip()
+
+    if not message:
+        return jsonify({"reply": ""})
+
+    # Build or retrieve conversation history
+    history = flask_session.get("pep_history", [])
+
+    # Game context — set after a game ends, cleared once Pep acknowledges it
+    game_context = flask_session.get("pep_game_context", None)
+
+    # Build system prompt with optional game context
+    system_prompt = get_system_prompt(stage, game_context)
+
+    # Call Groq
+    try:
+        response = groq_client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                *history,
+                {"role": "user", "content": message}
+            ],
+            max_tokens=200,
+        )
+        reply = response.choices[0].message.content.strip()
+    except Exception as e:
+        reply = "Sorry, I can't talk right now."
+        print(f"Groq error: {e}")
+
+    # Update history
+    history.append({"role": "user",      "content": message})
+    history.append({"role": "assistant", "content": reply})
+
+    # Keep last 20 messages to avoid token overflow
+    if len(history) > 20:
+        history = history[-20:]
+
+    flask_session["pep_history"]      = history
+    flask_session["pep_game_context"] = None  # clear after first use
+    flask_session.modified = True
+
+    return jsonify({"reply": reply})
 
 # ─── STAGE TRANSITION SCREEN ────────────────────────────────
 @app.route("/stage-up")

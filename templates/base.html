@@ -79,7 +79,47 @@
   <div class="xp-toast" id="xp-toast"></div>
 
   <script src="{{ url_for('static', filename='js/companion.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/pep.js') }}"></script>
   {% block scripts %}{% endblock %}
 
+  {# ── PEP WIDGET ─────────────────────────────────────── #}
+  {% set pep_locked = (request.endpoint in ['geo_question', 'geo_answer']) %}
+  <div class="pep-widget" id="pepWidget">
+
+    {# Chat panel #}
+    <div class="pep-panel" id="pepPanel">
+      <div class="pep-hd">
+        <span class="pep-av">{{ companion_emoji }}</span>
+        <div>
+          <div class="pep-name">PEP</div>
+          <div class="pep-status" id="pepStatus">
+            {% if pep_locked %}locked during game{% else %}ready to chat{% endif %}
+          </div>
+        </div>
+        <button class="pep-close" onclick="togglePep()">✕</button>
+      </div>
+      <div class="pep-msgs" id="pepMsgs"></div>
+      <div class="pep-ir">
+        <input class="pep-in" id="pepIn"
+               placeholder="{% if pep_locked %}locked...{% else %}ask pep...{% endif %}"
+               {% if pep_locked %}disabled{% endif %}
+               onkeydown="if(event.key==='Enter')sendPep()">
+        <button class="pep-sb" id="pepSend"
+                {% if pep_locked %}disabled{% endif %}
+                onclick="sendPep()">→</button>
+      </div>
+    </div>
+
+    {# Bubble button #}
+    <button class="pep-bubble" id="pepBubble" onclick="togglePep()">
+      {{ companion_emoji }}
+    </button>
+
+  </div>
+
+  <script>
+  const PEP_LOCKED  = {{ 'true' if pep_locked else 'false' }};
+  const PEP_STAGE   = {{ stage }};
+  </script>
 </body>
 </html>

@@ -205,10 +205,12 @@
 {% endblock %}
 
 {% block scripts %}
-{# Show XP toast after a correct answer #}
-{% if answered and is_correct %}
+{% if answered %}
 <script>
+  {% if is_correct %}
   showXpToast({{ xp_gained }}, {{ 'true' if already_mastered else 'false' }});
+  {% endif %}
+  showPepPopup({{ get_message(stage, 'correct' if is_correct else 'wrong') | tojson }});
 </script>
 {% endif %}
 {% endblock %}
