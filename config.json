@@ -1,7 +1,7 @@
 {
   "name": null,
-  "xp": 90,
-  "stage": 3,
+  "xp": 0,
+  "stage": 4,
   "tint": "amber",
   "streak": 0,
   "longest_streak": 0,
@@ -13,9 +13,9 @@
   },
   "stats": {
     "total_steps": 0,
-    "games_played": 2,
+    "games_played": 5,
     "best_score_capitals": 100,
-    "best_score_flags": 0,
+    "best_score_flags": 100,
     "words_learned": 0,
     "correct_answers": 0,
     "wrong_answers": 0
@@ -28,7 +28,28 @@
   },
   "mastered": {
     "capitals": {
-      "1": {},
+      "1": {
+        "Tokyo": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Madrid": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Washington D.C.": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Paris": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "New Delhi": {
+          "earned": 10,
+          "remaining": 0
+        }
+      },
       "2": {},
       "3": {
         "Bogotá": {
@@ -76,7 +97,40 @@
       "2": {},
       "3": {},
       "4": {},
-      "5": {}
+      "5": {
+        "Vanuatu": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Solomon Islands": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Timor-Leste": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Andorra": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Tuvalu": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Marshall Islands": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Kiribati": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Palau": {
+          "earned": 10,
+          "remaining": 0
+        }
+      }
     }
   }
 }

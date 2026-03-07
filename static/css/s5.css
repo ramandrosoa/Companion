@@ -282,3 +282,72 @@
     box-shadow:0 0 14px rgba(167,139,250,0.1); transition:all 0.2s;
   }
   .btn-submit:hover { background:linear-gradient(135deg,rgba(167,139,250,0.25),rgba(78,205,196,0.15)); }
+
+    /* ── PEP WIDGET ───────────────────────────────────────── */
+  .pep-widget { position:fixed; bottom:24px; right:24px; z-index:1000; display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
+
+  .pep-bubble {
+    width:52px; height:52px; border-radius:50%;
+    background:#0c1220; border:2px solid var(--accent);
+    font-size:1.4rem; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 16px rgba(167,139,250,.3), 0 4px 12px rgba(0,0,0,.5);
+    transition:transform .2s; position:relative;
+  }
+  .pep-bubble:hover { transform:scale(1.08); }
+  .pep-bubble::after {
+    content:''; position:absolute; top:3px; right:3px;
+    width:10px; height:10px; border-radius:50%;
+    background:var(--accent); border:2px solid #080c18;
+    box-shadow:0 0 6px rgba(167,139,250,.6);
+    animation:pep-dot 2s ease-in-out infinite;
+  }
+  @keyframes pep-dot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.3);opacity:.7} }
+
+  .pep-panel {
+    width:280px; background:#0c1220; border:1px solid rgba(167,139,250,.18); border-radius:16px;
+    overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,.5), 0 0 20px rgba(167,139,250,.06);
+    position:relative;
+    transform-origin:bottom right;
+    transform:scale(0.95) translateY(8px); opacity:0; pointer-events:none;
+    transition:all .25s cubic-bezier(.4,0,.2,1);
+  }
+  .pep-panel::before { content:''; position:absolute; top:0;left:0;right:0;height:1px; background:linear-gradient(90deg,transparent,rgba(167,139,250,.6),rgba(0,212,255,.4),transparent); }
+  .pep-panel.open { transform:scale(1) translateY(0); opacity:1; pointer-events:all; }
+
+  .pep-hd { display:flex; align-items:center; gap:10px; padding:12px 14px; border-bottom:1px solid rgba(167,139,250,.08); }
+  .pep-av { font-size:1.2rem; }
+  .pep-name { font-size:0.78rem; font-weight:800; background:linear-gradient(90deg,#f7c948,#b794f4); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .pep-status { font-size:0.65rem; font-weight:700; color:#2a3050; margin-top:1px; }
+  .pep-close { margin-left:auto; background:none; border:none; cursor:pointer; font-size:0.65rem; font-weight:700; color:#2a3050; }
+  .pep-close:hover { color:var(--accent); }
+
+  .pep-msgs { display:flex; flex-direction:column; gap:6px; max-height:190px; overflow-y:auto; padding:12px 14px; }
+  .pep-msg { padding:8px 10px; font-size:0.72rem; font-weight:600; line-height:1.5; }
+  .pep-p { background:rgba(255,255,255,.02); border:1px solid rgba(167,139,250,.08); border-radius:10px 10px 10px 0; color:#6870a0; }
+  .pep-u { background:rgba(167,139,250,.07); border:1px solid rgba(167,139,250,.12); border-radius:10px 10px 0 10px; color:#e8eaf8; align-self:flex-end; }
+  .pep-typing { opacity:.4; }
+
+  .pep-ir { display:flex; gap:6px; padding:10px 14px 12px; border-top:1px solid rgba(167,139,250,.06); }
+  .pep-in {
+    flex:1; background:rgba(255,255,255,.03); border:1px solid rgba(167,139,250,.1); border-radius:10px;
+    color:#e8eaf8; font-size:0.72rem; font-weight:600; padding:7px 10px; outline:none;
+  }
+  .pep-in:focus { border-color:rgba(167,139,250,.4); box-shadow:0 0 10px rgba(167,139,250,.1); }
+  .pep-in:disabled { opacity:.3; cursor:default; }
+  .pep-sb {
+    background:rgba(167,139,250,.1); border:1px solid rgba(167,139,250,.25); border-radius:10px;
+    color:var(--accent); font-size:0.72rem; font-weight:800;
+    padding:7px 12px; cursor:pointer; transition:all .2s;
+  }
+  .pep-sb:hover { background:rgba(167,139,250,.18); }
+  .pep-sb:disabled { opacity:.3; cursor:default; }
+
+  .pep-popup {
+    position:absolute; bottom:65px; right:0; width:230px;
+    background:#0c1220; border:1px solid rgba(167,139,250,.15); border-radius:14px;
+    padding:12px 14px; font-size:0.72rem; font-weight:700; color:#6870a0;
+    line-height:1.5; animation:popup-in .2s ease;
+    box-shadow:0 8px 24px rgba(0,0,0,.4), 0 0 14px rgba(167,139,250,.08);
+  }
+  @keyframes popup-in { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
