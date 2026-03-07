@@ -68,22 +68,14 @@ def get_system_prompt(stage: int, game_context: str = None) -> str:
     
     return base
 
-def build_game_context(stage: int, mode: str, score: int, total: int, flagged: list) -> str: 
-
-    context = f"""The user just finished a {mode} game at stage {stage}.
-    They scored {score} out of {total} possible points."""
-    
-    if flagged: 
-        flagged_str = ', '.join(flagged)
-        context += f"""
-        They answered these questions incorrectly more than once: {flagged_str}.
-        You can naturally bring these up in conversation to help them learn.
-        Do not say they were 'flagged' — just mention them conversationally.
-        """
-    else: 
-        context += "\nThey answered all questions well with no repeated mistakes."
-
-    return context
+def build_game_context(stage, mode, correct, wrong, total, mastered_hit, flagged):
+    flagged_str = ", ".join(flagged) if flagged else "none"
+    return (
+        f"The user just finished a {mode} game at stage {stage}. "
+        f"They got {correct}/{total} correct and {wrong} wrong. "
+        f"{mastered_hit} of the correct answers were already mastered. "
+        f"Questions they struggled with (wrong twice): {flagged_str}."
+    )
 
 MESSAGES = {
     1: {

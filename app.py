@@ -254,9 +254,10 @@ def geo_results():
         flask_session["stage_up_to"]   = data["stage"]
         return redirect(url_for("stage_up"))
 
+
     best_key = f"best_score_{mode}"
-    if summary["score"] > data["stats"].get(best_key, 0):
-        data["stats"][best_key] = summary["score"]
+    if summary["pct"] > data["stats"].get(best_key, 0):
+        data["stats"][best_key] = summary["pct"]
         summary["new_best"] = True
     else:
         summary["new_best"] = False

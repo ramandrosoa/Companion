@@ -1,11 +1,11 @@
 {
   "name": null,
-  "xp": 200,
-  "stage": 5,
+  "xp": 90,
+  "stage": 3,
   "tint": "amber",
   "streak": 0,
   "longest_streak": 0,
-  "last_opened": "2026-03-07",
+  "last_opened": "2026-03-08",
   "daily_pillars": {
     "word_seen": false,
     "game_played": true,
@@ -13,9 +13,9 @@
   },
   "stats": {
     "total_steps": 0,
-    "games_played": 10,
-    "best_score_capitals": 80,
-    "best_score_flags": 80,
+    "games_played": 2,
+    "best_score_capitals": 100,
+    "best_score_flags": 0,
     "words_learned": 0,
     "correct_answers": 0,
     "wrong_answers": 0
@@ -30,98 +30,53 @@
     "capitals": {
       "1": {},
       "2": {},
-      "3": {},
-      "4": {},
-      "5": {
-        "Moroni": {
+      "3": {
+        "Bogotá": {
           "earned": 10,
           "remaining": 0
         },
-        "Dili": {
+        "Kyiv": {
           "earned": 10,
           "remaining": 0
         },
-        "Bishkek": {
+        "Algiers": {
           "earned": 10,
           "remaining": 0
         },
-        "Port Vila": {
+        "Islamabad": {
           "earned": 10,
           "remaining": 0
         },
-        "Ouagadougou": {
+        "Astana": {
           "earned": 10,
           "remaining": 0
         },
-        "Paramaribo": {
+        "Rabat": {
           "earned": 10,
           "remaining": 0
         },
-        "Asmara": {
+        "Lima": {
           "earned": 10,
           "remaining": 0
         },
-        "Yaren": {
+        "Hanoi": {
           "earned": 10,
           "remaining": 0
         },
-        "Ngerulmud": {
-          "earned": 10,
-          "remaining": 0
-        },
-        "Palikir": {
+        "Addis Ababa": {
           "earned": 10,
           "remaining": 0
         }
-      }
+      },
+      "4": {},
+      "5": {}
     },
     "flags": {
       "1": {},
       "2": {},
       "3": {},
       "4": {},
-      "5": {
-        "Palau": {
-          "earned": 10,
-          "remaining": 0
-        },
-        "Tuvalu": {
-          "earned": 10,
-          "remaining": 0
-        },
-        "Marshall Islands": {
-          "earned": 10,
-          "remaining": 0
-        },
-        "San Marino": {
-          "earned": 10,
-          "remaining": 0
-        },
-        "Solomon Islands": {
-          "earned": 10,
-          "remaining": 0
-        },
-        "Vanuatu": {
-          "earned": 10,
-          "remaining": 0
-        },
-        "Timor-Leste": {
-          "earned": 10,
-          "remaining": 0
-        },
-        "Kiribati": {
-          "earned": 10,
-          "remaining": 0
-        },
-        "Andorra": {
-          "earned": 10,
-          "remaining": 0
-        },
-        "São Tomé and Príncipe": {
-          "earned": 10,
-          "remaining": 0
-        }
-      }
+      "5": {}
     }
   }
 }

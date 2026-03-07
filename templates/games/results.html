@@ -22,16 +22,16 @@
     {# ── SCORE GRID ──────────────────────────────────────── #}
     <div class="res-grid">
       <div class="res-cell">
-        <div class="res-val">{{ summary.score }}</div>
-        <div class="res-lbl">SCORE</div>
+      <div class="res-val">{{ summary.correct }}/{{ summary.total }}</div>
+        <div class="res-lbl">CORRECT</div>
       </div>
       <div class="res-cell">
         <div class="res-val">{{ summary.pct }}%</div>
         <div class="res-lbl">ACCURACY</div>
       </div>
       <div class="res-cell">
-        <div class="res-val">{{ summary.correct }}</div>
-        <div class="res-lbl">CORRECT</div>
+        <div class="res-val">{{ summary.wrong }}</div>
+        <div class="res-lbl">WRONG</div>
       </div>
       <div class="res-cell">
         <div class="res-val">{{ summary.best_streak }}</div>

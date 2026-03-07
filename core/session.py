@@ -26,6 +26,7 @@ XP_EARNED   = "geo_xp_earned"
 HINTS_USED  = "geo_hints_used"   # {q_index: hints_used_count}
 WRONG_COUNT = "geo_wrong_count"  # {q_index: wrong_attempts}
 FLAGGED     = "geo_flagged"      # [question strings answered wrong twice]
+MASTERED_HIT = "geo_mastered_hit"  # correct answers that were already mastered
 
 # ─── START ──────────────────────────────────────────────────
 def start(mode: str, questions: list) -> None:
@@ -45,6 +46,7 @@ def start(mode: str, questions: list) -> None:
     session[HINTS_USED]  = {}
     session[WRONG_COUNT] = {}
     session[FLAGGED]     = []
+    session[MASTERED_HIT] = 0
 
 
 # ─── READ ───────────────────────────────────────────────────
@@ -111,6 +113,8 @@ def record_answer(is_correct: bool, xp_gained: int) -> None:
         session[CORRECT]   = session.get(CORRECT, 0) + 1
         session[STREAK]    = session.get(STREAK, 0) + 1
         session[XP_EARNED] = session.get(XP_EARNED, 0) + xp_gained
+        if xp_gained == 0:
+            session[MASTERED_HIT] = session.get(MASTERED_HIT, 0) + 1
 
         # Update best streak if current streak is higher
         if session[STREAK] > session.get(BEST_STREAK, 0):
@@ -176,11 +180,11 @@ def get_summary() -> dict:
     """
     questions  = session.get(QUESTIONS, [])
     total      = len(questions)
-    correct    = session.get(CORRECT, 0)
-    score      = session.get(SCORE, 0)
-    max_score  = total * 10
-    pct        = int((score / max_score) * 100) if max_score > 0 else 0
-
+    correct      = session.get(CORRECT, 0)
+    wrong        = total - correct
+    mastered_hit = session.get(MASTERED_HIT, 0)
+    pct          = int((correct / total) * 100) if total > 0 else 0
+    
     xp_total = session.get(XP_EARNED, 0)
 
     # Pick result emoji and title based on percentage
@@ -196,17 +200,18 @@ def get_summary() -> dict:
     return {
         "emoji":            emoji,
         "title":            title,
-        "score":            score,
-        "max_score":        max_score,
         "pct":              pct,
         "correct":          correct,
-        "wrong":            total - correct,
+        "wrong":            wrong,
         "total":            total,
+        "mastered_hit":     mastered_hit,
         "xp_earned":        xp_total,
         "flagged":          session.get(FLAGGED, []),
         "best_streak":      session.get(BEST_STREAK, 0),
         "mode":             session.get(MODE, "capitals"),
     }
+
+
 
 
 # ─── CLEAR ──────────────────────────────────────────────────
@@ -215,5 +220,5 @@ def clear() -> None:
     Wipe all game session data.
     Call this when the user finishes a game or quits back to menu.
     """
-    for key in [MODE, QUESTIONS, Q_INDEX, SCORE, STREAK, BEST_STREAK, CORRECT, XP_EARNED, HINTS_USED, WRONG_COUNT, FLAGGED]:
+    for key in [MODE, QUESTIONS, Q_INDEX, SCORE, STREAK, BEST_STREAK, CORRECT, XP_EARNED, HINTS_USED, WRONG_COUNT, FLAGGED, MASTERED_HIT]:
         session.pop(key, None)
