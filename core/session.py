@@ -128,12 +128,14 @@ def record_answer(is_correct: bool, xp_gained: int) -> None:
         wrong[q_index] = wrong.get(q_index, 0) + 1
         session[WRONG_COUNT] = wrong
         # Flag question if wrong twice
-        if wrong[q_index] == 2:
+        if wrong[q_index] == 1:
             q = current_question()
+            print(f"DEBUG flagging: q={q}, a={q['a'] if q else None}")
             if q and q["a"] not in session.get(FLAGGED, []):
                 flagged = session.get(FLAGGED, [])
                 flagged.append(q["a"])
                 session[FLAGGED] = flagged
+                #print(f"DEBUG flagged list now: {session[FLAGGED]}")
 
 
     # Force Flask to recognise the session has changed
