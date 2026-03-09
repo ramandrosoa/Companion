@@ -23,7 +23,7 @@ from games.geography import game
 from games.geography.game import DIFFICULTY, QUESTIONS_PER_STAGE, get_xp_worth
 from pip_prompts import get_system_prompt, build_game_context, get_message
 from datetime import timedelta
-
+import random
 
 load_dotenv()
 groq_client = Groq(api_key=os.environ["GROQ_API_KEY"])
@@ -302,16 +302,66 @@ def geo_results():
     total   = summary["total"]
     flagged = summary["flagged"]
 
+    # Append flagged questions naturally
+
+    perfect_msgs = [
+        f"Perfect score! {correct}/{total} correct. You're on fire! 🔥",
+        f"Flawless! {correct}/{total} — not a single mistake. Incredible. 🏆",
+        f"{correct}/{total}. Clean sweep! You really know your geography. ⭐",
+        f"100%! Every single one correct. That's mastery right there. 🌟",
+        f"Wow — {correct}/{total}. Nothing got past you today. 🔥",
+    ]
+    great_msgs = [
+        f"Great game! {correct}/{total} correct. Really solid work.",
+        f"Strong session — {correct}/{total}. You're getting sharper. 💪",
+        f"{correct}/{total} correct. Nearly perfect — just a couple slipped through.",
+        f"Nice work! {correct}/{total}. You clearly know most of this. 🌍",
+        f"{correct}/{total} — that's a great score. Keep this up. ✨",
+    ]
+    ok_msgs = [
+        f"{correct}/{total} correct. Not bad — keep at it!",
+        f"Decent effort — {correct}/{total}. There's room to grow though.",
+        f"{correct}/{total}. Halfway there! A bit more practice and you'll nail it.",
+        f"Not bad at all — {correct}/{total}. You're building knowledge. 📚",
+        f"{correct}/{total} correct. Solid base — keep pushing. 🌱",
+    ]
+    tough_msgs = [
+        f"Tough one — {correct}/{total} correct. Don't worry, every attempt builds knowledge.",
+        f"{correct}/{total}. This one was hard. The only way is up from here. 💪",
+        f"Rough session — {correct}/{total}. But you showed up, and that matters.",
+        f"{correct}/{total} correct. Don't be discouraged — this stuff takes time. 🌱",
+        f"Only {correct}/{total} this time. Review those countries and try again!",
+    ]
+
     if pct == 100:
-        pep_auto = f"Perfect score! {correct}/{total} correct. You're on fire! 🔥"
+        pep_auto = random.choice(perfect_msgs)
     elif pct >= 80:
-        pep_auto = f"Great game! {correct}/{total} correct. Really solid work."
+        pep_auto = random.choice(great_msgs)
     elif pct >= 50:
-        pep_auto = f"{correct}/{total} correct. Not bad — keep at it!"
+        pep_auto = random.choice(ok_msgs)
     else:
-        pep_auto = f"Tough one — {correct}/{total} correct. Don't worry, every attempt builds knowledge."
+        pep_auto = random.choice(tough_msgs)
 
     # Append flagged questions naturally
+    if flagged:
+        single_flagged_msgs = [
+            f" Looks like {flagged[0]} gave you some trouble.",
+            f" I noticed you struggled a bit with {flagged[0]}.",
+            f" Worth reviewing {flagged[0]} — that one tripped you up.",
+            f" {flagged[0]} was a tough one for you today.",
+            f" Keep an eye on {flagged[0]} — it slipped past you this time.",
+        ]
+        multi_flagged_msgs = [
+            f" A few gave you trouble: {', '.join(flagged)}. Worth revisiting those.",
+            f" You had some difficulty with {', '.join(flagged)}. Don't worry — practice makes perfect.",
+            f" {', '.join(flagged)} were tricky ones. Give them another look.",
+            f" I'd review {', '.join(flagged)} if I were you — those ones caught you out.",
+            f" Stumbled on {', '.join(flagged)}. Keep an eye on those next time.",
+        ]
+        if len(flagged) == 1:
+            pep_auto += random.choice(single_flagged_msgs)
+        else:
+            pep_auto += random.choice(multi_flagged_msgs)
 
     if flagged:
         if len(flagged) == 1:

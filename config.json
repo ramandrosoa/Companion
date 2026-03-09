@@ -1,8 +1,8 @@
 {
   "name": null,
-  "xp": 20,
+  "xp": 50,
   "stage": 2,
-  "tint": "blue",
+  "tint": "amber",
   "streak": 0,
   "longest_streak": 0,
   "last_opened": "2026-03-09",
@@ -13,9 +13,9 @@
   },
   "stats": {
     "total_steps": 0,
-    "games_played": 7,
-    "best_score_capitals": 80,
-    "best_score_flags": 33,
+    "games_played": 15,
+    "best_score_capitals": 100,
+    "best_score_flags": 60,
     "words_learned": 0,
     "correct_answers": 0,
     "wrong_answers": 0
@@ -44,15 +44,94 @@
         "Tokyo": {
           "earned": 10,
           "remaining": 0
+        },
+        "Rome": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Paris": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Beijing": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "New Delhi": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Washington D.C.": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Madrid": {
+          "earned": 10,
+          "remaining": 0
         }
       },
-      "2": {},
-      "3": {},
+      "2": {
+        "Berlin": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Abuja": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Riyadh": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Pretoria": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Buenos Aires": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Ottawa": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Ankara": {
+          "earned": 10,
+          "remaining": 0
+        }
+      },
+      "3": {
+        "Astana": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Islamabad": {
+          "earned": 10,
+          "remaining": 0
+        }
+      },
       "4": {},
       "5": {}
     },
     "flags": {
-      "1": {},
+      "1": {
+        "Japan": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "France": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Australia": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "China": {
+          "earned": 10,
+          "remaining": 0
+        }
+      },
       "2": {
         "Nigeria": {
           "earned": 10,

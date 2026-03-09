@@ -21,9 +21,9 @@
      --accent3:   #665500;
      --text:      var(--tint);
      --text2:     #886600;
-     --text3:     #443300;
+     --text3:     #975402;
      --correct:   var(--tint);
-     --wrong:     #553300;
+     --wrong:     #d90101;
      --font:      'Press Start 2P', monospace;
      --glow:      var(--tint-glow);     
      --radius:    0px;
@@ -155,10 +155,10 @@
    .opt.correct .opt-ltr { border-color:var(--correct); color:var(--correct); }
    .opt.wrong   .opt-ltr { border-color:var(--wrong);   color:var(--wrong); }
    
-   .feedback { display:none; padding:12px 14px; margin-bottom:14px; font-size:0.42rem; line-height:1.8; border-left:3px solid; }
+   .feedback { display:none; padding:12px 14px; margin-bottom:14px; font-size:0.58rem; line-height:1.8; border-left:3px solid; }
    .feedback.show { display:block; }
    .feedback.ok  { border-color:var(--correct); color:var(--correct); background:#050300; }
-   .feedback.bad { border-color:var(--wrong);   color:var(--text3);   background:#050200; }
+   .feedback.bad { border-color:var(--wrong);   color:var(--wrong);   background:#000000; }
    
    .btn-next {
      display:none; width:100%; padding:14px; background:var(--card2); border:1px solid var(--accent);
