@@ -2,10 +2,10 @@
   "name": null,
   "xp": 0,
   "stage": 1,
-  "tint": "amber",
+  "tint": "cyan",
   "streak": 0,
   "longest_streak": 0,
-  "last_opened": "2026-03-08",
+  "last_opened": "2026-03-09",
   "daily_pillars": {
     "word_seen": false,
     "game_played": true,
@@ -13,7 +13,7 @@
   },
   "stats": {
     "total_steps": 0,
-    "games_played": 6,
+    "games_played": 24,
     "best_score_capitals": 100,
     "best_score_flags": 100,
     "words_learned": 0,
@@ -29,15 +29,7 @@
   "mastered": {
     "capitals": {
       "1": {
-        "Tokyo": {
-          "earned": 10,
-          "remaining": 0
-        },
         "Madrid": {
-          "earned": 10,
-          "remaining": 0
-        },
-        "Washington D.C.": {
           "earned": 10,
           "remaining": 0
         },
@@ -45,18 +37,83 @@
           "earned": 10,
           "remaining": 0
         },
+        "Tokyo": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Rome": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Beijing": {
+          "earned": 10,
+          "remaining": 0
+        },
         "New Delhi": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Cairo": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Canberra": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Washington D.C.": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Brasília": {
           "earned": 10,
           "remaining": 0
         }
       },
-      "2": {},
-      "3": {
-        "Bogotá": {
+      "2": {
+        "Abuja": {
           "earned": 10,
           "remaining": 0
         },
-        "Kyiv": {
+        "Buenos Aires": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Moscow": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Riyadh": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Berlin": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Seoul": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Ankara": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Mexico City": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Ottawa": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Pretoria": {
+          "earned": 10,
+          "remaining": 0
+        }
+      },
+      "3": {
+        "Islamabad": {
           "earned": 10,
           "remaining": 0
         },
@@ -64,19 +121,11 @@
           "earned": 10,
           "remaining": 0
         },
-        "Islamabad": {
-          "earned": 10,
-          "remaining": 0
-        },
-        "Astana": {
-          "earned": 10,
-          "remaining": 0
-        },
-        "Rabat": {
-          "earned": 10,
-          "remaining": 0
-        },
         "Lima": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Tehran": {
           "earned": 10,
           "remaining": 0
         },
@@ -84,7 +133,19 @@
           "earned": 10,
           "remaining": 0
         },
+        "Bogotá": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Astana": {
+          "earned": 10,
+          "remaining": 0
+        },
         "Addis Ababa": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Rabat": {
           "earned": 10,
           "remaining": 0
         }
@@ -93,44 +154,130 @@
       "5": {}
     },
     "flags": {
-      "1": {},
-      "2": {},
-      "3": {},
-      "4": {},
-      "5": {
-        "Vanuatu": {
+      "1": {
+        "China": {
           "earned": 10,
           "remaining": 0
         },
-        "Solomon Islands": {
+        "Australia": {
           "earned": 10,
           "remaining": 0
         },
-        "Timor-Leste": {
+        "Japan": {
           "earned": 10,
           "remaining": 0
         },
-        "Andorra": {
+        "India": {
           "earned": 10,
           "remaining": 0
         },
-        "Tuvalu": {
+        "France": {
           "earned": 10,
           "remaining": 0
         },
-        "Marshall Islands": {
+        "Italy": {
           "earned": 10,
           "remaining": 0
         },
-        "Kiribati": {
+        "Brazil": {
           "earned": 10,
           "remaining": 0
         },
-        "Palau": {
+        "Germany": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Canada": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "United Kingdom": {
           "earned": 10,
           "remaining": 0
         }
-      }
+      },
+      "2": {
+        "Nigeria": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Argentina": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Portugal": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Sweden": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "South Africa": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Turkey": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Singapore": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Mexico": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Saudi Arabia": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "South Korea": {
+          "earned": 10,
+          "remaining": 0
+        }
+      },
+      "3": {
+        "Ghana": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Kenya": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Philippines": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Colombia": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Switzerland": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Greece": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Jamaica": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Pakistan": {
+          "earned": 10,
+          "remaining": 0
+        },
+        "Morocco": {
+          "earned": 10,
+          "remaining": 0
+        }
+      },
+      "4": {},
+      "5": {}
     }
   }
 }

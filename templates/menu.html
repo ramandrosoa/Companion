@@ -65,26 +65,7 @@
       <span class="game-arrow">›</span>
     </a>
 
-    {# Future games — locked #}
-    <div class="game-row locked">
-      {% if stage <= 2 %}<div class="pixel-icon icon-microscope"></div>{% else %}<span class="game-icon">🔬</span>{% endif %}
-      <div>
-        <div class="game-title">SCIENCE</div>
-        <div class="game-sub">Coming soon</div>
-      </div>
-      <span class="game-arrow">{% if stage <= 3 %}<div class="pixel-icon icon-lock"></div>{% else %}🔒{% endif %}</span>
-    </div>
 
-    <div class="game-row locked">
-      {% if stage <= 2 %}<div class="pixel-icon icon-brain"></div>{% else %}<span class="game-icon">🧠</span>{% endif %}
-      <div>
-        <div class="game-title">MEMORY</div>
-        <div class="game-sub">Coming soon</div>
-      </div>
-      <span class="game-arrow">{% if stage <= 3 %}<div class="pixel-icon icon-lock"></div>{% else %}🔒{% endif %}</span>
-    </div>
-
-  </div>
 
   {# ── MASTERY PROGRESS BARS ───────────────────────────── #}
   {# Shows how many geography questions mastered at current stage #}

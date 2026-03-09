@@ -110,7 +110,7 @@
    }
    .game-row:hover:not(.locked) { border-left-color: var(--accent); }
    .game-row.locked { opacity: 0.25; cursor: default; }
-   .game-icon  { font-size: 1.3rem; filter: grayscale(1) brightness(0.5); }
+   .game-icon  { font-size: 1.3rem;}
    .game-title { font-size: 0.65rem; color: var(--accent2); }
    .game-sub   { font-size: 0.5rem; color: var(--text3); margin-top: 4px; }
    .game-arrow { margin-left: auto; font-size: 0.6rem; color: var(--text3); }
@@ -189,7 +189,7 @@
    
    /* RESULTS */
    .results    { text-align: center; padding: 12px 0; }
-   .res-emoji  { font-size: 3.5rem; margin-bottom: 12px; filter: grayscale(1) brightness(0.6); }
+   .res-emoji  { font-size: 3.5rem; margin-bottom: 12px; }
    .res-title  { font-size: 1.1rem; color: var(--accent); margin-bottom: 8px; letter-spacing: 3px; }
    .res-sub    { font-size: 0.6rem; color: var(--text2); margin-bottom: 24px; }
    .res-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 18px; }
@@ -233,7 +233,7 @@
      display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; transition:all 0.1s;
    }
    .mode-card:hover { border-left-color:var(--accent); }
-   .mode-card-icon  { font-size:2rem; filter:grayscale(1) brightness(0.5); }
+   .mode-card-icon  { font-size:2rem; }
    .mode-card-title { font-size:0.65rem; color:var(--accent2); }
    .mode-card-sub   { font-size:0.5rem; color:var(--text3); }
    

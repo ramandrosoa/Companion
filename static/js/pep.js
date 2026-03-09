@@ -1,8 +1,7 @@
 // ── PEP STATE ──────────────────────────────────────────────
 let pepOpen = false;
-
-// Restore messages from sessionStorage so they survive page navigation
-const MSG_KEY = 'pep_messages';
+const MSG_KEY     = 'pep_messages';
+const WELCOME_KEY = 'pep_welcomed';
 
 function saveMsgs() {
   const msgs = document.getElementById('pepMsgs');
@@ -14,9 +13,6 @@ function loadMsgs() {
   if (saved) {
     document.getElementById('pepMsgs').innerHTML = saved;
     document.getElementById('pepMsgs').scrollTop = 999999;
-  } else {
-    // First ever open — show greeting
-    addMsg('pep', getGreeting());
   }
 }
 
@@ -37,13 +33,15 @@ function togglePep() {
   const panel = document.getElementById('pepPanel');
   if (pepOpen) {
     panel.classList.add('open');
-    loadMsgs();
-    if (!PEP_LOCKED) {
-      document.getElementById('pepIn').focus();
-    }
+    if (!PEP_LOCKED) document.getElementById('pepIn').focus();
   } else {
     panel.classList.remove('open');
   }
+}
+
+function openPep() {
+  pepOpen = true;
+  document.getElementById('pepPanel').classList.add('open');
 }
 
 // ── ADD MESSAGE ────────────────────────────────────────────
@@ -67,7 +65,6 @@ function sendPep() {
   addMsg('user', msg);
   input.value = '';
 
-  // Typing indicator
   const msgs = document.getElementById('pepMsgs');
   const typing = document.createElement('div');
   typing.className = 'pep-msg pep-p pep-typing';
@@ -92,15 +89,31 @@ function sendPep() {
   });
 }
 
-// ── IN-GAME POP-UP MESSAGE ─────────────────────────────────
-function showPepPopup(message) {
-  const bubble = document.getElementById('pepBubble');
-  // Create popup above bubble
-  const popup = document.createElement('div');
-  popup.className = 'pep-popup';
-  popup.textContent = message;
-  document.getElementById('pepWidget').appendChild(popup);
+// ── AUTO OPEN ──────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  loadMsgs();
 
-  // Auto-remove after 4 seconds
-  setTimeout(() => popup.remove(), 4000);
-}
+  // 1. Page-specific auto message (results, stage-up)
+  if (typeof PEP_AUTO !== 'undefined' && PEP_AUTO) {
+    setTimeout(() => {
+      openPep();
+      addMsg('pep', PEP_AUTO);
+    }, 600);
+    return;
+  }
+
+  // 2. Welcome back — only on menu, only if session has no history yet
+  if (typeof PEP_WELCOME_BACK !== 'undefined' && PEP_WELCOME_BACK) {
+    const welcomed = sessionStorage.getItem(WELCOME_KEY);
+    if (!welcomed) {
+      sessionStorage.setItem(WELCOME_KEY, '1');
+      setTimeout(() => {
+        openPep();
+        addMsg('pep', PEP_WELCOME_BACK);
+      }, 800);
+    }
+    return;
+  }
+
+  // 3. First ever open — no history, no auto — just load silently
+});

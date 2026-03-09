@@ -54,6 +54,9 @@ def menu():
 
     ctx             = context.build(data)
     ctx["progress"] = user.stage_progress(data, data["stage"])
+    ctx["pep_auto"]         = None
+    ctx["pep_welcome_back"] = f"Welcome back! Ready to explore some geography today?"
+
     return render_template("menu.html", **ctx)
 
 
@@ -258,10 +261,12 @@ def geo_results():
     stage   = data["stage"]
     mode    = get_mode()
     summary = game_session.get_summary()
-
+    
     from core.stage import can_stage_up, do_stage_up
     if can_stage_up(data, stage):
         data = do_stage_up(data)
+        data["stats"]["best_score_capitals"] = 0
+        data["stats"]["best_score_flags"]    = 0
         user.save(data)
         game_session.clear()
         flask_session["stage_up_from"] = stage
@@ -290,11 +295,38 @@ def geo_results():
     game_session.clear()
 
     ctx = context.build(data)
+
+    # Build Pep auto-open message based on performance
+    pct     = summary["pct"]
+    correct = summary["correct"]
+    total   = summary["total"]
+    flagged = summary["flagged"]
+
+    if pct == 100:
+        pep_auto = f"Perfect score! {correct}/{total} correct. You're on fire! 🔥"
+    elif pct >= 80:
+        pep_auto = f"Great game! {correct}/{total} correct. Really solid work."
+    elif pct >= 50:
+        pep_auto = f"{correct}/{total} correct. Not bad — keep at it!"
+    else:
+        pep_auto = f"Tough one — {correct}/{total} correct. Don't worry, every attempt builds knowledge."
+
+    # Append flagged questions naturally
+
+    if flagged:
+        if len(flagged) == 1:
+            pep_auto += f" I noticed you had some trouble with {flagged[0]}."
+        else:
+            countries = ", ".join(flagged)
+            pep_auto += f" A few questions gave you trouble: {countries}. Worth revisiting those."
+
     ctx.update({
         "summary":  summary,
         "mode":     mode,
         "progress": user.stage_progress(data, stage),
+        "pep_auto": pep_auto,
     })
+
     return render_template("games/results.html", **ctx)
 
 # ─── PEP CHAT ───────────────────────────────────────────────
@@ -363,11 +395,21 @@ def stage_up():
 
     data = user.load()
     ctx  = context.build(data)
+
+    stage_names = {1:"Seed",2:"Sprout",3:"Sapling",4:"Tree",5:"Ancient"}
+    pep_autos = {
+        2: "You reached Stage 2! The screen just changed — that's all you. Welcome to Sprout. 🌿",
+        3: "Stage 3 unlocked! Colors everywhere now. You've earned it. Welcome to Sapling. 🌳",
+        4: "Stage 4. The whole interface transformed. You've grown past the retro phase. Welcome to Tree. 🌲",
+        5: "Stage 5. The final form. Very few make it here. Welcome to Ancient. ✨",
+    }
     ctx.update({
         "from_stage":  from_stage,
         "to_stage":    to_stage,
         "next_url":    url_for("menu"),
+        "pep_auto":    pep_autos.get(to_stage, "You leveled up!"),
     })
+
     return render_template("stage_up.html", **ctx)
 
 

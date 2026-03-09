@@ -118,8 +118,10 @@
   </div>
 
   <script>
-  const PEP_LOCKED  = {{ 'true' if pep_locked else 'false' }};
-  const PEP_STAGE   = {{ stage }};
+    const PEP_LOCKED       = {{ 'true' if pep_locked else 'false' }};
+    const PEP_STAGE        = {{ stage }};
+    const PEP_AUTO         = {{ pep_auto | tojson if pep_auto is defined and pep_auto else 'null' }};
+    const PEP_WELCOME_BACK = {{ pep_welcome_back | tojson if pep_welcome_back is defined and pep_welcome_back else 'null' }};
   </script>
 </body>
 </html>

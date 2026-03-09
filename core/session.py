@@ -130,10 +130,11 @@ def record_answer(is_correct: bool, xp_gained: int) -> None:
         # Flag question if wrong twice
         if wrong[q_index] == 2:
             q = current_question()
-            if q and q["q"] not in session.get(FLAGGED, []):
+            if q and q["a"] not in session.get(FLAGGED, []):
                 flagged = session.get(FLAGGED, [])
-                flagged.append(q["q"])
+                flagged.append(q["a"])
                 session[FLAGGED] = flagged
+
 
     # Force Flask to recognise the session has changed
     # (needed because we're mutating values, not replacing them)
