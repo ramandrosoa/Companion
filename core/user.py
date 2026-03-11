@@ -27,8 +27,8 @@ DEFAULT_CONFIG = {
     "stats": {
         "total_steps": 0,
         "games_played": 0,
-        "best_score_capitals": 0,
-        "best_score_flags": 0,
+        "best_capitals": {"pct": 0, "time": None},
+        "best_flags":    {"pct": 0, "time": None},
         "words_learned": 0,
         "correct_answers": 0,
         "wrong_answers": 0,
@@ -131,8 +131,11 @@ def _deep_merge(defaults: dict, target: dict) -> None:
 
 
 def is_mastered(data: dict, mode: str, stage: int, answer: str) -> bool:
-    """Return True if this question has been answered correctly at least once."""
-    return answer in data["mastered"][mode][str(stage)]
+    """Return True if this question has reached the full 10 XP cap."""
+    entry = data["mastered"][mode][str(stage)].get(answer)
+    if entry is None:
+        return False
+    return entry["remaining"] == 0
 
 
 def award_xp(data: dict, mode: str, stage: int, answer: str, worth: int) -> tuple[dict, int]:
@@ -161,18 +164,10 @@ def award_xp(data: dict, mode: str, stage: int, answer: str, worth: int) -> tupl
     return data, awarded
 
 
-def master_question(data: dict, mode: str, stage: int, answer: str, worth: int = 10) -> tuple[dict, int]:
-    """
-    Mark a question as mastered and award XP.
-    Returns (updated_data, xp_awarded).
-    Kept for backwards compatibility — wraps award_xp.
-    """
-    return award_xp(data, mode, stage, answer, worth)
-
-
 def mastered_count(data: dict, mode: str, stage: int) -> int:
-    """Return how many questions have been mastered for a mode/stage."""
-    return len(data["mastered"][mode][str(stage)])
+    """Return how many questions have reached the full 10 XP cap."""
+    entries = data["mastered"][mode][str(stage)]
+    return sum(1 for e in entries.values() if e["remaining"] == 0)
 
 
 def stage_progress(data: dict, stage: int) -> dict:

@@ -11,6 +11,7 @@ When a game ends or the user quits, the session is cleared.
 """
 
 from flask import session
+import time
 
 
 # ─── SESSION KEYS ───────────────────────────────────────────
@@ -27,6 +28,8 @@ HINTS_USED  = "geo_hints_used"   # {q_index: hints_used_count}
 WRONG_COUNT = "geo_wrong_count"  # {q_index: wrong_attempts}
 FLAGGED     = "geo_flagged"      # [question strings answered wrong twice]
 MASTERED_HIT = "geo_mastered_hit"  # correct answers that were already mastered
+START_TIME   = "geo_start_time"    # unix timestamp when session started
+THEORETICAL_XP = "geo_theoretical_xp"  # XP earned as if no mastery cap
 
 # ─── START ──────────────────────────────────────────────────
 def start(mode: str, questions: list) -> None:
@@ -47,6 +50,8 @@ def start(mode: str, questions: list) -> None:
     session[WRONG_COUNT] = {}
     session[FLAGGED]     = []
     session[MASTERED_HIT] = 0
+    session[THEORETICAL_XP] = 0
+    session[START_TIME] = time.time()
 
 
 # ─── READ ───────────────────────────────────────────────────
@@ -100,7 +105,7 @@ def get_progress() -> dict:
 
 
 # ─── UPDATE ─────────────────────────────────────────────────
-def record_answer(is_correct: bool, xp_gained: int) -> None:
+def record_answer(is_correct: bool, xp_gained: int, theoretical_xp: int = 0) -> None:
     """
     Update session state after the user submits an answer.
     Call this immediately after checking if the answer is right or wrong.
@@ -109,12 +114,14 @@ def record_answer(is_correct: bool, xp_gained: int) -> None:
     The caller (app.py) determines xp_gained using user.master_question().
     """
     if is_correct:
-        session[SCORE]     = session.get(SCORE, 0) + 10
-        session[CORRECT]   = session.get(CORRECT, 0) + 1
-        session[STREAK]    = session.get(STREAK, 0) + 1
-        session[XP_EARNED] = session.get(XP_EARNED, 0) + xp_gained
+        session[SCORE]          = session.get(SCORE, 0) + 10
+        session[CORRECT]        = session.get(CORRECT, 0) + 1
+        session[STREAK]         = session.get(STREAK, 0) + 1
+        session[XP_EARNED]      = session.get(XP_EARNED, 0) + xp_gained
+        session[THEORETICAL_XP] = session.get(THEORETICAL_XP, 0) + theoretical_xp
         if xp_gained == 0:
             session[MASTERED_HIT] = session.get(MASTERED_HIT, 0) + 1
+
 
         # Update best streak if current streak is higher
         if session[STREAK] > session.get(BEST_STREAK, 0):
@@ -186,10 +193,13 @@ def get_summary() -> dict:
     correct      = session.get(CORRECT, 0)
     wrong        = total - correct
     mastered_hit = session.get(MASTERED_HIT, 0)
-    pct          = int((correct / total) * 100) if total > 0 else 0
-    
-    xp_total = session.get(XP_EARNED, 0)
-
+    xp_total       = session.get(XP_EARNED, 0)
+    theoretical_xp = session.get(THEORETICAL_XP, 0)
+    max_xp         = total * 10
+    pct            = int((theoretical_xp / max_xp) * 100) if max_xp > 0 else 0
+    start        = session.get(START_TIME, time.time())
+    duration     = int(time.time() - start)  # seconds
+   
     # Pick result emoji and title based on percentage
     if pct == 100:
         emoji, title = "🏆", "Perfect Score!"
@@ -212,6 +222,7 @@ def get_summary() -> dict:
         "flagged":          session.get(FLAGGED, []),
         "best_streak":      session.get(BEST_STREAK, 0),
         "mode":             session.get(MODE, "capitals"),
+        "duration":         duration,
     }
 
 
@@ -223,5 +234,5 @@ def clear() -> None:
     Wipe all game session data.
     Call this when the user finishes a game or quits back to menu.
     """
-    for key in [MODE, QUESTIONS, Q_INDEX, SCORE, STREAK, BEST_STREAK, CORRECT, XP_EARNED, HINTS_USED, WRONG_COUNT, FLAGGED, MASTERED_HIT]:
+    for key in [MODE, QUESTIONS, Q_INDEX, SCORE, STREAK, BEST_STREAK, CORRECT, XP_EARNED, HINTS_USED, WRONG_COUNT, FLAGGED, MASTERED_HIT, THEORETICAL_XP]:
         session.pop(key, None)

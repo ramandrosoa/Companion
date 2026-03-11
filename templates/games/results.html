@@ -15,8 +15,9 @@
     </div>
 
     {# ── NEW PERSONAL BEST BADGE ─────────────────────────── #}
+
     {% if summary.new_best %}
-    <div class="new-best">★ NEW BEST SCORE</div>
+    <div class="new-best">★ NEW BEST</div>
     {% endif %}
 
     {# ── SCORE GRID ──────────────────────────────────────── #}
@@ -37,6 +38,10 @@
         <div class="res-val">{{ summary.best_streak }}</div>
         <div class="res-lbl">BEST STREAK</div>
       </div>
+      <div class="res-cell">
+        <div class="res-val">{{ summary.duration // 60 }}:{{ '%02d' % (summary.duration % 60) }}</div>
+        <div class="res-lbl">TIME</div>
+      </div>
     </div>
 
     {# ── XP BREAKDOWN ────────────────────────────────────── #}
@@ -50,6 +55,23 @@
         <div class="stat-lbl">TOTAL</div>
       </div>
 
+    </div>
+
+    {# ── BEST RECORD ────────────────────────────────────── #}
+    <div class="section-label">BEST PERFORMANCE</div>
+    <div class="stats-row" style="margin-bottom:16px;">
+      <div class="stat-box">
+        <div class="stat-val">{{ best_record.pct }}%</div>
+        <div class="stat-lbl">BEST ACCURACY</div>
+      </div>
+      <div class="stat-box">
+        {% if best_record.time is not none %}
+        <div class="stat-val">{{ best_record.time // 60 }}:{{ '%02d' % (best_record.time % 60) }}</div>
+        {% else %}
+        <div class="stat-val">—</div>
+        {% endif %}
+        <div class="stat-lbl">BEST TIME</div>
+      </div>
     </div>
 
     {# ── MASTERY PROGRESS ────────────────────────────────── #}

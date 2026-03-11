@@ -1,0 +1,62 @@
+# ── ENVIRONMENT ─────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── PYTHON ──────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+
+# ── VIRTUAL ENVIRONMENT ─────────────────────────────────────
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# ── FLASK ────────────────────────────────────────────────────
+instance/
+.webassets-cache
+flask_session/
+
+# ── USER DATA ────────────────────────────────────────────────
+config.json
+
+# ── MACOS ────────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# ── EDITORS ─────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── LOGS ────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── TESTING ─────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/

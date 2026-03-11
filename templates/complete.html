@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Companion — Complete!{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="results">
+    <div class="res-emoji">🏆</div>
+    <div class="res-title">COMPLETE</div>
+    <div class="res-sub">EVERY STAGE · EVERY COUNTRY · MASTERED</div>
+
+    <div class="feedback show ok" style="text-align:left; margin-bottom:16px;">
+      You've reached the end.<br><br>
+      All 5 stages completed. Every capital and every flag
+      at every level — fully mastered. Very few get here.
+    </div>
+
+    <div class="section-label">FINAL STATS</div>
+    <div class="stats-row" style="margin-bottom:16px;">
+      <div class="stat-box">
+        <div class="stat-val">5/5</div>
+        <div class="stat-lbl">STAGES</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val">100</div>
+        <div class="stat-lbl">QUESTIONS</div>
+      </div>
+    </div>
+
+    <div class="res-actions">
+      <form method="GET" action="{{ url_for('menu') }}">
+        <button type="submit" class="btn-play-again">
+          BACK TO MENU
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<canvas id="confetti-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;"></canvas>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx    = canvas.getContext('2d');
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const colors = ['#a78bfa','#00d4ff','#f7c948','#39ff14','#ff6b6b','#ffffff'];
+  const pieces = [];
+  const COUNT  = 120;
+
+  for (let i = 0; i < COUNT; i++) {
+    pieces.push({
+      x:     Math.random() * canvas.width,
+      y:     Math.random() * canvas.height - canvas.height,
+      w:     Math.random() * 10 + 5,
+      h:     Math.random() * 5 + 3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speed: Math.random() * 3 + 2,
+      angle: Math.random() * 360,
+      spin:  (Math.random() - 0.5) * 4,
+      drift: (Math.random() - 0.5) * 1.5,
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.angle * Math.PI / 180);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+
+      p.y     += p.speed;
+      p.x     += p.drift;
+      p.angle += p.spin;
+
+      if (p.y > canvas.height) {
+        p.y = -10;
+        p.x = Math.random() * canvas.width;
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  window.addEventListener('resize', () => {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+})();
+</script>
+{% endblock %}

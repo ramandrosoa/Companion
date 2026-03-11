@@ -24,6 +24,8 @@ from games.geography.game import DIFFICULTY, QUESTIONS_PER_STAGE, get_xp_worth
 from pip_prompts import get_system_prompt, build_game_context, get_message
 from datetime import timedelta
 import random
+from core.stage import is_game_complete
+
 
 load_dotenv()
 groq_client = Groq(api_key=os.environ["GROQ_API_KEY"])
@@ -60,6 +62,9 @@ def menu():
     return render_template("menu.html", **ctx)
 
 
+
+
+
 # ─── STAGE 2 TINT PICKER ────────────────────────────────────
 @app.route("/set-tint/<tint_key>")
 def set_tint(tint_key):
@@ -77,9 +82,15 @@ def set_tint(tint_key):
 def geo_menu():
     """Mode selection screen — Capitals or Flags."""
     data            = user.load()
+
     ctx             = context.build(data)
-    ctx["progress"] = user.stage_progress(data, data["stage"])
+    ctx              = context.build(data)
+    ctx["progress"]  = user.stage_progress(data, data["stage"])
+    ctx["best_capitals"] = data["stats"].get("best_capitals", {"pct": 0, "time": None})
+    ctx["best_flags"]    = data["stats"].get("best_flags",    {"pct": 0, "time": None})
+
     return render_template("games/geo_menu.html", **ctx)
+
 
 
 # ─── START A NEW GAME ───────────────────────────────────────
@@ -180,7 +191,8 @@ def geo_answer():
     else:
         xp_gained = 0
 
-    game_session.record_answer(is_correct, xp_gained)
+    theoretical = get_xp_worth(stage, hints_used) if is_correct else 0
+    game_session.record_answer(is_correct, xp_gained, theoretical)
 
     user.save(data)
 
@@ -265,24 +277,36 @@ def geo_results():
     from core.stage import can_stage_up, do_stage_up
     if can_stage_up(data, stage):
         data = do_stage_up(data)
-        data["stats"]["best_score_capitals"] = 0
-        data["stats"]["best_score_flags"]    = 0
+        data["stats"]["best_capitals"] = {"pct": 0, "time": None}
+        data["stats"]["best_flags"]    = {"pct": 0, "time": None}
         user.save(data)
         game_session.clear()
         flask_session["stage_up_from"] = stage
         flask_session["stage_up_to"]   = data["stage"]
         return redirect(url_for("stage_up"))
 
+    best_key    = f"best_{mode}"
+    current_best = data["stats"].get(best_key, {"pct": 0, "time": None})
+    new_pct     = summary["pct"]
+    new_time    = summary["duration"]
 
-    best_key = f"best_score_{mode}"
-    if summary["pct"] > data["stats"].get(best_key, 0):
-        data["stats"][best_key] = summary["pct"]
+    is_new_best = (
+        new_pct > current_best["pct"] or
+        (new_pct == current_best["pct"] and current_best["time"] is not None and new_time < current_best["time"])
+    )
+
+    if is_new_best:
+        data["stats"][best_key] = {"pct": new_pct, "time": new_time}
         summary["new_best"] = True
     else:
         summary["new_best"] = False
+    
 
     data = user.mark_game_played(data)
     user.save(data)
+
+    if is_game_complete(data):
+        return redirect(url_for("game_complete"))
 
     # Set Pep game context so he knows how the session went
     flask_session["pep_game_context"] = build_game_context(
@@ -371,10 +395,11 @@ def geo_results():
             pep_auto += f" A few questions gave you trouble: {countries}. Worth revisiting those."
 
     ctx.update({
-        "summary":  summary,
-        "mode":     mode,
-        "progress": user.stage_progress(data, stage),
-        "pep_auto": pep_auto,
+        "summary":      summary,
+        "mode":         mode,
+        "progress":     user.stage_progress(data, stage),
+        "pep_auto":     pep_auto,
+        "best_record":  data["stats"].get(f"best_{mode}", {"pct": 0, "time": None}),
     })
 
     return render_template("games/results.html", **ctx)
@@ -424,8 +449,8 @@ def pep_chat():
     history.append({"role": "assistant", "content": reply})
 
     # Keep last 20 messages to avoid token overflow
-    if len(history) > 20:
-        history = history[-20:]
+    if len(history) > 10:
+        history = history[-10:]
 
     flask_session["pep_history"]      = history
     flask_session["pep_game_context"] = None  # clear after first use
@@ -462,6 +487,13 @@ def stage_up():
 
     return render_template("stage_up.html", **ctx)
 
+# ─── GAME COMPLETE ──────────────────────────────────────────
+@app.route("/complete")
+def game_complete():
+    data = user.load()
+    ctx  = context.build(data)
+    ctx["pep_auto"] = "You did it. Every single country, every stage. This is as far as the game goes — and you made it. 🏆"
+    return render_template("complete.html", **ctx)
 
 
 # ─── DEV PANEL ──────────────────────────────────────────────

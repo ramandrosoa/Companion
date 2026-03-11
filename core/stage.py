@@ -59,6 +59,18 @@ DEFAULT_TINT = "amber"
 
 DIFFICULTY = {1: "Beginner", 2: "Easy", 3: "Medium", 4: "Hard", 5: "Expert"}
 
+
+def is_game_complete(data: dict) -> bool:
+    """Return True if stage 5 and all 20 questions mastered."""
+    from core.user import mastered_count
+    if data["stage"] != 5:
+        return False
+    return (
+        mastered_count(data, "capitals", 5) >= 10 and
+        mastered_count(data, "flags", 5) >= 10
+    )
+
+
 def can_stage_up(data: dict, stage: int) -> bool:
     """
     Returns True if both stage-up conditions are met:

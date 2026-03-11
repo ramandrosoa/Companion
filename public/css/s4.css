@@ -224,14 +224,6 @@
     cursor:pointer; margin-bottom:16px; transition:all 0.2s;
   }
   .btn-submit:hover { background:linear-gradient(135deg,rgba(78,205,196,0.25),rgba(247,201,72,0.15)); }
-
-  .session-timer {
-    font-size: 1.25rem; font-weight: 700;
-    color: var(--text3); text-align: right;
-    margin-bottom: 8px;
-  }
-
-  
       /* ── PEP WIDGET ───────────────────────────────────────── */
   .pep-widget { position:fixed; bottom:24px; right:24px; z-index:1000; display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
 
@@ -263,13 +255,13 @@
 
   .pep-hd { display:flex; align-items:center; gap:10px; padding:12px 14px; border-bottom:1px solid var(--border); }
   .pep-av { font-size:1.2rem; }
-  .pep-name { font-size:0.85rem; font-weight:800; color:var(--accent); font-family:var(--font); }
-  .pep-status { font-size:0.70rem; font-weight:700; color:var(--text3); margin-top:1px; }
+  .pep-name { font-size:0.78rem; font-weight:800; color:var(--accent); font-family:var(--font); }
+  .pep-status { font-size:0.65rem; font-weight:700; color:var(--text3); margin-top:1px; }
   .pep-close { margin-left:auto; background:none; border:none; cursor:pointer; font-size:0.65rem; font-weight:700; color:var(--text3); }
   .pep-close:hover { color:var(--accent); }
 
   .pep-msgs { display:flex; flex-direction:column; gap:6px; max-height:190px; overflow-y:auto; padding:12px 14px; }
-  .pep-msg { padding:8px 10px; font-size:0.9rem; font-weight:600; line-height:1.5; border-radius:8px; }
+  .pep-msg { padding:8px 10px; font-size:0.72rem; font-weight:600; line-height:1.5; border-radius:8px; }
   .pep-p { background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:8px 8px 8px 0; color:var(--text2); }
   .pep-u { background:rgba(0,201,167,.07); border:1px solid rgba(0,201,167,.12); border-radius:8px 8px 0 8px; color:var(--text); align-self:flex-end; }
   .pep-typing { opacity:.4; }
@@ -283,7 +275,7 @@
   .pep-in:disabled { opacity:.3; cursor:default; }
   .pep-sb {
     background:rgba(0,201,167,.1); border:1px solid rgba(0,201,167,.25); border-radius:8px;
-    color:var(--accent); font-size:0.9rem; font-weight:800;
+    color:var(--accent); font-size:0.72rem; font-weight:800;
     padding:7px 12px; cursor:pointer; transition:all .2s;
   }
   .pep-sb:hover { background:rgba(0,201,167,.18); }

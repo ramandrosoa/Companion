@@ -10,7 +10,7 @@ import random
 QUESTIONS_PATH = os.path.join(os.path.dirname(__file__), "questions.json")
 
 # Questions per session per stage
-QUESTIONS_PER_STAGE = {1: 5, 2: 6, 3: 7, 4: 8, 5: 8}
+QUESTIONS_PER_STAGE = {1: 10, 2: 10, 3: 10, 4: 10, 5: 10}
 
 # Number of options shown per stage (before any hints)
 OPTIONS_PER_STAGE = {1: 2, 2: 3, 3: 4, 4: 5, 5: 0}  # 0 = type answer
@@ -41,8 +41,9 @@ def get_session_questions(mode: str, stage: int) -> list:
     """
     all_q = load_questions()
     pool = all_q[mode][str(stage)]
-    count = QUESTIONS_PER_STAGE[stage]
-    selected = random.sample(pool, min(count, len(pool)))
+    selected = pool[:]
+    random.shuffle(selected)
+
 
     n_opts = OPTIONS_PER_STAGE[stage]
     for q in selected:
@@ -80,9 +81,31 @@ def apply_hint(shuffled_opts: list, correct: str, target_count: int) -> list:
     random.shuffle(new_opts)
     return new_opts
 
+def normalize(s: str) -> str:
+    """Lowercase, strip whitespace, remove accents."""
+    import unicodedata
+    s = s.strip().lower()
+    s = unicodedata.normalize("NFD", s)
+    s = "".join(c for c in s if unicodedata.category(c) != "Mn")
+    return s
 
 def check_answer(question: dict, submitted: str) -> bool:
-    return submitted.strip() == question["a"]
+    norm_submitted = normalize(submitted)
+    norm_answer    = normalize(question["a"])
+
+    # Exact match
+    if norm_submitted == norm_answer:
+        return True
+
+    # Short form for "X and Y" answers — accept everything before " and "
+    # e.g. "bosnia" matches "bosnia and herzegovina"
+    # e.g. "sao tome" matches "sao tome and principe"
+    if " and " in norm_answer:
+        short_form = norm_answer.split(" and ")[0].strip()
+        if norm_submitted == short_form:
+            return True
+
+    return False
 
 
 def session_max_xp(stage: int) -> int:

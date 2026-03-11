@@ -19,13 +19,13 @@
      --text3:   #3a4a6a;
      --correct: #39ff14;
      --wrong:   #ff3939;
-     --font:    'VT323', monospace;
+     --font:    'Press Start 2P', monospace;
      --glow:    rgba(57,255,20,0.4);
      --radius:  0px;
      --bar-h:   6px;
      --max-w:   720px;
    }
-   html { font-size: 22px; }
+   
    * { margin:0; padding:0; box-sizing:border-box; }
    
    body {
@@ -228,12 +228,6 @@
     margin-bottom:14px; transition:all 0.1s;
   }
   .btn-submit:hover { background:var(--border2); }
-
-  .session-timer {
-    font-family: var(--font); font-size: 0.85rem;
-    color: var(--accent3); text-align: right;
-    margin-bottom: 8px; letter-spacing: 2px;
-  }
 
   /* ── PEP WIDGET ───────────────────────────────────────── */
   .pep-widget { position:fixed; bottom:24px; right:24px; z-index:1000; display:flex; flex-direction:column; align-items:flex-end; gap:10px; }

@@ -21,6 +21,7 @@
 
   {# ── DIFFICULTY TAG ──────────────────────────────────── #}
   <div class="q-tag">{{ difficulty }} · {{ mode | upper }}</div>
+  <div class="session-timer" id="sessionTimer">0:00</div>
 
   {# ── QUESTION TEXT ───────────────────────────────────── #}
   <div class="q-text">{{ question.q }}</div>
@@ -204,6 +205,10 @@
 
 {% endblock %}
 
+{# ── SESSION TIMER ───────────────────────────────────────── #}
+{% if not answered %}
+{% endif %}
+
 {% block scripts %}
 {% if answered %}
 <script>
@@ -211,6 +216,26 @@
   showXpToast({{ xp_gained }}, {{ 'true' if already_mastered else 'false' }});
   {% endif %}
   showPepPopup({{ get_message(stage, 'correct' if is_correct else 'wrong') | tojson }});
+</script>
+{% else %}
+<script>
+  // Session timer — counts up
+  (function() {
+    const el = document.getElementById('sessionTimer');
+    if (!el) return;
+    const now = Math.floor(Date.now() / 1000);
+    if (!sessionStorage.getItem('session_timer_start')) {
+      sessionStorage.setItem('session_timer_start', now);
+    }
+    function tick() {
+      const elapsed = Math.floor(Date.now() / 1000) - parseInt(sessionStorage.getItem('session_timer_start'));
+      const m = Math.floor(elapsed / 60);
+      const s = elapsed % 60;
+      el.textContent = m + ':' + String(s).padStart(2, '0');
+    }
+    tick();
+    setInterval(tick, 1000);
+  })();
 </script>
 {% endif %}
 {% endblock %}
