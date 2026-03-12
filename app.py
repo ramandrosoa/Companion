@@ -16,7 +16,7 @@ from datetime import timedelta
 import os
 from dotenv import load_dotenv
 from groq import Groq
-
+from core.user import username_exists, create_user, find_by_email
 from core import user, context
 from core import session as game_session
 from games.geography import game
@@ -45,21 +45,110 @@ def get_mode() -> str:
     """Return the current game mode from the Flask session."""
     return flask_session.get("geo_mode", "capitals")
 
+# ─── ONBOARDING GUARD ───────────────────────────────────────
+@app.before_request
+def require_username():
+    allowed = ["login_page", "signup", "static"]
+    if request.endpoint in allowed:
+        return
+    if "username" not in flask_session:
+        return redirect(url_for("login_page"))
+    # Check user still exists in Redis
+    from core.user import username_exists
+    if not username_exists(flask_session["username"]):
+        flask_session.clear()
+        return redirect(url_for("login_page"))
+
+
+# ─── LOGIN ──────────────────────────────────────────────────
+@app.route("/login", methods=["GET", "POST"])
+def login_page():
+    error = None
+    if request.method == "POST":
+        identifier = request.form.get("identifier", "").strip()
+        if not identifier:
+            error = "Please enter your username or email."
+        else:
+            from core.user import login
+            username = login(identifier)
+            if username:
+                flask_session["username"] = username
+                flask_session.permanent = True
+                return redirect(url_for("menu"))
+            else:
+                error = "No account found. Check your username or email, or sign up below."
+    return render_template("login.html", error=error,
+        theme="s1", stage=1, stage_name="Seed",
+        companion_emoji="✨", xp_bar_percent=0,
+        xp_to_next=200, max_stage=False,
+        dev_mode=False, all_stages=[],
+        stage_names={}, tint_hex=None,
+        tint_bg=None, tint_dark=None, tint_glow=None)
+
+
+# ─── SIGN UP ────────────────────────────────────────────────
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    error = None
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        email    = request.form.get("email", "").strip().lower()
+
+        if not username or not email:
+            error = "Both username and email are required."
+        elif len(username) < 3:
+            error = "Username must be at least 3 characters."
+        elif len(username) > 20:
+            error = "Username must be under 20 characters."
+        elif not username.replace("_","").replace("-","").isalnum():
+            error = "Username: only letters, numbers, - and _ allowed."
+        elif "@" not in email:
+            error = "Please enter a valid email address."
+        elif username_exists(username):
+            error = "That username is already taken."
+        elif find_by_email(email):
+            error = "An account with that email already exists."
+        else:
+            create_user(username, email)
+            flask_session["username"] = username
+            flask_session.permanent = True
+            return redirect(url_for("menu"))
+
+    return render_template("signup.html", error=error,
+        theme="s1", stage=1, stage_name="Seed",
+        companion_emoji="✨", xp_bar_percent=0,
+        xp_to_next=200, max_stage=False,
+        dev_mode=False, all_stages=[],
+        stage_names={}, tint_hex=None,
+        tint_bg=None, tint_dark=None, tint_glow=None)
+
+
+# ─── LOGOUT ─────────────────────────────────────────────────
+@app.route("/logout")
+def logout():
+    flask_session.clear()
+    return redirect(url_for("login_page"))
+
 
 # ─── MAIN MENU ──────────────────────────────────────────────
 @app.route("/")
 def menu():
     flask_session.permanent = True
-    data         = user.load()
-    data, _      = user.check_and_update_streak(data)
+    data = user.load()
+    if data is None:
+        flask_session.clear()
+        return redirect(url_for("login_page"))
+    data, _ = user.check_and_update_streak(data)
     user.save(data)
 
     ctx             = context.build(data)
     ctx["progress"] = user.stage_progress(data, data["stage"])
     ctx["pep_auto"]         = None
-    ctx["pep_welcome_back"] = f"Welcome back! Ready to explore some geography today?"
+    username = flask_session.get("username", "there")
+    ctx["pep_welcome_back"] = f"Welcome back, {username}! Ready to explore some geography today?"
 
     return render_template("menu.html", **ctx)
+
 
 
 

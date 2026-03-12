@@ -8,8 +8,8 @@ import json
 import os
 from datetime import date
 from core.stage import DEFAULT_TINT
-
-CONFIG_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "config.json")
+from core.redis_client import redis
+from flask import session as flask_session
 
 DEFAULT_CONFIG = {
     "name": None,
@@ -50,28 +50,73 @@ DEFAULT_CONFIG = {
 }
 
 
+def _get_username() -> str | None:
+    """Return current username from Flask session."""
+    return flask_session.get("username")
+
+
 def load() -> dict:
-    """Load config from disk, creating it if it doesn't exist."""
-    if not os.path.exists(CONFIG_PATH):
-        save(DEFAULT_CONFIG.copy())
+    """Load user data from Redis using username as key."""
+    username = _get_username()
+    if not username:
         return DEFAULT_CONFIG.copy()
     try:
-        with open(CONFIG_PATH, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        # Merge any missing keys from DEFAULT_CONFIG
+        raw = redis.get(f"user:{username}")
+        if raw is None:
+            return None
+  
+        data = json.loads(raw)
         _deep_merge(DEFAULT_CONFIG, data)
         return data
-    except (json.JSONDecodeError, IOError):
+    except Exception as e:
+        print(f"Redis load error: {e}")
         return DEFAULT_CONFIG.copy()
 
 
 def save(data: dict) -> None:
-    """Save config to disk."""
+    """Save user data to Redis using username as key."""
+    username = _get_username()
+    if not username:
+        return
     try:
-        with open(CONFIG_PATH, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-    except IOError as e:
-        print(f"Warning: could not save config: {e}")
+        redis.set(f"user:{username}", json.dumps(data, ensure_ascii=False))
+    except Exception as e:
+        print(f"Redis save error: {e}")
+
+
+def username_exists(username: str) -> bool:
+    """Check if a username is already taken."""
+    return redis.exists(f"user:{username}") == 1
+
+
+def create_user(username: str, email: str) -> dict:
+    """Create a new user profile and store in Redis."""
+    data = DEFAULT_CONFIG.copy()
+    data["name"]  = username
+    data["email"] = email
+    redis.set(f"user:{username}", json.dumps(data, ensure_ascii=False))
+    redis.set(f"email:{email.lower()}", username)
+    return data
+
+
+def find_by_email(email: str) -> str | None:
+    """Return username associated with email, or None."""
+    return redis.get(f"email:{email.lower()}")
+
+
+def login(identifier: str) -> str | None:
+    """
+    Accept username or email, return username if found, else None.
+    """
+    identifier = identifier.strip()
+    # Try as username first
+    if redis.exists(f"user:{identifier}"):
+        return identifier
+    # Try as email
+    username = find_by_email(identifier)
+    if username:
+        return username
+    return None
 
 
 def check_and_update_streak(data: dict) -> tuple[dict, bool]:

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Companion — Recovery{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="companion-block">
+    <span class="companion-emoji">✨</span>
+    <div>
+      <div class="companion-name">HEY, {{ username }}!</div>
+      <div class="companion-msg">One more thing before you start.</div>
+    </div>
+  </div>
+
+  <div class="section-label">RECOVERY EMAIL (OPTIONAL)</div>
+  <div class="feedback show bad" style="margin-bottom:14px;">
+    ⚠ Without an email, your progress cannot be recovered if you forget your username.
+  </div>
+
+  <form method="POST">
+    <input type="email" name="email" class="type-input"
+           placeholder="your@email.com (optional)"
+           autocomplete="off">
+    <button type="submit" class="btn-submit">SAVE & START →</button>
+  </form>
+
+  <div style="margin-top:10px;">
+    <a href="{{ url_for('onboarding_skip') }}" class="back-link">
+      skip — I understand I may lose my progress
+    </a>
+  </div>
+</div>
+{% endblock %}
