@@ -104,7 +104,8 @@
     {# ── ACTIONS ─────────────────────────────────────────── #}
     <div class="res-actions">
       <form method="GET" action="{{ url_for('geo_play', mode=mode) }}">
-        <button type="submit" class="btn-play-again">
+        <button type="submit" class="btn-play-again"
+                onclick="sessionStorage.removeItem('session_timer_start')">
           PLAY AGAIN
         </button>
       </form>

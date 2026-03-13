@@ -33,11 +33,17 @@ function togglePep() {
   const panel = document.getElementById('pepPanel');
   if (pepOpen) {
     panel.classList.add('open');
+    const btn = document.getElementById('pepBubble');
+    btn.classList.add('pep-react');
+    setTimeout(() => btn.classList.remove('pep-react'), 600);
+    loadMsgs();
     if (!PEP_LOCKED) document.getElementById('pepIn').focus();
   } else {
     panel.classList.remove('open');
   }
 }
+
+
 
 function openPep() {
   pepOpen = true;

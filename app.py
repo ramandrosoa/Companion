@@ -37,7 +37,7 @@ app.secret_key = "companion-dev-key"
 app.permanent_session_lifetime = timedelta(days = 30)
 
 # Set DEV_MODE = False when running on the real device
-DEV_MODE = True
+DEV_MODE = False
 
 
 # ─── HELPERS ────────────────────────────────────────────────
@@ -515,14 +515,14 @@ def pep_chat():
     game_context = flask_session.get("pep_game_context", None)
 
     # Build system prompt with optional game context
-    system_prompt = get_system_prompt(stage, game_context)
+    system = get_system_prompt(stage, game_context, username=flask_session.get('username'))
 
     # Call Groq
     try:
         response = groq_client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[
-                {"role": "system", "content": system_prompt},
+                {"role": "system", "content": system},
                 *history,
                 {"role": "user", "content": message}
             ],

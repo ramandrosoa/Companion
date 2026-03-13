@@ -76,7 +76,10 @@ def can_stage_up(data: dict, stage: int) -> bool:
     Returns True if both stage-up conditions are met:
     1. All 20 questions mastered (10 capitals + 10 flags)
     2. XP >= 200
+    3. Not already at max stage
     """
+    if stage >= 5:
+        return False
     from core.user import mastered_count
     capitals_done = mastered_count(data, "capitals", stage) >= 10
     flags_done    = mastered_count(data, "flags", stage) >= 10

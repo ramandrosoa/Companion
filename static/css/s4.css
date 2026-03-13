@@ -235,22 +235,37 @@
       /* ── PEP WIDGET ───────────────────────────────────────── */
   .pep-widget { position:fixed; bottom:24px; right:24px; z-index:1000; display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
 
+
+
   .pep-bubble {
-    width:52px; height:52px; border-radius:50%;
+    width:56px; height:56px; border-radius:50%;
     background:var(--card); border:2px solid var(--accent);
-    font-size:1.4rem; cursor:pointer;
+    cursor:pointer; position:relative;
     display:flex; align-items:center; justify-content:center;
-    box-shadow:0 0 16px rgba(0,201,167,.25), 0 4px 12px rgba(0,0,0,.5);
-    transition:transform .2s; position:relative;
+    box-shadow:0 0 16px rgba(224,128,48,.3), 0 4px 12px rgba(0,0,0,.5);
+    transition:transform .2s; padding:0; overflow:visible;
   }
   .pep-bubble:hover { transform:scale(1.08); }
-  .pep-bubble::after {
-    content:''; position:absolute; top:3px; right:3px;
-    width:10px; height:10px; border-radius:50%;
-    background:var(--accent); border:2px solid var(--bg);
-    animation:pep-dot 2s ease-in-out infinite;
+  .pep-bubble svg {
+    width:44px; height:44px;
+    animation: s4-pep-glow 3s ease-in-out infinite, pep-bounce 4s ease-in-out infinite;
   }
-  @keyframes pep-dot { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2);opacity:.7} }
+  @keyframes s4-pep-glow {
+    0%,100% { filter: drop-shadow(0 0 2px #e08030); }
+    50%      { filter: drop-shadow(0 0 8px #ff9944); }
+  }
+  @keyframes pep-bounce {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-3px); }
+  }
+  @keyframes pep-react {
+    0%   { transform: scale(1) rotate(0deg); }
+    25%  { transform: scale(1.2) rotate(-8deg); }
+    50%  { transform: scale(1.25) rotate(8deg); }
+    75%  { transform: scale(1.1) rotate(-4deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+  .pep-bubble.pep-react { animation: pep-react 0.6s ease !important; }
 
   .pep-panel {
     width:280px; background:var(--card); border:1px solid var(--border); border-radius:14px;
@@ -296,3 +311,50 @@
     line-height:1.5; animation:popup-in .2s ease; box-shadow:0 8px 24px rgba(0,0,0,.3);
   }
   @keyframes popup-in { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── PEP IDLE ANIMATIONS ──────────────────────────────────── */
+  @keyframes pep-tail-wag {
+    0%,100% { transform: rotate(0deg);   transform-origin: 24px 26px; }
+    25%      { transform: rotate(12deg);  transform-origin: 24px 26px; }
+    75%      { transform: rotate(-10deg); transform-origin: 24px 26px; }
+  }
+  @keyframes pep-ear-twitch {
+    0%,85%,100% { transform: translateY(0); }
+    90%          { transform: translateY(-1.5px); }
+    95%          { transform: translateY(0); }
+  }
+  @keyframes pep-blink {
+    0%,90%,100% { transform: scaleY(1);   transform-origin: center; }
+    93%          { transform: scaleY(0.1); transform-origin: center; }
+  }
+  @keyframes pep-look {
+    0%,100%  { transform: translateX(0); }
+    20%,40%  { transform: translateX(1.5px); }
+    60%,80%  { transform: translateX(-1.5px); }
+  }
+
+  .pep-bubble .pep-tail {
+    animation: pep-tail-wag 1.8s ease-in-out infinite;
+  }
+  .pep-bubble .pep-ear-l {
+    animation: pep-ear-twitch 4s ease-in-out infinite;
+  }
+  .pep-bubble .pep-ear-r {
+    animation: pep-ear-twitch 4s ease-in-out infinite 0.3s;
+  }
+  .pep-bubble .pep-eye-l,
+  .pep-bubble .pep-eye-r {
+    animation: pep-blink 5s ease-in-out infinite,
+              pep-look 8s ease-in-out infinite 1s;
+  }
+  
+  @keyframes pep-react {
+    0%   { transform: scale(1) rotate(0deg); }
+    25%  { transform: scale(1.2) rotate(-10deg); }
+    50%  { transform: scale(1.25) rotate(10deg); }
+    75%  { transform: scale(1.1) rotate(-5deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+  .pep-bubble.pep-react {
+    animation: pep-react 0.6s ease !important;
+  }
