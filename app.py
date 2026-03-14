@@ -21,7 +21,7 @@ from core import user, context
 from core import session as game_session
 from games.geography import game
 from games.geography.game import DIFFICULTY, QUESTIONS_PER_STAGE, get_xp_worth
-from pip_prompts import get_system_prompt, build_game_context, get_message
+from pip_prompts import get_system_prompt, build_game_context
 from datetime import timedelta
 import random
 from core.stage import is_game_complete
@@ -37,7 +37,7 @@ app.secret_key = "companion-dev-key"
 app.permanent_session_lifetime = timedelta(days = 30)
 
 # Set DEV_MODE = False when running on the real device
-DEV_MODE = False
+DEV_MODE = True
 
 
 # ─── HELPERS ────────────────────────────────────────────────
@@ -299,7 +299,6 @@ def geo_answer():
         "is_correct":       is_correct,
         "submitted":        submitted,
         "xp_gained":        xp_gained,
-        "get_message":      get_message,
     })
     return render_template("games/question.html", **ctx)
 

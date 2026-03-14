@@ -7,7 +7,6 @@
 
   {# ── PROGRESS PILLS ──────────────────────────────────── #}
   <div class="q-pills">
-    <div class="pill score">⬡ {{ progress.score }}</div>
     {% if progress.streak >= 3 %}
     <div class="pill streak">🔥 {{ progress.streak }}</div>
     {% endif %}
@@ -215,7 +214,6 @@
   {% if is_correct %}
   showXpToast({{ xp_gained }}, {{ 'true' if already_mastered else 'false' }});
   {% endif %}
-  showPepPopup({{ get_message(stage, 'correct' if is_correct else 'wrong') | tojson }});
 </script>
 {% else %}
 <script>
