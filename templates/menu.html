@@ -64,35 +64,51 @@
       <span class="game-arrow">›</span>
     </a>
 
+{# ── GAMES LIST ──────────────────────────────────────── #}
+    {# Future games — locked #}
+    <div class="game-row locked">
+      {% if stage <= 2 %}<div class="pixel-icon icon-lock"></div>{% else %}<span class="game-icon">📖</span>{% endif %}
+      <div>
+        <div class="game-title">HISTORY</div>
+        <div class="game-sub">Coming soon</div>
+      </div>
+      <span class="game-arrow">{% if stage <= 3 %}<div class="pixel-icon icon-lock"></div>{% else %}🔒{% endif %}</span>
+    </div>
+
+    <div class="game-row locked">
+      {% if stage <= 2 %}<div class="pixel-icon icon-microscope"></div>{% else %}<span class="game-icon">🔬</span>{% endif %}
+      <div>
+        <div class="game-title">SCIENCE</div>
+        <div class="game-sub">Coming soon</div>
+      </div>
+      <span class="game-arrow">{% if stage <= 3 %}<div class="pixel-icon icon-lock"></div>{% else %}🔒{% endif %}</span>
+    </div>
+
+    <div class="game-row locked">
+      {% if stage <= 2 %}<div class="pixel-icon icon-brain"></div>{% else %}<span class="game-icon">🧠</span>{% endif %}
+      <div>
+        <div class="game-title">MEMORY</div>
+        <div class="game-sub">Coming soon</div>
+      </div>
+      <span class="game-arrow">{% if stage <= 3 %}<div class="pixel-icon icon-lock"></div>{% else %}🔒{% endif %}</span>
+    </div>
+
+    <div class="game-row locked">
+      {% if stage <= 2 %}<div class="pixel-icon icon-lock"></div>{% else %}<span class="game-icon">🧩</span>{% endif %}
+      <div>
+        <div class="game-title">LOGIC</div>
+        <div class="game-sub">Coming soon</div>
+      </div>
+      <span class="game-arrow">{% if stage <= 3 %}<div class="pixel-icon icon-lock"></div>{% else %}🔒{% endif %}</span>
+    </div>
+    
+
+  </div>
+
+
 
 
   {# ── MASTERY PROGRESS BARS ───────────────────────────── #}
-  {# Shows how many geography questions mastered at current stage #}
-  <div class="section-label">STAGE {{ stage }} PROGRESS</div>
-  <div class="mastery-row">
-    <div class="mastery-bar-wrap">
-      <div class="mastery-label">🏛 CAPITALS</div>
-      <div class="mastery-track">
-        <div class="mastery-fill"
-             style="width: {{ (progress.capitals.mastered / progress.capitals.total * 100) | int }}%">
-        </div>
-      </div>
-      <div class="mastery-count">
-        {{ progress.capitals.mastered }}/{{ progress.capitals.total }}
-      </div>
-    </div>
-    <div class="mastery-bar-wrap">
-      <div class="mastery-label">🚩 FLAGS</div>
-      <div class="mastery-track">
-        <div class="mastery-fill"
-             style="width: {{ (progress.flags.mastered / progress.flags.total * 100) | int }}%">
-        </div>
-      </div>
-      <div class="mastery-count">
-        {{ progress.flags.mastered }}/{{ progress.flags.total }}
-      </div>
-    </div>
-  </div>
 
   {# ── STATS ───────────────────────────────────────────── #}
   <div class="section-label">STATS</div>
