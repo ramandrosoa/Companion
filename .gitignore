@@ -60,3 +60,4 @@ logs/
 .pytest_cache/
 .coverage
 htmlcov/public/
+public/
