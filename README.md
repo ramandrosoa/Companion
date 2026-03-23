@@ -13,7 +13,7 @@
 
 ## 🗺️ Overview
 
-Companion is a single-player quiz game that grows with you. The interface starts as a monochrome retro terminal and evolves into a sleek, modern UI as you progress through 5 stages. Each stage unlocks new features, harder questions, and a more expressive version of Pep — your AI companion.
+Companion is a quiz game that grows with you. The interface starts as a monochrome retro terminal and evolves into a sleek, modern UI as you progress through 5 stages. Each stage unlocks new features, harder questions, and a more expressive version of Pep — your AI companion.
 
 ---
 
@@ -22,7 +22,6 @@ Companion is a single-player quiz game that grows with you. The interface starts
 - 🌱 **5 evolving stages** — Seed → Sprout → Sapling → Tree → Ancient, each with a distinct visual identity
 - 🏛️ **Two quiz modes** — Capitals and Flags, 10 questions per session
 - 🎯 **Mastery system** — each question has a 10 XP lifetime cap; questions are fully mastered once the cap is reached
-- ⚡ **XP and streak tracking** — session XP, streak, best streak, and accuracy metrics
 - 💡 **Hint system** — available from Stage 3, with XP penalties per hint used
 - 🐱 **Pep** — an AI companion powered by Groq that knows your stage, your country list, and your quiz results; personality evolves across stages
 - 🔐 **Authentication** — login via username + email, stored in Upstash Redis
