@@ -59,4 +59,4 @@ logs/
 # ── TESTING ─────────────────────────────────────────────────
 .pytest_cache/
 .coverage
-htmlcov/
+htmlcov/public/
