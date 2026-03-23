@@ -146,7 +146,7 @@ Pep auto-opens after sessions with performance feedback, on stage-up with congra
 ### Installation
 
 ```bash
-git clone https://github.com/ramandrosoa/companion.git
+git clone https://github.com/ramandrosoa/Companion.git
 cd companion
 python -m venv .venv
 source .venv/bin/activate
