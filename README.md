@@ -15,6 +15,7 @@
 
 Companion is a quiz game that grows with you. The interface starts as a monochrome retro terminal and evolves into a sleek, modern UI as you progress through 5 stages. Each stage unlocks new features, harder questions, and a more expressive version of Pep — your AI companion.
 
+🚀 Live Demo: https://companion-plum.vercel.app/
 ---
 
 ## ✨ Features
