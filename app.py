@@ -37,7 +37,7 @@ app.secret_key = "companion-dev-key"
 app.permanent_session_lifetime = timedelta(days = 30)
 
 # Set DEV_MODE = False when running on the real device
-DEV_MODE = True
+DEV_MODE = False
 
 
 # ─── HELPERS ────────────────────────────────────────────────
