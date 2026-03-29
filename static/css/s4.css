@@ -270,14 +270,20 @@
   .pep-bubble.pep-react { animation: pep-react 0.6s ease !important; }
 
   .pep-panel {
-    width:280px; background:var(--card); border:1px solid var(--border); border-radius:14px;
+    width:400px; background:var(--card); border:1px solid var(--border); border-radius:16px;
     overflow:hidden; box-shadow:0 8px 30px rgba(0,0,0,.4);
     transform-origin:bottom right;
     transform:scale(0.95) translateY(8px); opacity:0; pointer-events:none;
     transition:all .25s cubic-bezier(.4,0,.2,1);
+    max-height: 500px; /* starting height */
   }
-  .pep-panel.open { transform:scale(1) translateY(0); opacity:1; pointer-events:all; }
-
+  .pep-panel.open { 
+    transform:scale(1) translateY(0); 
+    opacity:1; 
+    pointer-events:all;
+    max-height: 1000px; /* expanded height */
+  }
+  
   .pep-hd { display:flex; align-items:center; gap:10px; padding:12px 14px; border-bottom:1px solid var(--border); }
   .pep-av { font-size:1.2rem; }
   .pep-name { font-size:0.85rem; font-weight:800; color:var(--accent); font-family:var(--font); }
@@ -285,7 +291,7 @@
   .pep-close { margin-left:auto; background:none; border:none; cursor:pointer; font-size:0.65rem; font-weight:700; color:var(--text3); }
   .pep-close:hover { color:var(--accent); }
 
-  .pep-msgs { display:flex; flex-direction:column; gap:6px; max-height:190px; overflow-y:auto; padding:12px 14px; }
+  .pep-msgs { display:flex; flex-direction:column; gap:6px; max-height:450px; overflow-y:auto; padding:12px 14px; }
   .pep-msg { padding:8px 10px; font-size:0.9rem; font-weight:600; line-height:1.5; border-radius:8px; }
   .pep-p { background:rgba(255,255,255,.03); border:1px solid var(--border); border-radius:8px 8px 8px 0; color:var(--text2); }
   .pep-u { background:rgba(0,201,167,.07); border:1px solid rgba(0,201,167,.12); border-radius:8px 8px 0 8px; color:var(--text); align-self:flex-end; }
