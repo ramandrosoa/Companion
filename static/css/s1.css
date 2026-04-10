@@ -2,34 +2,33 @@
    STAGE 1 — SEED — MONOCHROME RETRO
    Laptop-friendly layout. Max width 720px.
    ═══════════════════════════════════════════ */
-
    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
    :root {
 
      --card:     #0d0d0d;
-     --card2:    #050505;
-     --accent:   #39ff14;
+     --card2:    #1f2123;
+     --accent:  #39ff14;
      --accent2:  #39ff14;
-     --accent3:  #1a7a00;
-     --text:     #39ff14;
-     --text2:    #228800;
-     --text3:    #154400;
+     --accent3: #1a7a00;
+     --text:    #d1d0c5;
+     --text2:    #999890;
+     --text3:    #646669;
      --correct:  #39ff14;
-     --wrong:    #553300;
-     --bg:       #000a00;
-     --bg2:      #000000;
-     --border:   #0a1a00;
-     --border2:  #061000;
+     --wrong:    #ca4754; 
+     --bg:       #2c2e31;
+     --bg2:      #232527;
+     --border:   #3a3c40;
+     --border2:  #303235;
      --xp-fill:  #999999;
      --shadow:   0 4px 20px rgba(0,0,0,0.8);
      --font:     'VT323', monospace;
      --glow:     rgba(57,255,20,0.4);
-     --radius:   0px;
+     --radius:   4px;
      --max-w:    720px;
      --bar-h:    6px;
    }
-   html { font-size: 22px; }
+   html { font-size: 24px; }
    html, body { overflow-x: hidden; }
    * { margin:0; padding:0; box-sizing:border-box; }
    

@@ -49,9 +49,9 @@ COMPANION_GREETINGS = {
 
 # Colors available for Stage 2 tint selection
 TINT_COLORS = {
-    "amber": {"hex": "#ffb300", "bg": "#0a0800", "dark": "#1a1200", "glow": "rgba(255,179,0,0.5)"},
-    "green": {"hex": "#39ff14", "bg": "#000a00", "dark": "#001200", "glow": "rgba(57,255,20,0.5)"},
-    "blue":  {"hex": "#39b4ff", "bg": "#00080a", "dark": "#001020", "glow": "rgba(57,180,255,0.5)"},
+    "amber": {"hex": "#ffb300", "bg": "#2c2e31", "dark": "#232527", "glow": "rgba(255,179,0,0.5)"},
+    "green": {"hex": "#39ff14", "bg": "#2c2e31", "dark": "#232527", "glow": "rgba(57,255,20,0.5)"},
+    "blue":  {"hex": "#39b4ff", "bg": " #2c2e31", "dark": "#232527", "glow": "rgba(57,180,255,0.5)"},
    # "red":   {"hex": "#ff3939", "bg": "#0a0000", "dark": "#1a0000", "glow": "rgba(255,57,57,0.5)"},
 }
 

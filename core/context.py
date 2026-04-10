@@ -51,7 +51,7 @@ def build(data: dict) -> dict:
         "tint_hex":       tint["hex"],
         "tint_bg":        tint["bg"],
         "tint_dark":      tint["dark"],
-        "tint_glow":      tint["glow"],
+       # "tint_glow":      tint["glow"],
 
         # ── Companion ────────────────────────────────────────
         # Flattened so templates use {{ companion_emoji }} directly

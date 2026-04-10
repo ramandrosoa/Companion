@@ -6,27 +6,24 @@
    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
    :root {
-     --tint:      #ffb300;
-     --tint-bg:   #0a0800;
-     --tint-dark: #1a1200;
+     --tint:      #898989;
      --tint-glow: rgba(255,179,0,0.4);
-     --bg:        var(--tint-bg);
-     --bg2:       #000000;
-     --card:      var(--tint-dark);
-     --card2:     #050400;
-     --border:    var(--tint-dark);
-     --border2:   #0f0c00;
+     --bg:       #2c2e31;   
+     --bg2:      #232527;
+     --card:     #0d0d0d;
+     --card2:    #1f2123;
+     --border:    #3a3c40;
+     --border2:  #303235;
      --accent:    var(--tint);
      --accent2:   var(--tint);
-     --accent3:   #665500;
+     --accent3:  #707070; 
      --text:      var(--tint);
-     --text2:     #886600;
-     --text3:     #975402;
+     --text2:    #999890;
+     --text3:     #646669;
      --correct:   var(--tint);
-     --wrong:     #d90101;
+     --wrong:     #ca4754;
      --font:      'VT323', monospace;
-     --glow:      var(--tint-glow);     
-     --radius:    0px;
+     --radius:    4px;
      --bar-h:     6px;
      --max-w:     720px;
      
@@ -82,7 +79,7 @@
    
    .card {
      width:100%; max-width:var(--max-w); background:var(--card2); border:1px solid var(--border);
-     padding:24px; box-shadow:0 4px 20px rgba(0,0,0,0.8), 0 0 20px var(--tint-glow); position:relative;
+     padding:24px; box-shadow:0 4px 20px rgba(0,0,0,0.8) ; position:relative;
    }
    .card::before {
      content:''; position:absolute; top:0;left:0;right:0;height:1px;
