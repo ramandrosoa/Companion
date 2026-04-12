@@ -129,6 +129,11 @@ def logout():
     flask_session.clear()
     return redirect(url_for("login_page"))
 
+# ─── PING ───────────────────────────────────────────────────
+@app.route("/ping")
+def ping():
+    return "ok", 200
+
 
 # ─── MAIN MENU ──────────────────────────────────────────────
 @app.route("/")
@@ -632,6 +637,8 @@ def dev_set_stage(stage):
     data["xp"]    = 0
     user.save(data)
     return redirect(url_for("dev"))
+
+
 
 
 # ─── RUN ────────────────────────────────────────────────────
