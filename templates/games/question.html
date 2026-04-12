@@ -1,239 +1,300 @@
 {% extends "base.html" %}
-
 {% block title %}Companion — {{ mode | title }}{% endblock %}
 
 {% block content %}
-<div class="card">
+<div class="card" id="question-card">
 
   {# ── PROGRESS PILLS ──────────────────────────────────── #}
   <div class="q-pills">
-    {% if progress.streak >= 3 %}
-    <div class="pill streak">🔥 {{ progress.streak }}</div>
-    {% endif %}
-    <div class="pill prog">{{ progress.current }}/{{ progress.total }}</div>
+    <div class="pill streak" id="pill-streak" style="display:none">🔥 <span id="streak-val">0</span></div>
+    <div class="pill prog"><span id="progress-val">{{ progress.current }}</span>/{{ progress.total }}</div>
   </div>
 
-  {# ── FLAG (flags mode only) ──────────────────────────── #}
-  {% if mode == "flags" and question.flag %}
-  <span class="q-flag">{{ question.flag }}</span>
-  {% endif %}
+  {# ── FLAG ────────────────────────────────────────────── #}
+  <span class="q-flag" id="q-flag">
+    {% if mode == "flags" and question.flag %}{{ question.flag }}{% endif %}
+  </span>
 
-  {# ── DIFFICULTY TAG ──────────────────────────────────── #}
-  <div class="q-tag">{{ difficulty }} · {{ mode | upper }}</div>
+  {# ── TAGS ────────────────────────────────────────────── #}
+  <div class="q-tag" id="q-tag">{{ difficulty }} · {{ mode | upper }}</div>
   <div class="session-timer" id="sessionTimer">0:00</div>
 
   {# ── QUESTION TEXT ───────────────────────────────────── #}
-  <div class="q-text">{{ question.q }}</div>
-  {# ── STAGE 5 — TYPE ANSWER ──────────────────────────── #}
-  {% if stage == 5 and not answered %}
+  <div class="q-text" id="q-text">{{ question.q }}</div>
 
-    {% if hints_used == 0 %}
-    {# No hints yet — text input only #}
-    <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
-      <input type="text"
-             name="answer"
-             class="type-input"
-             placeholder="Type your answer..."
-             autocomplete="off"
-             autofocus>
-      <button type="submit" class="btn-submit">SUBMIT · 10 XP</button>
-    </form>
-    <div class="hint-btns">
-      <form method="POST" action="{{ url_for('geo_hint') }}">
-        <button type="submit" class="hint-btn">💡 GET 4 OPTIONS · 7 XP</button>
-      </form>
+  {# ── ANSWER AREA ─────────────────────────────────────── #}
+  <div id="answer-area">
+    {% if stage == 5 %}
+    <div id="s5-area">
+      <div id="type-area">
+        <input type="text" id="type-input" class="type-input"
+               placeholder="Type your answer..." autocomplete="off" autofocus>
+        <button class="btn-submit" onclick="submitAnswer()">SUBMIT · 10 XP</button>
+      </div>
+      <div class="hint-btns" id="hint-btns-s5">
+        <button class="hint-btn" id="hint-s5-0" onclick="useHint()">💡 GET 4 OPTIONS · 7 XP</button>
+      </div>
+      <div class="opts-grid" id="opts-grid" style="display:none"></div>
     </div>
-
-    {% elif hints_used == 1 %}
-    {# 4 options shown, can reduce to 3 #}
-    <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
-      <div class="opts-grid">
-        {% for opt in question.shuffled_opts %}
-        {% set letter = ["A","B","C","D","E"][loop.index0] %}
-        <button type="submit" name="answer" value="{{ opt }}" class="opt">
-          <span class="opt-ltr">{{ letter }}</span>{{ opt }}
-        </button>
-        {% endfor %}
-      </div>
-    </form>
-    <div class="hint-btns">
-      <button type="button" class="hint-btn dim" disabled>💡 4 OPTIONS · USED</button>
-      <form method="POST" action="{{ url_for('geo_hint') }}">
-        <button type="submit" class="hint-btn">💡 GET 3 OPTIONS · 4 XP</button>
-      </form>
-    </div>
-
-    {% elif hints_used == 2 %}
-    {# 3 options shown, can reduce to 2 #}
-    <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
-      <div class="opts-grid">
-        {% for opt in question.shuffled_opts %}
-        {% set letter = ["A","B","C","D","E"][loop.index0] %}
-        <button type="submit" name="answer" value="{{ opt }}" class="opt">
-          <span class="opt-ltr">{{ letter }}</span>{{ opt }}
-        </button>
-        {% endfor %}
-      </div>
-    </form>
-    <div class="hint-btns">
-      <button type="button" class="hint-btn dim" disabled>💡 4 OPTIONS · USED</button>
-      <button type="button" class="hint-btn dim" disabled>💡 3 OPTIONS · USED</button>
-      <form method="POST" action="{{ url_for('geo_hint') }}">
-        <button type="submit" class="hint-btn">💡 GET 2 OPTIONS · 1 XP</button>
-      </form>
-    </div>
-
-    {% elif hints_used >= 3 %}
-    {# 2 options shown, no more hints #}
-    <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
-      <div class="opts-grid">
-        {% for opt in question.shuffled_opts %}
-        {% set letter = ["A","B","C","D","E"][loop.index0] %}
-        <button type="submit" name="answer" value="{{ opt }}" class="opt">
-          <span class="opt-ltr">{{ letter }}</span>{{ opt }}
-        </button>
-        {% endfor %}
-      </div>
-    </form>
-    <div class="hint-btns">
-      <button type="button" class="hint-btn dim" disabled>💡 ALL HINTS USED</button>
-    </div>
-    {% endif %}
-
-  {# ── STAGES 1-4 — MULTIPLE CHOICE ───────────────────── #}
-  {% else %}
-
-    <form method="POST" action="{{ url_for('geo_answer') }}" id="answer-form">
-      <div class="opts-grid">
-        {% for opt in question.shuffled_opts %}
-        {% set letter = ["A","B","C","D","E"][loop.index0] %}
-        <button type="submit"
-                name="answer"
-                value="{{ opt }}"
-                class="opt
-                  {%- if answered %}
-                    {%- if opt == question.a %} correct
-                    {%- elif opt == submitted %} wrong
-                    {%- endif %}
-                  {%- endif %}"
-                {% if answered %}disabled{% endif %}>
-          <span class="opt-ltr">{{ letter }}</span>
-          {{ opt }}
-        </button>
-        {% endfor %}
-      </div>
-    </form>
-
-    {# ── HINT BUTTONS (S3 and S4 only, before answering) ── #}
-    {% if not answered %}
-      {% if stage == 3 and hints_used == 0 %}
-      <div class="hint-btns">
-        <form method="POST" action="{{ url_for('geo_hint') }}">
-          <button type="submit" class="hint-btn">— REDUCE TO 2 OPTIONS · 5 XP</button>
-        </form>
-      </div>
-      {% elif stage == 4 %}
-      <div class="hint-btns">
-        {% if hints_used == 0 %}
-        <form method="POST" action="{{ url_for('geo_hint') }}">
-          <button type="submit" class="hint-btn">REDUCE TO 3 OPTIONS · 6 XP</button>
-        </form>
-        <button type="button" class="hint-btn dim" disabled>REDUCE TO 2 OPTIONS · 2 XP</button>
-        {% elif hints_used == 1 %}
-        <button type="button" class="hint-btn dim" disabled>REDUCE TO 3 OPTIONS · USED</button>
-        <form method="POST" action="{{ url_for('geo_hint') }}">
-          <button type="submit" class="hint-btn">REDUCE TO 2 OPTIONS · 2 XP</button>
-        </form>
-        {% elif hints_used >= 2 %}
-        <button type="button" class="hint-btn dim" disabled>REDUCE TO 3 OPTIONS · USED</button>
-        <button type="button" class="hint-btn dim" disabled>REDUCE TO 2 OPTIONS · USED</button>
-        {% endif %}
-      </div>
-      {% endif %}
-    {% endif %}
-
-  {% endif %}
-  {# ── FEEDBACK BLOCK ──────────────────────────────────── #}
-  {# Only visible after an answer has been submitted         #}
-  {% if answered %}
-
-    {% if is_correct %}
-    <div class="feedback show ok">
-      ✓ CORRECT
-      {% if xp_gained > 0 %}
-       · +{{ xp_gained }} XP
-      {% elif already_mastered %}
-       · Already mastered
-      {% endif %}
-      {% if feedback %}
-      <br><br>{{ feedback }}
-      {% endif %}
-    </div>
-
     {% else %}
-    <div class="feedback show bad">
-      ✗ WRONG · Correct answer: {{ question.a }}
-      {% if feedback %}
-      <br><br>{{ feedback }}
-      {% endif %}
+    <div class="opts-grid" id="opts-grid">
+      {% for opt in question.shuffled_opts %}
+      {% set letter = ["A","B","C","D","E"][loop.index0] %}
+      <button class="opt" onclick="submitAnswer('{{ opt }}')">
+        <span class="opt-ltr">{{ letter }}</span>{{ opt }}
+      </button>
+      {% endfor %}
+    </div>
+    {% if stage == 3 %}
+    <div class="hint-btns" id="hint-btns">
+      <button class="hint-btn" id="hint-s3" onclick="useHint()">— REDUCE TO 2 OPTIONS · 5 XP</button>
+    </div>
+    {% elif stage == 4 %}
+    <div class="hint-btns" id="hint-btns">
+      <button class="hint-btn" id="hint-s4-0" onclick="useHint()">REDUCE TO 3 OPTIONS · 6 XP</button>
+      <button class="hint-btn dim" id="hint-s4-1" disabled>REDUCE TO 2 OPTIONS · 2 XP</button>
     </div>
     {% endif %}
+    {% endif %}
+  </div>
 
-    {# Next button — submits POST to advance to next question #}
-    <form method="POST" action="{{ url_for('geo_next') }}">
-      <button type="submit" class="btn-next show">
-        {% if progress.current == progress.total %}
-          SEE RESULTS →
-        {% else %}
-          NEXT →
-        {% endif %}
-      </button>
-    </form>
+  {# ── FEEDBACK ─────────────────────────────────────────── #}
+  <div class="feedback" id="feedback"></div>
 
-  {% endif %}
+  {# ── NEXT BUTTON ──────────────────────────────────────── #}
+  <button class="btn-next" id="btn-next" onclick="nextQuestion()">NEXT →</button>
 
 </div>
 
-{# ── BACK LINK ───────────────────────────────────────────── #}
-{# Only shown before answering so user can't quit mid-feedback #}
-{% if not answered %}
-<div class="back-wrap">
+<div class="back-wrap" id="quit-wrap">
   <a href="{{ url_for('geo_menu') }}" class="back-link">← QUIT</a>
 </div>
-{% endif %}
-
 {% endblock %}
 
-{# ── SESSION TIMER ───────────────────────────────────────── #}
-{% if not answered %}
-{% endif %}
-
 {% block scripts %}
-{% if answered %}
 <script>
-  {% if is_correct %}
-  showXpToast({{ xp_gained }}, {{ 'true' if already_mastered else 'false' }});
-  {% endif %}
-</script>
-{% else %}
-<script>
-  // Session timer — counts up
-  (function() {
-    const el = document.getElementById('sessionTimer');
-    if (!el) return;
-    const now = Math.floor(Date.now() / 1000);
-    if (!sessionStorage.getItem('session_timer_start')) {
-      sessionStorage.setItem('session_timer_start', now);
+const STAGE    = {{ stage }};
+const MODE     = "{{ mode }}";
+const TOTAL    = {{ progress.total }};
+let   current  = {{ progress.current }};
+let   hintsUsed = {{ hints_used }};
+let   answered  = false;
+let   streak    = {{ progress.streak }};
+
+// ── TIMER ─────────────────────────────────────────────────
+(function() {
+  const el = document.getElementById('sessionTimer');
+  if (!el) return;
+  const now = Math.floor(Date.now() / 1000);
+  if (!sessionStorage.getItem('session_timer_start')) {
+    sessionStorage.setItem('session_timer_start', now);
+  }
+  function tick() {
+    const elapsed = Math.floor(Date.now() / 1000) - parseInt(sessionStorage.getItem('session_timer_start'));
+    const m = Math.floor(elapsed / 60);
+    const s = elapsed % 60;
+    el.textContent = m + ':' + String(s).padStart(2, '0');
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
+// ── UPDATE STREAK PILL ────────────────────────────────────
+function updateStreak(s) {
+  streak = s;
+  const pill = document.getElementById('pill-streak');
+  if (streak >= 3) {
+    pill.style.display = '';
+    document.getElementById('streak-val').textContent = streak;
+  } else {
+    pill.style.display = 'none';
+  }
+}
+updateStreak(streak);
+
+// ── SUBMIT ANSWER ─────────────────────────────────────────
+function submitAnswer(answer) {
+  if (answered) return;
+
+  // For stage 5 type input
+  if (STAGE === 5 && answer === undefined) {
+    answer = document.getElementById('type-input').value.trim();
+    if (!answer) return;
+  }
+
+  answered = true;
+
+  // Disable all options
+  document.querySelectorAll('.opt').forEach(b => b.disabled = true);
+  if (document.getElementById('type-input')) {
+    document.getElementById('type-input').disabled = true;
+  }
+  document.querySelectorAll('.hint-btn').forEach(b => b.disabled = true);
+  document.getElementById('quit-wrap').style.display = 'none';
+
+  fetch('/geo/answer/json', {
+    method:  'POST',
+    headers: {'Content-Type': 'application/json'},
+    body:    JSON.stringify({answer})
+  })
+  .then(r => r.json())
+  .then(data => {
+    // Highlight correct/wrong options
+    document.querySelectorAll('.opt').forEach(btn => {
+      const val = btn.textContent.trim().replace(/^[A-E]\s*/, '');
+      if (val === data.correct_answer) btn.classList.add('correct');
+      else if (val === answer)         btn.classList.add('wrong');
+    });
+
+    // Feedback
+    const fb = document.getElementById('feedback');
+    if (data.is_correct) {
+      let msg = '✓ CORRECT';
+      if (data.xp_gained > 0)        msg += ` · +${data.xp_gained} XP`;
+      else if (data.already_mastered) msg += ' · Already mastered';
+      if (data.feedback)              msg += `<br><br>${data.feedback}`;
+      fb.className = 'feedback show ok';
+      fb.innerHTML = msg;
+      showXpToast(data.xp_gained, data.already_mastered);
+    } else {
+      let msg = `✗ WRONG · Correct answer: ${data.correct_answer}`;
+      if (data.feedback) msg += `<br><br>${data.feedback}`;
+      fb.className = 'feedback show bad';
+      fb.innerHTML = msg;
     }
-    function tick() {
-      const elapsed = Math.floor(Date.now() / 1000) - parseInt(sessionStorage.getItem('session_timer_start'));
-      const m = Math.floor(elapsed / 60);
-      const s = elapsed % 60;
-      el.textContent = m + ':' + String(s).padStart(2, '0');
+
+    // Update progress
+    current = data.progress.current;
+    updateStreak(data.progress.streak);
+    document.getElementById('progress-val').textContent = current;
+
+    // Next button
+    const btn = document.getElementById('btn-next');
+    btn.classList.add('show');
+    btn.textContent = data.finished ? 'SEE RESULTS →' : 'NEXT →';
+
+    if (data.finished) {
+      btn.onclick = () => { window.location.href = '/geo/results'; };
     }
-    tick();
-    setInterval(tick, 1000);
-  })();
+  })
+  .catch(err => console.error('Answer error:', err));
+}
+
+// ── NEXT QUESTION ─────────────────────────────────────────
+function nextQuestion() {
+  fetch('/geo/next/json', { method: 'POST' })
+  .then(r => r.json())
+  .then(data => {
+    if (data.finished) {
+      window.location.href = '/geo/results';
+      return;
+    }
+
+    // Reset state
+    answered  = false;
+    hintsUsed = data.hints_used;
+
+    // Update question text and flag
+    document.getElementById('q-text').textContent = data.question.q;
+    const flagEl = document.getElementById('q-flag');
+    flagEl.textContent = (data.mode === 'flags' && data.question.flag) ? data.question.flag : '';
+
+    // Update progress
+    current = data.progress.current;
+    document.getElementById('progress-val').textContent = current;
+    updateStreak(data.progress.streak);
+
+    // Reset feedback and next button
+    const fb = document.getElementById('feedback');
+    fb.className = 'feedback';
+    fb.innerHTML = '';
+    const btn = document.getElementById('btn-next');
+    btn.classList.remove('show');
+    btn.onclick = nextQuestion;
+
+    // Show quit link again
+    document.getElementById('quit-wrap').style.display = '';
+
+    // Rebuild options
+    renderOptions(data.question.opts, data.mode);
+    renderHints(hintsUsed);
+  })
+  .catch(err => console.error('Next error:', err));
+}
+
+// ── RENDER OPTIONS ────────────────────────────────────────
+function renderOptions(opts, mode) {
+  if (STAGE === 5) {
+    // Reset S5 to type input
+    document.getElementById('type-area').style.display = '';
+    const grid = document.getElementById('opts-grid');
+    grid.style.display = 'none';
+    grid.innerHTML = '';
+    const input = document.getElementById('type-input');
+    if (input) { input.value = ''; input.disabled = false; input.focus(); }
+    return;
+  }
+
+  const letters = ['A','B','C','D','E'];
+  const grid = document.getElementById('opts-grid');
+  grid.innerHTML = '';
+  opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.innerHTML = `<span class="opt-ltr">${letters[i]}</span>${opt}`;
+    btn.onclick = () => submitAnswer(opt);
+    grid.appendChild(btn);
+  });
+}
+
+// ── RENDER HINTS ──────────────────────────────────────────
+function renderHints(used) {
+  if (STAGE === 3) {
+    const h = document.getElementById('hint-s3');
+    if (h) { h.disabled = used > 0; h.classList.toggle('dim', used > 0); }
+  } else if (STAGE === 4) {
+    const h0 = document.getElementById('hint-s4-0');
+    const h1 = document.getElementById('hint-s4-1');
+    if (h0) { h0.disabled = used >= 1; h0.classList.toggle('dim', used >= 1); }
+    if (h1) { h1.disabled = used < 1 || used >= 2; h1.classList.toggle('dim', used < 1 || used >= 2); }
+  } else if (STAGE === 5) {
+    const h = document.getElementById('hint-s5-0');
+    if (h) { h.disabled = used > 0; h.classList.toggle('dim', used > 0); }
+  }
+}
+
+// ── USE HINT ──────────────────────────────────────────────
+function useHint() {
+  fetch('/geo/hint/json', { method: 'POST' })
+  .then(r => r.json())
+  .then(data => {
+    hintsUsed = data.hints_used;
+
+    if (STAGE === 5) {
+      if (hintsUsed === 1) {
+        // Switch from type input to options grid
+        document.getElementById('type-area').style.display = 'none';
+        const grid = document.getElementById('opts-grid');
+        grid.style.display = '';
+        renderOptions(data.opts, MODE);
+        // Update hint button
+        const h = document.getElementById('hint-s5-0');
+        if (h) {
+          h.textContent = '💡 GET 3 OPTIONS · 4 XP';
+          h.onclick = useHint;
+          h.disabled = false;
+          h.classList.remove('dim');
+        }
+      } else {
+        renderOptions(data.opts, MODE);
+        renderHints(hintsUsed);
+      }
+    } else {
+      renderOptions(data.opts, MODE);
+      renderHints(hintsUsed);
+    }
+  })
+  .catch(err => console.error('Hint error:', err));
+}
 </script>
-{% endif %}
 {% endblock %}

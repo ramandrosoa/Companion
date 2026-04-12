@@ -25,7 +25,7 @@ from pip_prompts import get_system_prompt, build_game_context
 from datetime import timedelta
 import random
 from core.stage import is_game_complete
-
+from flask import jsonify
 
 load_dotenv()
 groq_client = Groq(api_key=os.environ["GROQ_API_KEY"])
@@ -354,6 +354,111 @@ def geo_hint():
         flask_session.modified = True
 
     return redirect(url_for("geo_question"))
+
+
+# ─── AJAX — SUBMIT ANSWER ───────────────────────────────────
+@app.route("/geo/answer/json", methods=["POST"])
+def geo_answer_json():
+    if not game_session.is_active():
+        return jsonify({"error": "no session"}), 400
+
+    data      = user.load()
+    stage     = data["stage"]
+    mode      = get_mode()
+    question  = game_session.current_question()
+    submitted = request.json.get("answer", "")
+
+    is_correct = game.check_answer(question, submitted)
+    q_index    = game_session.get_progress()["current"] - 1
+    hints_used = game_session.get_hints_used(q_index)
+    worth      = get_xp_worth(stage, hints_used)
+
+    if is_correct:
+        data, xp_gained = user.award_xp(data, mode, stage, question["a"], worth)
+    else:
+        xp_gained = 0
+
+    theoretical = get_xp_worth(stage, hints_used) if is_correct else 0
+    game_session.record_answer(is_correct, xp_gained, theoretical)
+    user.save(data)
+
+    progress        = game_session.get_progress()
+    already_mastered = xp_gained == 0 and is_correct
+
+    return jsonify({
+        "is_correct":       is_correct,
+        "correct_answer":   question["a"],
+        "xp_gained":        xp_gained,
+        "already_mastered": already_mastered,
+        "feedback":         question.get("fact", ""),
+        "progress":         progress,
+        "submitted":        submitted,
+        "finished":         game_session.is_finished(),
+    })
+
+
+# ─── AJAX — NEXT QUESTION ────────────────────────────────────
+@app.route("/geo/next/json", methods=["POST"])
+def geo_next_json():
+    if not game_session.is_active():
+        return jsonify({"error": "no session"}), 400
+
+    game_session.advance()
+
+    if game_session.is_finished():
+        return jsonify({"finished": True})
+
+    data     = user.load()
+    stage    = data["stage"]
+    mode     = get_mode()
+    question = game_session.current_question()
+    progress = game_session.get_progress()
+    q_index  = game_session.get_progress()["current"] - 1
+    hints_used = game_session.get_hints_used(q_index)
+    already_mastered = user.is_mastered(data, mode, stage, question["a"])
+
+    return jsonify({
+        "finished":         False,
+        "question":         {"q": question["q"], "a": question["a"],
+                             "flag": question.get("flag", ""),
+                             "opts": question.get("shuffled_opts", [])},
+        "progress":         progress,
+        "hints_used":       hints_used,
+        "already_mastered": already_mastered,
+        "mode":             mode,
+    })
+
+
+# ─── AJAX — HINT ─────────────────────────────────────────────
+@app.route("/geo/hint/json", methods=["POST"])
+def geo_hint_json():
+    if not game_session.is_active():
+        return jsonify({"error": "no session"}), 400
+
+    data     = user.load()
+    stage    = data["stage"]
+    q_index  = game_session.get_progress()["current"] - 1
+    hints_used = game_session.use_hint(q_index)
+    question = game_session.current_question()
+
+    from games.geography.game import apply_hint
+    targets = {3: [2], 4: [3, 2], 5: [4, 3, 2]}
+    target_counts = targets.get(stage, [])
+
+    new_opts = question.get("shuffled_opts", [])
+    if hints_used <= len(target_counts):
+        target = target_counts[hints_used - 1]
+        current_opts = question.get("all_opts", question["shuffled_opts"]) if hints_used == 1 else question["shuffled_opts"]
+        new_opts = apply_hint(current_opts, question["a"], target)
+        questions = flask_session["geo_questions"]
+        questions[q_index]["shuffled_opts"] = new_opts
+        flask_session["geo_questions"] = questions
+        flask_session.modified = True
+
+    return jsonify({
+        "hints_used": hints_used,
+        "opts":       new_opts,
+    })
     
 # ─── RESULTS ────────────────────────────────────────────────
 @app.route("/geo/results")
