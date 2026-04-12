@@ -12,7 +12,7 @@ from core.stage import (
 
 # Set this to True to show the dev switcher in templates
 # Mirrors the DEV_MODE flag in app.py
-DEV_MODE = False
+DEV_MODE = True
 
 
 def build(data: dict) -> dict:

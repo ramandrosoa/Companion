@@ -363,14 +363,14 @@
   .pep-ir { display:flex; gap:6px; padding:10px 14px 12px; border-top:1px solid rgba(167,139,250,.06); }
   .pep-in {
     flex:1; background:rgba(255,255,255,.03); border:1px solid rgba(167,139,250,.1); border-radius:10px;
-    color:#e8eaf8; font-size:0.72rem; font-weight:600; padding:7px 10px; outline:none;
+    color:#e8eaf8; font-size:0.9rem; font-weight:100; padding:7px 10px; outline:none;
   }
   .pep-in:focus { border-color:rgba(167,139,250,.4); box-shadow:0 0 10px rgba(167,139,250,.1); }
   .pep-in:disabled { opacity:.3; cursor:default; }
   .pep-sb {
-    background:rgba(167,139,250,.1); border:1px solid rgba(167,139,250,.25); border-radius:10px;
-    color:var(--accent); font-size:0.9rem; font-weight:800;
-    padding:7px 12px; cursor:pointer; transition:all .2s;
+    background:var(--bg); border:1px solid var(--accent);
+    color:var(--accent); font-family:var(--font); font-size:0.9rem;
+    padding:7px 12px; cursor:pointer; transition:all .1s;
   }
   .pep-sb:hover { background:rgba(167,139,250,.18); }
   .pep-sb:disabled { opacity:.3; cursor:default; }
