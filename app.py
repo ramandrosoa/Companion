@@ -48,7 +48,7 @@ def get_mode() -> str:
 # ─── ONBOARDING GUARD ───────────────────────────────────────
 @app.before_request
 def require_username():
-    allowed = ["login_page", "signup", "static"]
+    allowed = ["login_page", "signup", "static", "ping"]
     if request.endpoint in allowed:
         return
     if "username" not in flask_session:
