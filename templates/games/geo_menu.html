@@ -14,6 +14,22 @@
     </div>
   </div>
 
+  {# ── STAGE 2 TINT PICKER ─────────────────────────────── #}
+  {# Only shown at stage 2 so the user can pick their color #}
+  {% if stage == 2 %}
+  <div class="tint-picker">
+    <span class="tint-label">COLOR</span>
+    <div class="tint-swatches">
+      {% for key, color in tint_colors.items() %}
+      <a href="{{ url_for('set_tint', tint_key=key) }}"
+         class="tint-swatch {% if key == tint %}active{% endif %}"
+         style="background: {{ color.hex }}"
+         title="{{ key }}"></a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+  
   {# ── MODE SELECTOR ───────────────────────────────────── #}
   <div class="mode-title">SELECT MODE</div>
   <div class="mode-grid">
@@ -83,9 +99,6 @@
     </div>
   </div>
 
-{# ── BACK LINK ───────────────────────────────────────────── #}
-<div class="back-wrap">
-  <a href="{{ url_for('menu') }}" class="back-link">← BACK</a>
-</div>
+
 
 {% endblock %}

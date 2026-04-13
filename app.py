@@ -74,7 +74,7 @@ def login_page():
             if username:
                 flask_session["username"] = username
                 flask_session.permanent = True
-                return redirect(url_for("menu"))
+                return redirect(url_for("geo_menu"))
             else:
                 error = "No account found. Check your username or email, or sign up below."
     return render_template("login.html", error=error,
@@ -112,7 +112,7 @@ def signup():
             create_user(username, email)
             flask_session["username"] = username
             flask_session.permanent = True
-            return redirect(url_for("menu"))
+            return redirect(url_for("geo_menu"))
 
     return render_template("signup.html", error=error,
         theme="s1", stage=1, stage_name="Seed",
@@ -168,18 +168,27 @@ def set_tint(tint_key):
     if tint_key in TINT_COLORS:
         data["tint"] = tint_key
         user.save(data)
-    return redirect(url_for("menu"))
+    return redirect(url_for("geo_menu"))
 
 
 # ─── GEOGRAPHY MENU ─────────────────────────────────────────
 @app.route("/geo")
 def geo_menu():
     """Mode selection screen — Capitals or Flags."""
-    data            = user.load()
+    flask_session.permanent = True
+    data = user.load()
+    if data is None:
+        flask_session.clear()
+        return redirect(url_for("login_page"))
+    data, _ = user.check_and_update_streak(data)
+    user.save(data)
 
     ctx             = context.build(data)
-    ctx              = context.build(data)
-    ctx["progress"]  = user.stage_progress(data, data["stage"])
+    ctx["progress"] = user.stage_progress(data, data["stage"])
+    ctx["pep_auto"]         = None
+    username = flask_session.get("username", "there")
+    ctx["pep_welcome_back"] = f"Welcome back, {username}! Ready to explore some geography today?"
+
     ctx["best_capitals"] = data["stats"].get("best_capitals", {"pct": 0, "time": None})
     ctx["best_flags"]    = data["stats"].get("best_flags",    {"pct": 0, "time": None})
 
@@ -664,7 +673,7 @@ def stage_up():
     to_stage   = flask_session.pop("stage_up_to", None)
 
     if not from_stage or not to_stage:
-        return redirect(url_for("menu"))
+        return redirect(url_for("geo_menu"))
 
     data = user.load()
     ctx  = context.build(data)
@@ -679,7 +688,7 @@ def stage_up():
     ctx.update({
         "from_stage":  from_stage,
         "to_stage":    to_stage,
-        "next_url":    url_for("menu"),
+        "next_url":    url_for("geo_menu"),
         "pep_auto":    pep_autos.get(to_stage, "You leveled up!"),
     })
 
@@ -699,7 +708,7 @@ def game_complete():
 def dev():
     """Dev panel — only accessible when DEV_MODE = True."""
     if not DEV_MODE:
-        return redirect(url_for("menu"))
+        return redirect(url_for("geo_menu"))
 
     data            = user.load()
     ctx             = context.build(data)
@@ -710,7 +719,7 @@ def dev():
 @app.route("/dev/set-xp/<int:xp>")
 def dev_set_xp(xp):
     if not DEV_MODE:
-        return redirect(url_for("menu"))
+        return redirect(url_for("geo_menu"))
 
     data       = user.load()
     data["xp"] = xp
@@ -722,7 +731,7 @@ def dev_set_xp(xp):
 def dev_reset():
     """Reset all user data back to zero. Dev only."""
     if not DEV_MODE:
-        return redirect(url_for("menu"))
+        return redirect(url_for("geo_menu"))
 
     user.save(user.DEFAULT_CONFIG.copy())
     game_session.clear()
@@ -732,7 +741,7 @@ def dev_reset():
 @app.route("/dev/set-stage/<int:stage>")
 def dev_set_stage(stage):
     if not DEV_MODE:
-        return redirect(url_for("menu"))
+        return redirect(url_for("geo_menu"))
 
     if stage not in range(1, 6):
         return redirect(url_for("dev"))
